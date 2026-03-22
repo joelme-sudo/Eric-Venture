@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Center – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --border: #2B2D33;
+        }
+        body { background: var(--bg-primary); color: var(--text-primary); }
+        .main-nav { background: rgba(10,11,13,0.95); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .support-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .search-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .search-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 3rem;
+            padding: 1rem 2rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            background: var(--accent);
+            color: black;
+            border: none;
+            border-radius: 3rem;
+            padding: 0 3rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            border-color: var(--accent);
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .faq-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+        }
+
+        .faq-answer {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .contact-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .contact-btn {
+            background: var(--accent);
+            color: black;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.75rem 2rem;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .contact-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="index.html" style="color: var(--text-primary); text-decoration: none;">Home</a>
+            <a href="faq.html" style="color: var(--text-primary); text-decoration: none;">FAQ</a>
+        </div>
+    </nav>
+
+    <div class="support-wrapper">
+        <div class="search-section">
+            <h1>How can we help you?</h1>
+            <p style="color: var(--text-secondary);">Search for answers or browse our help center</p>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search...">
+                <button class="search-btn">Search</button>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem;">Browse by Category</h2>
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-user"></i></div>
+                <h3>Account</h3>
+                <p style="color: var(--text-secondary);">Manage your account</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Security</h3>
+                <p style="color: var(--text-secondary);">Protect your account</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-coins"></i></div>
+                <h3>Trading</h3>
+                <p style="color: var(--text-secondary);">Learn to trade</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-credit-card"></i></div>
+                <h3>Payments</h3>
+                <p style="color: var(--text-secondary);">Deposits & withdrawals</p>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem;">Frequently Asked Questions</h2>
+        <div class="faq-section">
+            <div class="faq-item active">
+                <div class="faq-question">
+                    <h3>How do I create an account?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Click "Sign Up" in the top right corner. Enter your email, create a password, and verify your email address. You can then complete your profile and start trading.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What are the trading fees?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Our fees start at 0.10% for makers and 0.15% for takers. VIP tiers offer lower fees based on 30-day trading volume. Check our Fees page for details.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How do I enable 2FA?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Go to Security Settings, click "Enable 2FA", and follow the instructions to set up Google Authenticator or SMS verification.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How long do withdrawals take?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Crypto withdrawals are usually processed within minutes. Bank withdrawals take 1-3 business days depending on your bank.
+                </div>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem;">Contact Us</h2>
+        <div class="contact-section">
+            <div class="contact-card">
+                <div class="contact-icon"><i class="fas fa-comment"></i></div>
+                <h3>Live Chat</h3>
+                <p style="color: var(--text-secondary);">24/7 instant support</p>
+                <button class="contact-btn">Start Chat</button>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                <h3>Email</h3>
+                <p style="color: var(--text-secondary);">support@ever.finance</p>
+                <button class="contact-btn">Send Email</button>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon"><i class="fas fa-twitter"></i></div>
+                <h3>Twitter</h3>
+                <p style="color: var(--text-secondary);">@everfinance</p>
+                <button class="contact-btn">Tweet Us</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const item = this.parentElement;
+                item.classList.toggle('active');
+                const icon = this.querySelector('i');
+                if (item.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

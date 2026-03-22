@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --border: #2B2D33;
+        }
+        body { background: var(--bg-primary); color: var(--text-primary); }
+        .main-nav { background: rgba(10,11,13,0.95); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .faq-wrapper {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .faq-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .faq-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-btn {
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .category-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .category-btn.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+
+        .faq-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+        }
+
+        .faq-answer {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="index.html" style="color: var(--text-primary); text-decoration: none;">Home</a>
+            <a href="support.html" style="color: var(--text-primary); text-decoration: none;">Support</a>
+        </div>
+    </nav>
+
+    <div class="faq-wrapper">
+        <div class="faq-header">
+            <h1>Frequently Asked Questions</h1>
+            <p style="color: var(--text-secondary);">Find answers to common questions</p>
+        </div>
+
+        <div class="faq-categories">
+            <span class="category-btn active">All</span>
+            <span class="category-btn">Account</span>
+            <span class="category-btn">Trading</span>
+            <span class="category-btn">Security</span>
+            <span class="category-btn">Fees</span>
+            <span class="category-btn">Technical</span>
+        </div>
+
+        <div class="faq-section">
+            <!-- Account -->
+            <div class="faq-item active" data-category="account">
+                <div class="faq-question">
+                    <h3>How do I create an account?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Click "Sign Up" in the top right corner. Enter your email, create a strong password, and verify your email address. You can then complete your profile and start trading.
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="account">
+                <div class="faq-question">
+                    <h3>How do I verify my identity?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Go to Settings → Verification. Upload a government-issued ID and proof of address. Verification usually takes 24-48 hours.
+                </div>
+            </div>
+
+            <!-- Trading -->
+            <div class="faq-item" data-category="trading">
+                <div class="faq-question">
+                    <h3>What is the minimum trade amount?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    The minimum trade amount varies by pair. For BTC/USDT it's 0.0001 BTC, for ETH/USDT it's 0.001 ETH, and for USDT pairs it's 1 USDT.
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="trading">
+                <div class="faq-question">
+                    <h3>How does leverage work?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Leverage allows you to trade with more than your account balance. For example, with 10x leverage, a $100 margin gives you $1,000 buying power. Higher leverage increases both potential profits and risks.
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="trading">
+                <div class="faq-question">
+                    <h3>What is a funding rate?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Funding rates are periodic payments between long and short traders to keep the perpetual contract price close to the spot price. Rates are calculated every 8 hours.
+                </div>
+            </div>
+
+            <!-- Security -->
+            <div class="faq-item" data-category="security">
+                <div class="faq-question">
+                    <h3>How do I enable 2FA?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Go to Settings → Security → Two-Factor Authentication. Choose between Google Authenticator or SMS verification and follow the setup instructions.
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="security">
+                <div class="faq-question">
+                    <h3>What is an anti-phishing code?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    An anti-phishing code is a unique word or number that appears in all legitimate emails from Ever Finance. If you receive an email without this code, it's likely a phishing attempt.
+                </div>
+            </div>
+
+            <!-- Fees -->
+            <div class="faq-item" data-category="fees">
+                <div class="faq-question">
+                    <h3>What are the trading fees?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Spot trading fees are 0.10% for makers and 0.15% for takers. Futures fees are 0.02% for makers and 0.05% for takers. VIP tiers offer discounted rates based on 30-day volume.
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="fees">
+                <div class="faq-question">
+                    <h3>Are there withdrawal fees?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes, withdrawal fees cover network transaction costs. Fees vary by cryptocurrency and network conditions. Current fees are displayed on the withdrawal page.
+                </div>
+            </div>
+
+            <!-- Technical -->
+            <div class="faq-item" data-category="technical">
+                <div class="faq-question">
+                    <h3>How do I use the API?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    Go to API Management to create API keys. You can set permissions for reading, trading, and withdrawals. Our API documentation has examples in Python, JavaScript, and other languages.
+                </div>
+            </div>
+
+            <div class="faq-item" data-category="technical">
+                <div class="faq-question">
+                    <h3>What is the order types?</h3>
+                    <i class="fas fa-chevron-down" style="color: var(--accent);"></i>
+                </div>
+                <div class="faq-answer">
+                    We support Limit, Market, Stop-Limit, Stop-Market, and Trailing Stop orders. Advanced orders are available for futures and margin trading.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const item = this.parentElement;
+                item.classList.toggle('active');
+                const icon = this.querySelector('i');
+                if (item.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Category filtering
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.textContent.toLowerCase();
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (category === 'all' || item.dataset.category === category) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

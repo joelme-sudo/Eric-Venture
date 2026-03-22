@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --border: #2B2D33;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .blog-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .blog-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .blog-header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .featured-post {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .featured-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .featured-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .featured-excerpt {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            background: var(--accent);
+            color: black;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .featured-image {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 1rem;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .blog-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-category {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 3rem 0;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .page-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .page-btn.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .newsletter {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 3rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 3rem;
+            padding: 1rem 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .newsletter-btn {
+            background: var(--accent);
+            color: black;
+            border: none;
+            border-radius: 3rem;
+            padding: 0 2rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .featured-post {
+                grid-template-columns: 1fr;
+            }
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            .newsletter-form {
+                flex-direction: column;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="support.html">Support</a>
+        </div>
+    </nav>
+
+    <div class="blog-wrapper">
+        <div class="blog-header">
+            <h1>ERIC VENTURE Blog</h1>
+            <p>Insights, updates, and stories from the world of crypto</p>
+        </div>
+
+        <!-- Featured Post -->
+        <div class="featured-post">
+            <div class="featured-content">
+                <div class="featured-meta">
+                    <span>Featured</span>
+                    <span>•</span>
+                    <span>5 min read</span>
+                </div>
+                <h2>The Future of DeFi: What's Next for 2026</h2>
+                <p class="featured-excerpt">As we look ahead to 2026, the DeFi landscape continues to evolve at breakneck speed. From AI-powered trading to cross-chain interoperability, here's what you need to know about the future of decentralized finance.</p>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="read-more" onclick="window.location='blog-post.html?id=1'">Read More</button>
+                    <span style="color: var(--text-secondary);">By Sarah Chen • Mar 1, 2026</span>
+                </div>
+            </div>
+            <div class="featured-image">
+                <i class="fas fa-chart-line"></i>
+            </div>
+        </div>
+
+        <!-- Blog Grid -->
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-bitcoin"></i>
+                </div>
+                <div class="blog-content">
+                    <div class="blog-category">Bitcoin</div>
+                    <div class="blog-title">Bitcoin Halving 2026: Everything You Need to Know</div>
+                    <div class="blog-excerpt">The next Bitcoin halving is approaching. Learn how it could impact prices and what to expect.</div>
+                    <div class="blog-meta">
+                        <span>Mar 1, 2026</span>
+                        <span>4 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="blog-content">
+                    <div class="blog-category">Trading</div>
+                    <div class="blog-title">How to Use AI Trading Bots Effectively</div>
+                    <div class="blog-excerpt">Discover strategies for maximizing returns with automated trading bots while managing risk.</div>
+                    <div class="blog-meta">
+                        <span>Feb 28, 2026</span>
+                        <span>6 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="blog-content">
+                    <div class="blog-category">Security</div>
+                    <div class="blog-title">Top 10 Security Tips for Crypto Traders</div>
+                    <div class="blog-excerpt">Keep your assets safe with these essential security practices for 2026.</div>
+                    <div class="blog-meta">
+                        <span>Feb 25, 2026</span>
+                        <span>5 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div class="blog-content">
+                    <div class="blog-category">Analysis</div>
+                    <div class="blog-title">Market Analysis: What's Driving the Current Rally?</div>
+                    <div class="blog-excerpt">A deep dive into the factors behind the recent market movements and what analysts are saying.</div>
+                    <div class="blog-meta">
+                        <span>Feb 22, 2026</span>
+                        <span>7 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="blog-content">
+                    <div class="blog-category">Technology</div>
+                    <div class="blog-title">Understanding Layer 2 Solutions</div>
+                    <div class="blog-excerpt">A beginner's guide to scaling solutions like Arbitrum, Optimism, and zkSync.</div>
+                    <div class="blog-meta">
+                        <span>Feb 20, 2026</span>
+                        <span>5 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <div class="blog-content">
+                    <div class="blog-category">News</div>
+                    <div class="blog-title">Ever Finance Launches Pre-Market Trading</div>
+                    <div class="blog-excerpt">Trade newly minted tokens before they hit major exchanges with our new Pre-market feature.</div>
+                    <div class="blog-meta">
+                        <span>Feb 18, 2026</span>
+                        <span>3 min read</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="newsletter">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Get the latest crypto insights delivered straight to your inbox</p>
+            <div class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email">
+                <button class="newsletter-btn">Subscribe</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

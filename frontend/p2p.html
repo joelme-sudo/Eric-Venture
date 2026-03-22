@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P Trading – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .p2p-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .p2p-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .p2p-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .p2p-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .p2p-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .p2p-header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Tabs */
+        .p2p-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .p2p-tab {
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .p2p-tab.buy {
+            background: var(--green);
+            color: black;
+        }
+
+        .p2p-tab.sell {
+            background: var(--red);
+            color: white;
+        }
+
+        .p2p-tab.active {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* Filters */
+        .filters-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .filter-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .more-filters {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+
+        .more-filters-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .more-filters-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Ad Grid */
+        .ads-section {
+            margin-bottom: 2rem;
+        }
+
+        .ads-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .ads-count {
+            color: var(--text-secondary);
+        }
+
+        .refresh-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .refresh-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .ads-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ad-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 1fr;
+            align-items: center;
+            gap: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .ad-card:hover {
+            border-color: var(--accent);
+        }
+
+        .ad-trader {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .trader-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: black;
+        }
+
+        .trader-info {
+            flex: 1;
+        }
+
+        .trader-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .trader-stats {
+            display: flex;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .trader-rating {
+            color: var(--accent);
+        }
+
+        .badge-success {
+            background: var(--green);
+            color: black;
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+        }
+
+        .ad-price {
+            text-align: center;
+        }
+
+        .price-value {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .price-fiat {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .ad-available {
+            text-align: center;
+        }
+
+        .available-value {
+            font-weight: 600;
+        }
+
+        .available-crypto {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .ad-limits {
+            text-align: center;
+        }
+
+        .limits-value {
+            font-weight: 600;
+        }
+
+        .limits-fiat {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .ad-payments {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .payment-badge {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .ad-action {
+            text-align: center;
+        }
+
+        .buy-ad-btn {
+            background: var(--green);
+            color: black;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .sell-ad-btn {
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .buy-ad-btn:hover, .sell-ad-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* My Ads Section */
+        .my-ads-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .my-ads-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .create-ad-btn {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .my-ads-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .my-ad-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem;
+        }
+
+        .my-ad-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .my-ad-type {
+            font-weight: 600;
+        }
+
+        .my-ad-type.buy {
+            color: var(--green);
+        }
+
+        .my-ad-type.sell {
+            color: var(--red);
+        }
+
+        .my-ad-status {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .my-ad-details {
+            margin-bottom: 0.5rem;
+        }
+
+        .my-ad-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .my-ad-label {
+            color: var(--text-secondary);
+        }
+
+        .my-ad-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .my-ad-btn {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .my-ad-btn:hover {
+            border-color: var(--accent);
+        }
+
+        /* Guidelines */
+        .guidelines-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .guideline-item {
+            text-align: center;
+        }
+
+        .guideline-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            color: black;
+        }
+
+        .guideline-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .guideline-desc {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .filters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .ad-card {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+            .ad-payments, .ad-action {
+                grid-column: span 2;
+            }
+            .my-ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .guidelines-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            .ad-card {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            .my-ads-grid {
+                grid-template-columns: 1fr;
+            }
+            .guidelines-grid {
+                grid-template-columns: 1fr;
+            }
+            .p2p-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- P2P Content -->
+    <div class="p2p-wrapper">
+        <div class="p2p-container">
+            <!-- Header -->
+            <div class="p2p-header">
+                <h1>P2P Trading</h1>
+                <p>Buy and sell crypto directly with other users. 0% fees, 100+ payment methods.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">10k+</div>
+                    <div class="stat-label">Daily Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">100+</div>
+                    <div class="stat-label">Payment Methods</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">60+</div>
+                    <div class="stat-label">Fiat Currencies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0%</div>
+                    <div class="stat-label">Fees</div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="p2p-tabs">
+                <div class="p2p-tab buy active">Buy</div>
+                <div class="p2p-tab sell">Sell</div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filters-grid">
+                    <div class="filter-item">
+                        <span class="filter-label">Crypto</span>
+                        <select class="filter-select">
+                            <option>USDT</option>
+                            <option>BTC</option>
+                            <option>ETH</option>
+                            <option>BNB</option>
+                            <option>SOL</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Fiat</span>
+                        <select class="filter-select">
+                            <option>NGN (₦)</option>
+                            <option>USD ($)</option>
+                            <option>EUR (€)</option>
+                            <option>GBP (£)</option>
+                            <option>CAD (C$)</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Payment Method</span>
+                        <select class="filter-select">
+                            <option>All Methods</option>
+                            <option>Bank Transfer</option>
+                            <option>PayPal</option>
+                            <option>Cash App</option>
+                            <option>Mobile Money</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Sort By</span>
+                        <select class="filter-select">
+                            <option>Best Price</option>
+                            <option>Highest Limit</option>
+                            <option>Most Trusted</option>
+                            <option>Fastest Payment</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                    <button class="more-filters-btn">
+                        <i class="fas fa-sliders-h"></i> More Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ads Section -->
+            <div class="ads-section">
+                <div class="ads-header">
+                    <div class="ads-count">124 ads available</div>
+                    <button class="refresh-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="ads-grid">
+                    <!-- Ad 1 -->
+                    <div class="ad-card">
+                        <div class="ad-trader">
+                            <div class="trader-avatar">IK</div>
+                            <div class="trader-info">
+                                <div class="trader-name">Ibrahimkay <span class="badge-success">VERIFIED</span></div>
+                                <div class="trader-stats">
+                                    <span>687 orders</span>
+                                    <span class="trader-rating">★ 4.9</span>
+                                    <span>15min ⏱️</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ad-price">
+                            <div class="price-value">₦1,484.88</div>
+                            <div class="price-fiat">per USDT</div>
+                        </div>
+                        <div class="ad-available">
+                            <div class="available-value">22,032.32</div>
+                            <div class="available-crypto">USDT</div>
+                        </div>
+                        <div class="ad-limits">
+                            <div class="limits-value">₦15M - ₦32.7M</div>
+                            <div class="limits-fiat">Limit</div>
+                        </div>
+                        <div class="ad-payments">
+                            <span class="payment-badge">Bank Transfer</span>
+                            <span class="payment-badge">PayPal</span>
+                        </div>
+                        <div class="ad-action">
+                            <button class="buy-ad-btn">Buy USDT</button>
+                        </div>
+                    </div>
+
+                    <!-- Ad 2 -->
+                    <div class="ad-card">
+                        <div class="ad-trader">
+                            <div class="trader-avatar">CK</div>
+                            <div class="trader-info">
+                                <div class="trader-name">CryptoKing <span class="badge-success">VERIFIED</span></div>
+                                <div class="trader-stats">
+                                    <span>1,234 orders</span>
+                                    <span class="trader-rating">★ 4.8</span>
+                                    <span>10min ⏱️</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ad-price">
+                            <div class="price-value">₦1,485.00</div>
+                            <div class="price-fiat">per USDT</div>
+                        </div>
+                        <div class="ad-available">
+                            <div class="available-value">15,000.00</div>
+                            <div class="available-crypto">USDT</div>
+                        </div>
+                        <div class="ad-limits">
+                            <div class="limits-value">₦10M - ₦25M</div>
+                            <div class="limits-fiat">Limit</div>
+                        </div>
+                        <div class="ad-payments">
+                            <span class="payment-badge">Bank Transfer</span>
+                            <span class="payment-badge">Cash App</span>
+                            <span class="payment-badge">Venmo</span>
+                        </div>
+                        <div class="ad-action">
+                            <button class="buy-ad-btn">Buy USDT</button>
+                        </div>
+                    </div>
+
+                    <!-- Ad 3 -->
+                    <div class="ad-card">
+                        <div class="ad-trader">
+                            <div class="trader-avatar">TM</div>
+                            <div class="trader-info">
+                                <div class="trader-name">TrustMerchant</div>
+                                <div class="trader-stats">
+                                    <span>2,845 orders</span>
+                                    <span class="trader-rating">★ 5.0</span>
+                                    <span>5min ⏱️</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ad-price">
+                            <div class="price-value">₦1,483.50</div>
+                            <div class="price-fiat">per USDT</div>
+                        </div>
+                        <div class="ad-available">
+                            <div class="available-value">50,000.00</div>
+                            <div class="available-crypto">USDT</div>
+                        </div>
+                        <div class="ad-limits">
+                            <div class="limits-value">₦20M - ₦50M</div>
+                            <div class="limits-fiat">Limit</div>
+                        </div>
+                        <div class="ad-payments">
+                            <span class="payment-badge">All Payments</span>
+                        </div>
+                        <div class="ad-action">
+                            <button class="buy-ad-btn">Buy USDT</button>
+                        </div>
+                    </div>
+
+                    <!-- Ad 4 -->
+                    <div class="ad-card">
+                        <div class="ad-trader">
+                            <div class="trader-avatar">QC</div>
+                            <div class="trader-info">
+                                <div class="trader-name">QuickCash</div>
+                                <div class="trader-stats">
+                                    <span>456 orders</span>
+                                    <span class="trader-rating">★ 4.7</span>
+                                    <span>20min ⏱️</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ad-price">
+                            <div class="price-value">₦1,486.20</div>
+                            <div class="price-fiat">per USDT</div>
+                        </div>
+                        <div class="ad-available">
+                            <div class="available-value">8,750.00</div>
+                            <div class="available-crypto">USDT</div>
+                        </div>
+                        <div class="ad-limits">
+                            <div class="limits-value">₦5M - ₦15M</div>
+                            <div class="limits-fiat">Limit</div>
+                        </div>
+                        <div class="ad-payments">
+                            <span class="payment-badge">Bank Transfer</span>
+                            <span class="payment-badge">Mobile Money</span>
+                        </div>
+                        <div class="ad-action">
+                            <button class="buy-ad-btn">Buy USDT</button>
+                        </div>
+                    </div>
+
+                    <!-- Ad 5 -->
+                    <div class="ad-card">
+                        <div class="ad-trader">
+                            <div class="trader-avatar">GC</div>
+                            <div class="trader-info">
+                                <div class="trader-name">GoldCash</div>
+                                <div class="trader-stats">
+                                    <span>932 orders</span>
+                                    <span class="trader-rating">★ 4.9</span>
+                                    <span>8min ⏱️</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ad-price">
+                            <div class="price-value">₦1,484.00</div>
+                            <div class="price-fiat">per USDT</div>
+                        </div>
+                        <div class="ad-available">
+                            <div class="available-value">35,000.00</div>
+                            <div class="available-crypto">USDT</div>
+                        </div>
+                        <div class="ad-limits">
+                            <div class="limits-value">₦12M - ₦40M</div>
+                            <div class="limits-fiat">Limit</div>
+                        </div>
+                        <div class="ad-payments">
+                            <span class="payment-badge">Bank Transfer</span>
+                            <span class="payment-badge">PayPal</span>
+                            <span class="payment-badge">Wise</span>
+                        </div>
+                        <div class="ad-action">
+                            <button class="buy-ad-btn">Buy USDT</button>
+                        </div>
+                    </div>
+
+                    <!-- Ad 6 -->
+                    <div class="ad-card">
+                        <div class="ad-trader">
+                            <div class="trader-avatar">SE</div>
+                            <div class="trader-info">
+                                <div class="trader-name">SecureX</div>
+                                <div class="trader-stats">
+                                    <span>2,101 orders</span>
+                                    <span class="trader-rating">★ 4.9</span>
+                                    <span>12min ⏱️</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ad-price">
+                            <div class="price-value">₦1,485.50</div>
+                            <div class="price-fiat">per USDT</div>
+                        </div>
+                        <div class="ad-available">
+                            <div class="available-value">42,500.00</div>
+                            <div class="available-crypto">USDT</div>
+                        </div>
+                        <div class="ad-limits">
+                            <div class="limits-value">₦18M - ₦45M</div>
+                            <div class="limits-fiat">Limit</div>
+                        </div>
+                        <div class="ad-payments">
+                            <span class="payment-badge">Bank Transfer</span>
+                            <span class="payment-badge">Revolut</span>
+                        </div>
+                        <div class="ad-action">
+                            <button class="buy-ad-btn">Buy USDT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Ads Section -->
+            <div class="my-ads-section">
+                <div class="my-ads-header">
+                    <h3>My Ads</h3>
+                    <button class="create-ad-btn">
+                        <i class="fas fa-plus"></i> Create Ad
+                    </button>
+                </div>
+
+                <div class="my-ads-grid">
+                    <div class="my-ad-card">
+                        <div class="my-ad-header">
+                            <span class="my-ad-type buy">BUY</span>
+                            <span class="my-ad-status">Active</span>
+                        </div>
+                        <div class="my-ad-details">
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">USDT/NGN</span>
+                                <span>₦1,484.88</span>
+                            </div>
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">Available</span>
+                                <span>5,000 USDT</span>
+                            </div>
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">Limits</span>
+                                <span>₦1M - ₦5M</span>
+                            </div>
+                        </div>
+                        <div class="my-ad-actions">
+                            <button class="my-ad-btn">Edit</button>
+                            <button class="my-ad-btn">Pause</button>
+                            <button class="my-ad-btn">Stats</button>
+                        </div>
+                    </div>
+
+                    <div class="my-ad-card">
+                        <div class="my-ad-header">
+                            <span class="my-ad-type sell">SELL</span>
+                            <span class="my-ad-status">Active</span>
+                        </div>
+                        <div class="my-ad-details">
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">BTC/NGN</span>
+                                <span>₦98,450,000</span>
+                            </div>
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">Available</span>
+                                <span>2.5 BTC</span>
+                            </div>
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">Limits</span>
+                                <span>₦10M - ₦50M</span>
+                            </div>
+                        </div>
+                        <div class="my-ad-actions">
+                            <button class="my-ad-btn">Edit</button>
+                            <button class="my-ad-btn">Pause</button>
+                            <button class="my-ad-btn">Stats</button>
+                        </div>
+                    </div>
+
+                    <div class="my-ad-card">
+                        <div class="my-ad-header">
+                            <span class="my-ad-type buy">BUY</span>
+                            <span class="my-ad-status">Paused</span>
+                        </div>
+                        <div class="my-ad-details">
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">ETH/NGN</span>
+                                <span>₦5,250,000</span>
+                            </div>
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">Available</span>
+                                <span>15 ETH</span>
+                            </div>
+                            <div class="my-ad-row">
+                                <span class="my-ad-label">Limits</span>
+                                <span>₦5M - ₦20M</span>
+                            </div>
+                        </div>
+                        <div class="my-ad-actions">
+                            <button class="my-ad-btn">Edit</button>
+                            <button class="my-ad-btn">Resume</button>
+                            <button class="my-ad-btn">Stats</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guidelines -->
+            <div class="guidelines-section">
+                <h3 style="margin-bottom: 1rem;">P2P Trading Guidelines</h3>
+                <div class="guidelines-grid">
+                    <div class="guideline-item">
+                        <div class="guideline-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="guideline-title">Secure Escrow</div>
+                        <div class="guideline-desc">Crypto held securely until payment confirmed</div>
+                    </div>
+                    <div class="guideline-item">
+                        <div class="guideline-icon"><i class="fas fa-clock"></i></div>
+                        <div class="guideline-title">15min Payment</div>
+                        <div class="guideline-desc">Complete payment within time limit</div>
+                    </div>
+                    <div class="guideline-item">
+                        <div class="guideline-icon"><i class="fas fa-star"></i></div>
+                        <div class="guideline-title">Rating System</div>
+                        <div class="guideline-desc">Build trust with user ratings</div>
+                    </div>
+                    <div class="guideline-item">
+                        <div class="guideline-icon"><i class="fas fa-headset"></i></div>
+                        <div class="guideline-title">24/7 Support</div>
+                        <div class="guideline-desc">Dispute resolution available</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Tab switching
+        document.querySelectorAll('.p2p-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.p2p-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update button colors based on tab
+                const isBuy = this.classList.contains('buy');
+                document.querySelectorAll('.ad-action button').forEach(btn => {
+                    if (isBuy) {
+                        btn.className = 'buy-ad-btn';
+                        btn.textContent = 'Buy USDT';
+                    } else {
+                        btn.className = 'sell-ad-btn';
+                        btn.textContent = 'Sell USDT';
+                    }
+                });
+            });
+        });
+
+        // Filter select changes
+        document.querySelectorAll('.filter-select').forEach(select => {
+            select.addEventListener('change', function() {
+                console.log('Filter changed:', this.value);
+                // In real app, would fetch new ads
+            });
+        });
+
+        // Refresh button
+        document.querySelector('.refresh-btn').addEventListener('click', function() {
+            const btn = this;
+            btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+            }, 1000);
+        });
+
+        // More filters button
+        document.querySelector('.more-filters-btn').addEventListener('click', function() {
+            alert('More filters coming soon!');
+        });
+
+        // Buy/Sell buttons
+        document.querySelectorAll('.buy-ad-btn, .sell-ad-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const ad = this.closest('.ad-card');
+                const trader = ad.querySelector('.trader-name').textContent.split(' ')[0];
+                const price = ad.querySelector('.price-value').textContent;
+                alert(`Start trade with ${trader} at ${price}?`);
+            });
+        });
+
+        // Create ad button
+        document.querySelector('.create-ad-btn').addEventListener('click', function() {
+            alert('Create new P2P ad coming soon!');
+        });
+
+        // My ad actions
+        document.querySelectorAll('.my-ad-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const action = this.textContent;
+                const ad = this.closest('.my-ad-card');
+                const type = ad.querySelector('.my-ad-type').textContent;
+                alert(`${action} ${type} ad?`);
+            });
+        });
+    </script>
+</body>
+</html>

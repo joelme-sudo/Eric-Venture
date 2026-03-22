@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fees – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --border: #2B2D33;
+        }
+        body { background: var(--bg-primary); color: var(--text-primary); }
+        .main-nav { background: rgba(10,11,13,0.95); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .fees-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .fees-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .fees-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .fee-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            background: var(--bg-card);
+            padding: 0.5rem;
+            border-radius: 3rem;
+            width: fit-content;
+            margin: 2rem auto;
+        }
+
+        .toggle-btn {
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .fee-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .fee-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .fee-card.popular {
+            border-color: var(--accent);
+            transform: scale(1.05);
+            position: relative;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -0.75rem;
+            right: 1rem;
+            background: var(--accent);
+            color: black;
+            padding: 0.25rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .tier-price {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-desc {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .fee-table {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-row:hover {
+            background: var(--bg-secondary);
+        }
+
+        .fee-note {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .note-icon {
+            color: var(--accent);
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .fee-grid {
+                grid-template-columns: 1fr;
+            }
+            .table-header, .table-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            .fee-card.popular {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="index.html" style="color: var(--text-primary); text-decoration: none;">Home</a>
+            <a href="market-spot.html" style="color: var(--text-primary); text-decoration: none;">Markets</a>
+        </div>
+    </nav>
+
+    <div class="fees-wrapper">
+        <div class="fees-header">
+            <h1>Transparent Fees</h1>
+            <p style="color: var(--text-secondary); font-size: 1.2rem;">No hidden costs. Pay less, trade more.</p>
+        </div>
+
+        <div class="fee-toggle">
+            <span class="toggle-btn active">Simple Fee</span>
+            <span class="toggle-btn">VIP Tier</span>
+        </div>
+
+        <!-- Simple Fee Grid -->
+        <div class="fee-grid" id="simpleFees">
+            <div class="fee-card">
+                <div class="tier-name">Maker</div>
+                <div class="tier-price">0.10%</div>
+                <div class="tier-desc">When you add liquidity</div>
+                <ul style="list-style: none; color: var(--text-secondary);">
+                    <li style="padding: 0.5rem 0;">✓ Limit orders</li>
+                    <li style="padding: 0.5rem 0;">✓ Order book depth</li>
+                </ul>
+            </div>
+
+            <div class="fee-card popular">
+                <span class="popular-badge">MOST TRADED</span>
+                <div class="tier-name">Taker</div>
+                <div class="tier-price">0.15%</div>
+                <div class="tier-desc">When you remove liquidity</div>
+                <ul style="list-style: none; color: var(--text-secondary);">
+                    <li style="padding: 0.5rem 0;">✓ Market orders</li>
+                    <li style="padding: 0.5rem 0;">✓ Instant execution</li>
+                </ul>
+            </div>
+
+            <div class="fee-card">
+                <div class="tier-name">Futures</div>
+                <div class="tier-price">0.02%</div>
+                <div class="tier-desc">Perpetual & Delivery</div>
+                <ul style="list-style: none; color: var(--text-secondary);">
+                    <li style="padding: 0.5rem 0;">✓ Maker: 0.02%</li>
+                    <li style="padding: 0.5rem 0;">✓ Taker: 0.05%</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- VIP Fee Table (hidden by default) -->
+        <div class="fee-table" id="vipFees" style="display: none;">
+            <div class="table-header">
+                <span>VIP Level</span>
+                <span>30d Volume</span>
+                <span>Maker Fee</span>
+                <span>Taker Fee</span>
+                <span>Withdrawal</span>
+            </div>
+            <div class="table-row">
+                <span>VIP 0</span>
+                <span>&lt; $1M</span>
+                <span>0.10%</span>
+                <span>0.15%</span>
+                <span>0.0005 BTC</span>
+            </div>
+            <div class="table-row">
+                <span>VIP 1</span>
+                <span>$1M - $5M</span>
+                <span>0.09%</span>
+                <span>0.14%</span>
+                <span>0.0004 BTC</span>
+            </div>
+            <div class="table-row">
+                <span>VIP 2</span>
+                <span>$5M - $10M</span>
+                <span>0.08%</span>
+                <span>0.13%</span>
+                <span>0.0003 BTC</span>
+            </div>
+            <div class="table-row">
+                <span>VIP 3</span>
+                <span>$10M - $50M</span>
+                <span>0.07%</span>
+                <span>0.12%</span>
+                <span>0.0002 BTC</span>
+            </div>
+            <div class="table-row">
+                <span>VIP 4</span>
+                <span>$50M - $100M</span>
+                <span>0.06%</span>
+                <span>0.11%</span>
+                <span>0.0001 BTC</span>
+            </div>
+            <div class="table-row">
+                <span>VIP 5</span>
+                <span>$100M+</span>
+                <span>0.05%</span>
+                <span>0.10%</span>
+                <span>0 BTC</span>
+            </div>
+        </div>
+
+        <!-- Other Fees -->
+        <h2 style="margin: 3rem 0 1.5rem;">Other Fees</h2>
+        <div class="fee-grid">
+            <div class="fee-card">
+                <div class="tier-name">Deposit</div>
+                <div class="tier-price">Free</div>
+                <div class="tier-desc">All cryptocurrencies</div>
+            </div>
+            <div class="fee-card">
+                <div class="tier-name">Withdrawal</div>
+                <div class="tier-price">Variable</div>
+                <div class="tier-desc">Network fees apply</div>
+            </div>
+            <div class="fee-card">
+                <div class="tier-name">Convert</div>
+                <div class="tier-price">0%</div>
+                <div class="tier-desc">No fees on conversion</div>
+            </div>
+        </div>
+
+        <!-- Fee Notes -->
+        <div class="fee-note">
+            <h3><i class="fas fa-info-circle note-icon"></i> Important Notes</h3>
+            <ul style="color: var(--text-secondary); margin-top: 1rem;">
+                <li>Fees are calculated based on your 30-day trading volume</li>
+                <li>VIP tiers update automatically every day at 00:00 UTC</li>
+                <li>Referral discounts can be stacked with VIP discounts</li>
+                <li>Withdrawal fees cover network transaction costs</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Toggle between Simple and VIP fee display
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                if (this.textContent === 'Simple Fee') {
+                    document.getElementById('simpleFees').style.display = 'grid';
+                    document.getElementById('vipFees').style.display = 'none';
+                } else {
+                    document.getElementById('simpleFees').style.display = 'none';
+                    document.getElementById('vipFees').style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

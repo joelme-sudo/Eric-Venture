@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staking – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --border: #2B2D33;
+        }
+        body { background: var(--bg-primary); color: var(--text-primary); }
+        .main-nav { background: var(--bg-secondary); border-bottom: 1px solid var(--border); }
+        .nav-container { max-width: 1400px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .staking-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .staking-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .staking-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+        }
+        .apy {
+            font-size: 2.5rem;
+            color: var(--green);
+            margin: 1rem 0;
+        }
+        .stake-btn {
+            background: var(--accent);
+            color: black;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">[same navigation as spot.html]</nav>
+    
+    <div class="staking-container">
+        <h1>Staking</h1>
+        <div class="staking-grid">
+            <div class="staking-card">
+                <h3>ETH Staking</h3>
+                <div class="apy">4.2% APY</div>
+                <button class="stake-btn">Stake ETH</button>
+            </div>
+            <div class="staking-card">
+                <h3>SOL Staking</h3>
+                <div class="apy">6.8% APY</div>
+                <button class="stake-btn">Stake SOL</button>
+            </div>
+            <div class="staking-card">
+                <h3>ADA Staking</h3>
+                <div class="apy">3.9% APY</div>
+                <button class="stake-btn">Stake ADA</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

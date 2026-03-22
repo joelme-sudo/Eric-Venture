@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Trading – ERIC VENTURE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .options-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .options-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .options-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .options-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .options-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .underlying-price {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .price-big {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .price-change {
+            color: var(--green);
+        }
+
+        /* Chain Selector */
+        .chain-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: var(--bg-card);
+            padding: 0.5rem;
+            border-radius: 3rem;
+            width: fit-content;
+            border: 1px solid var(--border);
+        }
+
+        .chain-option {
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .chain-option:hover {
+            color: var(--accent);
+        }
+
+        .chain-option.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        /* Expiry Tabs */
+        .expiry-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .expiry-tab {
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .expiry-tab:hover {
+            color: var(--accent);
+        }
+
+        .expiry-tab.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        /* Options Chain */
+        .options-chain {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chain-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .chain-header {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            font-weight: 600;
+            display: grid;
+            grid-template-columns: 80px 100px 80px 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chain-header.calls {
+            color: var(--green);
+        }
+
+        .chain-header.puts {
+            color: var(--red);
+        }
+
+        .option-row {
+            display: grid;
+            grid-template-columns: 80px 100px 80px 1fr;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .option-row:hover {
+            background: var(--bg-secondary);
+        }
+
+        .option-row.selected {
+            background: rgba(240,185,11,0.1);
+            border-left: 3px solid var(--accent);
+        }
+
+        .strike {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .price {
+            font-family: monospace;
+            color: var(--text-primary);
+        }
+
+        .change.positive {
+            color: var(--green);
+        }
+
+        .change.negative {
+            color: var(--red);
+        }
+
+        .volume {
+            color: var(--text-secondary);
+        }
+
+        /* Greeks Panel */
+        .greeks-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .greeks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .greeks-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+        }
+
+        .greek-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        .greek-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .greek-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Strategy Builder */
+        .strategy-builder {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .strategy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .strategy-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 2rem;
+        }
+
+        .strategy-tab {
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .strategy-tab:hover {
+            color: var(--accent);
+        }
+
+        .strategy-tab.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        /* Selected Legs */
+        .legs-section {
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .leg-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .leg-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .leg-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .leg-type {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .leg-type.call {
+            background: var(--green);
+            color: black;
+        }
+
+        .leg-type.put {
+            background: var(--red);
+            color: white;
+        }
+
+        .leg-price {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .leg-remove {
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .leg-remove:hover {
+            color: var(--red);
+        }
+
+        /* Payoff Chart */
+        .payoff-container {
+            height: 300px;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        #payoffChart {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Strategy Actions */
+        .strategy-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .buy-btn {
+            flex: 1;
+            background: linear-gradient(135deg, var(--green), #0fa86a);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .sell-btn {
+            flex: 1;
+            background: linear-gradient(135deg, var(--red), #d43f54);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .buy-btn:hover, .sell-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* Error Message */
+        .error {
+            color: var(--red);
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .options-chain {
+                grid-template-columns: 1fr;
+            }
+            .greeks-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .greeks-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .strategy-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html" class="active">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Options Trading Content -->
+    <div class="options-wrapper">
+        <div class="options-container">
+            <!-- Header -->
+            <div class="options-header">
+                <h1>Options Trading</h1>
+                <div class="underlying-price">
+                    <span>BTC/USDT</span>
+                    <span class="price-big" id="btcPrice">$68,142</span>
+                    <span class="price-change" id="priceChange">+2.4%</span>
+                </div>
+            </div>
+
+            <!-- Chain Selector -->
+            <div class="chain-selector">
+                <span class="chain-option active">BTC</span>
+                <span class="chain-option">ETH</span>
+                <span class="chain-option">SOL</span>
+                <span class="chain-option">BNB</span>
+                <span class="chain-option">XRP</span>
+            </div>
+
+            <!-- Expiry Tabs -->
+            <div class="expiry-tabs">
+                <span class="expiry-tab active">Weekly (Mar 7)</span>
+                <span class="expiry-tab">Weekly (Mar 14)</span>
+                <span class="expiry-tab">Monthly (Mar 28)</span>
+                <span class="expiry-tab">Quarterly (Jun 27)</span>
+                <span class="expiry-tab">Quarterly (Sep 26)</span>
+            </div>
+
+            <!-- Options Chain -->
+            <div class="options-chain">
+                <!-- Calls -->
+                <div class="chain-section">
+                    <div class="chain-header calls">
+                        <span>Strike</span>
+                        <span>Price</span>
+                        <span>Change</span>
+                        <span>Volume</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'call', 64000)">
+                        <span class="strike">64,000</span>
+                        <span class="price">$4,850</span>
+                        <span class="change positive">+320</span>
+                        <span class="volume">1,234</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'call', 65000)">
+                        <span class="strike">65,000</span>
+                        <span class="price">$4,120</span>
+                        <span class="change positive">+280</span>
+                        <span class="volume">2,567</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'call', 66000)">
+                        <span class="strike">66,000</span>
+                        <span class="price">$3,450</span>
+                        <span class="change positive">+190</span>
+                        <span class="volume">3,456</span>
+                    </div>
+                    <div class="option-row selected" onclick="selectOption(this, 'call', 67000)">
+                        <span class="strike">67,000</span>
+                        <span class="price">$2,850</span>
+                        <span class="change positive">+120</span>
+                        <span class="volume">4,567</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'call', 68000)">
+                        <span class="strike">68,000</span>
+                        <span class="price">$2,150</span>
+                        <span class="change positive">+85</span>
+                        <span class="volume">5,678</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'call', 69000)">
+                        <span class="strike">69,000</span>
+                        <span class="price">$1,550</span>
+                        <span class="change positive">+45</span>
+                        <span class="volume">3,890</span>
+                    </div>
+                </div>
+
+                <!-- Puts -->
+                <div class="chain-section">
+                    <div class="chain-header puts">
+                        <span>Strike</span>
+                        <span>Price</span>
+                        <span>Change</span>
+                        <span>Volume</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'put', 64000)">
+                        <span class="strike">64,000</span>
+                        <span class="price">$1,250</span>
+                        <span class="change negative">-65</span>
+                        <span class="volume">2,345</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'put', 65000)">
+                        <span class="strike">65,000</span>
+                        <span class="price">$1,650</span>
+                        <span class="change negative">-82</span>
+                        <span class="volume">3,456</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'put', 66000)">
+                        <span class="strike">66,000</span>
+                        <span class="price">$1,950</span>
+                        <span class="change negative">-78</span>
+                        <span class="volume">4,567</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'put', 67000)">
+                        <span class="strike">67,000</span>
+                        <span class="price">$2,250</span>
+                        <span class="change negative">-92</span>
+                        <span class="volume">5,678</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'put', 68000)">
+                        <span class="strike">68,000</span>
+                        <span class="price">$2,550</span>
+                        <span class="change negative">-85</span>
+                        <span class="volume">3,456</span>
+                    </div>
+                    <div class="option-row" onclick="selectOption(this, 'put', 69000)">
+                        <span class="strike">69,000</span>
+                        <span class="price">$2,850</span>
+                        <span class="change negative">-64</span>
+                        <span class="volume">2,567</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Greeks Panel -->
+            <div class="greeks-panel">
+                <div class="greeks-header">
+                    <h3>Option Greeks</h3>
+                    <span class="badge">BTC 67,000 CALL</span>
+                </div>
+                <div class="greeks-grid">
+                    <div class="greek-item">
+                        <div class="greek-label">Delta</div>
+                        <div class="greek-value" id="delta">0.65</div>
+                    </div>
+                    <div class="greek-item">
+                        <div class="greek-label">Gamma</div>
+                        <div class="greek-value" id="gamma">0.08</div>
+                    </div>
+                    <div class="greek-item">
+                        <div class="greek-label">Theta</div>
+                        <div class="greek-value" id="theta">-12.4</div>
+                    </div>
+                    <div class="greek-item">
+                        <div class="greek-label">Vega</div>
+                        <div class="greek-value" id="vega">45.6</div>
+                    </div>
+                    <div class="greek-item">
+                        <div class="greek-label">Rho</div>
+                        <div class="greek-value" id="rho">2.3</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strategy Builder -->
+            <div class="strategy-builder">
+                <div class="strategy-header">
+                    <h3>Strategy Builder</h3>
+                    <div class="strategy-tabs">
+                        <span class="strategy-tab active">Single</span>
+                        <span class="strategy-tab">Vertical</span>
+                        <span class="strategy-tab">Iron Condor</span>
+                        <span class="strategy-tab">Straddle</span>
+                        <span class="strategy-tab">Strangle</span>
+                    </div>
+                </div>
+
+                <!-- Selected Legs -->
+                <div class="legs-section">
+                    <div class="leg-item">
+                        <div class="leg-info">
+                            <span class="leg-type call">CALL</span>
+                            <span>BTC 67,000</span>
+                            <span>Mar 7, 2026</span>
+                        </div>
+                        <div class="leg-price">$2,850</div>
+                        <div class="leg-remove"><i class="fas fa-times"></i></div>
+                    </div>
+                </div>
+
+                <!-- Payoff Chart -->
+                <div class="payoff-container">
+                    <canvas id="payoffChart"></canvas>
+                </div>
+
+                <!-- Strategy Actions -->
+                <div class="strategy-actions">
+                    <button class="buy-btn">Buy Strategy</button>
+                    <button class="sell-btn">Sell Strategy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        
+        // Price updates
+        async function updatePrice() {
+            try {
+                const res = await fetch('http://localhost:5001/api/market/price/BTCUSDT');
+                const data = await res.json();
+                document.getElementById('btcPrice').textContent = `$${data.price.toLocaleString()}`;
+                document.getElementById('priceChange').textContent = `${data.change > 0 ? '+' : ''}${data.change}%`;
+                document.getElementById('priceChange').className = data.change >= 0 ? 'price-change positive' : 'price-change negative';
+            } catch (err) {
+                console.log('Price update error');
+            }
+        }
+
+        // Option selection
+        function selectOption(element, type, strike) {
+            document.querySelectorAll('.option-row').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            // Update Greeks (mock)
+            const delta = type === 'call' ? 0.65 : -0.35;
+            document.getElementById('delta').textContent = delta.toFixed(2);
+            document.getElementById('gamma').textContent = (0.05 + Math.random() * 0.05).toFixed(3);
+            document.getElementById('theta').textContent = (-8 - Math.random() * 10).toFixed(1);
+            document.getElementById('vega').textContent = (30 + Math.random() * 30).toFixed(1);
+            document.getElementById('rho').textContent = (1 + Math.random() * 3).toFixed(1);
+        }
+
+        // Chain selector
+        document.querySelectorAll('.chain-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                document.querySelectorAll('.chain-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Expiry tabs
+        document.querySelectorAll('.expiry-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.expiry-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Strategy tabs
+        document.querySelectorAll('.strategy-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.strategy-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Payoff Chart
+        const ctx = document.getElementById('payoffChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['64k', '65k', '66k', '67k', '68k', '69k', '70k', '71k', '72k'],
+                datasets: [{
+                    label: 'Strategy P&L',
+                    data: [-1200, -800, -400, 0, 400, 800, 1200, 800, 400],
+                    borderColor: '#F0B90B',
+                    backgroundColor: 'rgba(240,185,11,0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#F0B90B',
+                    pointBorderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1C1D22',
+                        titleColor: '#fff',
+                        bodyColor: '#8A8D92',
+                        borderColor: '#F0B90B',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: { color: '#2B2D33' },
+                        ticks: { color: '#8A8D92' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#8A8D92' }
+                    }
+                }
+            }
+        });
+
+        // Update price every 10 seconds
+        updatePrice();
+        setInterval(updatePrice, 10000);
+    </script>
+</body>
+</html>

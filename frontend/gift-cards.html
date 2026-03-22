@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift Cards – Ever Finance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --orange: #f97316;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .gift-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .gift-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .gift-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .gift-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .gift-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gift-header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Categories */
+        .categories-section {
+            margin-bottom: 2rem;
+        }
+
+        .categories-scroll {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-secondary);
+        }
+
+        .categories-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .categories-scroll::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+
+        .categories-scroll::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .category-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.75rem 1.5rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .category-chip.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+
+        .category-chip i {
+            font-size: 1.1rem;
+        }
+
+        /* Search Bar */
+        .search-section {
+            margin-bottom: 2rem;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .search-box i {
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Featured Brands */
+        .featured-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .view-all {
+            color: var(--accent);
+            cursor: pointer;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .featured-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .brand-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: black;
+        }
+
+        .brand-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-category {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .brand-offer {
+            color: var(--green);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .shop-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .shop-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Gift Cards Grid */
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .gift-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gift-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .gift-card.popular::before {
+            content: '🔥 POPULAR';
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: var(--accent);
+            color: black;
+            padding: 0.25rem 3rem;
+            transform: rotate(45deg);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .gift-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .gift-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .gift-category {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gift-prices {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .price-tag {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .price-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .gift-discount {
+            color: var(--green);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .buy-now-btn {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .buy-now-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Regional Section */
+        .regional-section {
+            margin-bottom: 3rem;
+        }
+
+        .regional-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .regional-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .regional-tab:hover {
+            color: var(--accent);
+        }
+
+        .regional-tab.active {
+            color: var(--accent);
+        }
+
+        .regional-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .regional-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+        }
+
+        .regional-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .regional-card:hover {
+            border-color: var(--accent);
+        }
+
+        .regional-flag {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .regional-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* My Cards Section */
+        .my-cards-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .my-cards-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .my-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .my-card {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .my-card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .my-card-info {
+            flex: 1;
+        }
+
+        .my-card-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .my-card-balance {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .my-card-code {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .featured-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gift-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .regional-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .my-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+            .gift-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .regional-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .my-cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Gift Cards Content -->
+    <div class="gift-wrapper">
+        <div class="gift-container">
+            <!-- Header -->
+            <div class="gift-header">
+                <h1>Gift Cards</h1>
+                <p>5,000+ brands worldwide. Instant delivery. Pay with crypto.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">5,000+</div>
+                    <div class="stat-label">Brands</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">150+</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Instant Delivery</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0%</div>
+                    <div class="stat-label">Fees</div>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="categories-section">
+                <div class="categories-scroll">
+                    <span class="category-chip active"><i class="fas fa-fire"></i> Popular</span>
+                    <span class="category-chip"><i class="fas fa-gamepad"></i> Gaming</span>
+                    <span class="category-chip"><i class="fas fa-shopping-cart"></i> Shopping</span>
+                    <span class="category-chip"><i class="fas fa-utensils"></i> Food & Drink</span>
+                    <span class="category-chip"><i class="fas fa-film"></i> Entertainment</span>
+                    <span class="category-chip"><i class="fas fa-plane"></i> Travel</span>
+                    <span class="category-chip"><i class="fas fa-music"></i> Music</span>
+                    <span class="category-chip"><i class="fas fa-book"></i> Education</span>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-section">
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search for brands...">
+                    </div>
+                    <button class="filter-btn">
+                        <i class="fas fa-sliders-h"></i> Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Featured Brands -->
+            <div class="featured-section">
+                <div class="section-header">
+                    <h2>Featured Brands</h2>
+                    <span class="view-all">View All <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <div class="featured-grid">
+                    <div class="featured-card">
+                        <div class="brand-logo"><i class="fab fa-amazon"></i></div>
+                        <div class="brand-name">Amazon</div>
+                        <div class="brand-category">Shopping</div>
+                        <div class="brand-offer">Up to 5% off</div>
+                        <button class="shop-btn">Shop Now</button>
+                    </div>
+                    <div class="featured-card">
+                        <div class="brand-logo"><i class="fab fa-steam"></i></div>
+                        <div class="brand-name">Steam</div>
+                        <div class="brand-category">Gaming</div>
+                        <div class="brand-offer">Instant delivery</div>
+                        <button class="shop-btn">Shop Now</button>
+                    </div>
+                    <div class="featured-card">
+                        <div class="brand-logo"><i class="fab fa-apple"></i></div>
+                        <div class="brand-name">Apple</div>
+                        <div class="brand-category">Electronics</div>
+                        <div class="brand-offer">App Store & iTunes</div>
+                        <button class="shop-btn">Shop Now</button>
+                    </div>
+                    <div class="featured-card">
+                        <div class="brand-logo"><i class="fab fa-google"></i></div>
+                        <div class="brand-name">Google Play</div>
+                        <div class="brand-category">Apps & Games</div>
+                        <div class="brand-offer">Up to 10% bonus</div>
+                        <button class="shop-btn">Shop Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gift Cards Grid -->
+            <div class="section-header">
+                <h2>Popular Gift Cards</h2>
+                <span class="view-all">View All <i class="fas fa-arrow-right"></i></span>
+            </div>
+            <div class="gift-grid">
+                <div class="gift-card popular">
+                    <div class="gift-icon">🎮</div>
+                    <div class="gift-name">Steam</div>
+                    <div class="gift-category">Gaming</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$10</span>
+                        <span class="price-tag">$25</span>
+                        <span class="price-tag">$50</span>
+                    </div>
+                    <div class="gift-discount">+5% bonus</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">🛒</div>
+                    <div class="gift-name">Amazon</div>
+                    <div class="gift-category">Shopping</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$25</span>
+                        <span class="price-tag">$50</span>
+                        <span class="price-tag">$100</span>
+                    </div>
+                    <div class="gift-discount">Up to $5 bonus</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">🍎</div>
+                    <div class="gift-name">Apple</div>
+                    <div class="gift-category">Electronics</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$15</span>
+                        <span class="price-tag">$30</span>
+                        <span class="price-tag">$60</span>
+                    </div>
+                    <div class="gift-discount">App Store credit</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">☕</div>
+                    <div class="gift-name">Starbucks</div>
+                    <div class="gift-category">Food & Drink</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$10</span>
+                        <span class="price-tag">$25</span>
+                        <span class="price-tag">$50</span>
+                    </div>
+                    <div class="gift-discount">Bonus stars</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">🎵</div>
+                    <div class="gift-name">Spotify</div>
+                    <div class="gift-category">Music</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$10</span>
+                        <span class="price-tag">$30</span>
+                        <span class="price-tag">$60</span>
+                    </div>
+                    <div class="gift-discount">3 months</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">📺</div>
+                    <div class="gift-name">Netflix</div>
+                    <div class="gift-category">Entertainment</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$15</span>
+                        <span class="price-tag">$30</span>
+                        <span class="price-tag">$60</span>
+                    </div>
+                    <div class="gift-discount">HD included</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">🎁</div>
+                    <div class="gift-name">Xbox</div>
+                    <div class="gift-category">Gaming</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$25</span>
+                        <span class="price-tag">$50</span>
+                        <span class="price-tag">$100</span>
+                    </div>
+                    <div class="gift-discount">Game Pass</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">🕹️</div>
+                    <div class="gift-name">PlayStation</div>
+                    <div class="gift-category">Gaming</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$25</span>
+                        <span class="price-tag">$50</span>
+                        <span class="price-tag">$100</span>
+                    </div>
+                    <div class="gift-discount">Plus included</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">✈️</div>
+                    <div class="gift-name">Airbnb</div>
+                    <div class="gift-category">Travel</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$50</span>
+                        <span class="price-tag">$100</span>
+                        <span class="price-tag">$200</span>
+                    </div>
+                    <div class="gift-discount">Global stays</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-icon">💄</div>
+                    <div class="gift-name">Sephora</div>
+                    <div class="gift-category">Beauty</div>
+                    <div class="gift-prices">
+                        <span class="price-tag">$25</span>
+                        <span class="price-tag">$50</span>
+                        <span class="price-tag">$100</span>
+                    </div>
+                    <div class="gift-discount">Beauty insider</div>
+                    <button class="buy-now-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Regional Section -->
+            <div class="regional-section">
+                <div class="section-header">
+                    <h2>Shop by Region</h2>
+                    <span class="view-all">View All <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <div class="regional-tabs">
+                    <span class="regional-tab active">All</span>
+                    <span class="regional-tab">North America</span>
+                    <span class="regional-tab">Europe</span>
+                    <span class="regional-tab">Asia</span>
+                    <span class="regional-tab">Oceania</span>
+                </div>
+                <div class="regional-grid">
+                    <div class="regional-card">
+                        <div class="regional-flag">🇺🇸</div>
+                        <div class="regional-name">United States</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇬🇧</div>
+                        <div class="regional-name">United Kingdom</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇨🇦</div>
+                        <div class="regional-name">Canada</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇦🇺</div>
+                        <div class="regional-name">Australia</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇩🇪</div>
+                        <div class="regional-name">Germany</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇫🇷</div>
+                        <div class="regional-name">France</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇯🇵</div>
+                        <div class="regional-name">Japan</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇸🇬</div>
+                        <div class="regional-name">Singapore</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇧🇷</div>
+                        <div class="regional-name">Brazil</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇮🇳</div>
+                        <div class="regional-name">India</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇿🇦</div>
+                        <div class="regional-name">South Africa</div>
+                    </div>
+                    <div class="regional-card">
+                        <div class="regional-flag">🇦🇪</div>
+                        <div class="regional-name">UAE</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Cards Section -->
+            <div class="my-cards-section">
+                <div class="my-cards-header">
+                    <h3>My Gift Cards</h3>
+                    <span class="view-all">View All <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <div class="my-cards-grid">
+                    <div class="my-card">
+                        <div class="my-card-icon"><i class="fab fa-amazon"></i></div>
+                        <div class="my-card-info">
+                            <div class="my-card-name">Amazon</div>
+                            <div class="my-card-balance">$25.00</div>
+                            <div class="my-card-code">Code: XXXX-XXXX-1234</div>
+                        </div>
+                    </div>
+                    <div class="my-card">
+                        <div class="my-card-icon"><i class="fab fa-steam"></i></div>
+                        <div class="my-card-info">
+                            <div class="my-card-name">Steam</div>
+                            <div class="my-card-balance">$10.00</div>
+                            <div class="my-card-code">Code: XXXX-XXXX-5678</div>
+                        </div>
+                    </div>
+                    <div class="my-card">
+                        <div class="my-card-icon"><i class="fas fa-coffee"></i></div>
+                        <div class="my-card-info">
+                            <div class="my-card-name">Starbucks</div>
+                            <div class="my-card-balance">$15.00</div>
+                            <div class="my-card-code">Code: XXXX-XXXX-9012</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Category chip selection
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Regional tab switching
+        document.querySelectorAll('.regional-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.regional-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Price tag selection
+        document.querySelectorAll('.price-tag').forEach(price => {
+            price.addEventListener('click', function() {
+                const card = this.closest('.gift-card');
+                card.querySelectorAll('.price-tag').forEach(p => p.style.background = 'var(--bg-secondary)');
+                this.style.background = 'var(--accent)';
+                this.style.color = 'black';
+            });
+        });
+
+        // Buy now buttons
+        document.querySelectorAll('.buy-now-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.gift-card');
+                const name = card.querySelector('.gift-name').textContent;
+                alert(`Purchase ${name} gift card?`);
+            });
+        });
+
+        // Shop buttons
+        document.querySelectorAll('.shop-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.featured-card');
+                const brand = card.querySelector('.brand-name').textContent;
+                alert(`View ${brand} gift cards`);
+            });
+        });
+    </script>
+</body>
+</html>

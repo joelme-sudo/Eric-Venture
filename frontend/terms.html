@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --border: #2B2D33;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .terms-wrapper {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .terms-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .terms-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .terms-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .last-updated {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--accent);
+        }
+
+        .terms-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .terms-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .terms-section h3 {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .terms-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .terms-section ul {
+            color: var(--text-secondary);
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .terms-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .terms-section strong {
+            color: var(--text-primary);
+        }
+
+        .terms-section a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .terms-section a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent);
+            color: black;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .terms-wrapper {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="support.html">Support</a>
+        </div>
+    </nav>
+
+    <div class="terms-wrapper">
+        <div class="terms-header">
+            <h1>Terms of Service</h1>
+            <p>Please read these terms carefully before using our platform</p>
+            <div class="last-updated">Last Updated: March 1, 2026</div>
+        </div>
+
+        <div class="terms-section">
+            <h2>1. Introduction</h2>
+            <p>Welcome to ERIC VENTURE ("Company," "we," "our," "us"). These Terms of Service ("Terms") govern your use of our website, mobile applications, and services (collectively, the "Platform"). By accessing or using the Platform, you agree to be bound by these Terms.</p>
+            <p>If you do not agree to these Terms, you may not access or use the Platform. We reserve the right to modify these Terms at any time, and your continued use of the Platform constitutes acceptance of such modifications.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>2. Eligibility</h2>
+            <p>By using the Platform, you represent and warrant that:</p>
+            <ul>
+                <li>You are at least 18 years of age</li>
+                <li>You have the full power and authority to enter into these Terms</li>
+                <li>You are not a resident of a restricted jurisdiction</li>
+                <li>Your use of the Platform does not violate any applicable laws or regulations</li>
+                <li>You have not been previously suspended or removed from the Platform</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2>3. Account Registration</h2>
+            <p>To use certain features of the Platform, you must register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete.</p>
+            <p>You are responsible for safeguarding your password and for all activities that occur under your account. You must notify us immediately of any unauthorized use of your account.</p>
+            <p>We reserve the right to refuse service, terminate accounts, remove or edit content, or cancel orders at our sole discretion.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>4. Risk Disclosure</h2>
+            <p>Trading cryptocurrencies involves substantial risk. The volatility and unpredictability of the price of cryptocurrencies may result in significant loss. You should carefully consider whether trading is appropriate for you in light of your financial circumstances.</p>
+            <p><strong>You acknowledge and agree that:</strong></p>
+            <ul>
+                <li>The value of cryptocurrencies can fluctuate significantly</li>
+                <li>Past performance is not indicative of future results</li>
+                <li>You may lose some or all of your investment</li>
+                <li>We do not provide investment advice or recommendations</li>
+                <li>You are solely responsible for your trading decisions</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2>5. Fees</h2>
+            <p>We charge fees for certain transactions as described on our Fees page. All fees are non-refundable. We may modify our fees at any time with notice to you.</p>
+            <p>You are responsible for all taxes associated with your use of the Platform. We may withhold taxes from payments if required by law.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>6. Prohibited Activities</h2>
+            <p>You may not use the Platform for any illegal or unauthorized purpose. Prohibited activities include:</p>
+            <ul>
+                <li>Violating any laws or regulations</li>
+                <li>Manipulating markets or engaging in fraudulent trading</li>
+                <li>Interfering with the proper functioning of the Platform</li>
+                <li>Attempting to gain unauthorized access to other accounts</li>
+                <li>Using the Platform for money laundering or terrorist financing</li>
+                <li>Engaging in any activity that could damage or impair the Platform</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2>7. Intellectual Property</h2>
+            <p>The Platform and its original content, features, and functionality are owned by Ever Finance and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
+            <p>You may not copy, modify, distribute, sell, or lease any part of the Platform without our prior written consent.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>8. Limitation of Liability</h2>
+            <p>To the maximum extent permitted by law, in no event shall Ever Finance be liable for any indirect, punitive, incidental, special, consequential, or exemplary damages, including without limitation damages for loss of profits, goodwill, use, data, or other intangible losses, arising out of or relating to the use of, or inability to use, the Platform.</p>
+            <p>Our total liability to you shall not exceed the amount you paid to us during the six months preceding any claim.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>9. Indemnification</h2>
+            <p>You agree to indemnify and hold Ever Finance harmless from any claim or demand, including reasonable attorneys' fees, made by any third party due to or arising out of your breach of these Terms or your violation of any law or the rights of a third party.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>10. Termination</h2>
+            <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach these Terms.</p>
+            <p>Upon termination, your right to use the Platform will immediately cease. All provisions of these Terms which by their nature should survive termination shall survive termination.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>11. Governing Law</h2>
+            <p>These Terms shall be governed and construed in accordance with the laws of the Republic of Singapore, without regard to its conflict of law provisions.</p>
+            <p>Any disputes arising under these Terms shall be resolved exclusively by the courts of Singapore.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>12. Changes to Terms</h2>
+            <p>We reserve the right to modify or replace these Terms at any time. We will provide notice of any material changes by posting the new Terms on the Platform and updating the "Last Updated" date.</p>
+            <p>Your continued use of the Platform after any such changes constitutes your acceptance of the new Terms.</p>
+        </div>
+
+        <div class="terms-section">
+            <h2>13. Contact Us</h2>
+            <p>If you have any questions about these Terms, please contact us at:</p>
+            <ul>
+                <li>Email: <a href="mailto:legal@ever.finance">legal@ever.finance</a></li>
+                <li>Address: 1 Raffles Place, #20-01, Singapore 048616</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</body>
+</html>

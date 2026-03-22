@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Futures – ERIC VENTURE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .delivery-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .delivery-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .delivery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .delivery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .delivery-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .market-info {
+            display: flex;
+            gap: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Calendar Section */
+        .calendar-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .calendar-nav button {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .calendar-nav button:hover {
+            border-color: var(--accent);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-weekday {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+
+        .calendar-day {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            min-height: 100px;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        .calendar-day:hover {
+            border-color: var(--accent);
+        }
+
+        .calendar-day.today {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent-glow);
+        }
+
+        .calendar-day .date {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .calendar-event {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Contracts Grid */
+        .contracts-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 2rem;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .filter-tab:hover {
+            color: var(--accent);
+        }
+
+        .filter-tab.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .contracts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .contract-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contract-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #FFD700);
+        }
+
+        .contract-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .contract-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contract-symbol {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .contract-type {
+            background: var(--bg-card);
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .contract-name {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .contract-dates {
+            background: var(--bg-card);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .date-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .date-label {
+            color: var(--text-secondary);
+        }
+
+        .date-value {
+            font-weight: 600;
+        }
+
+        .contract-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1rem;
+        }
+
+        .price-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .price-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .contract-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-item {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .contract-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .trade-btn {
+            flex: 1;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .trade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .details-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .details-btn:hover {
+            border-color: var(--accent);
+        }
+
+        /* Chart Section */
+        .chart-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chart-control {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .chart-control:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .chart-control.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        #basisChart {
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .contracts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .market-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .contracts-grid {
+                grid-template-columns: 1fr;
+            }
+            .calendar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Delivery Futures Content -->
+    <div class="delivery-wrapper">
+        <div class="delivery-container">
+            <!-- Header -->
+            <div class="delivery-header">
+                <h1>Delivery Futures</h1>
+                <div class="market-info">
+                    <div class="info-item">
+                        <div class="info-label">Total OI</div>
+                        <div class="info-value">$3.24B</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">24h Volume</div>
+                        <div class="info-value">$892M</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Active Contracts</div>
+                        <div class="info-value">12</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <h3>Expiry Calendar</h3>
+                    <div class="calendar-nav">
+                        <button><i class="fas fa-chevron-left"></i></button>
+                        <span style="padding: 0.5rem;">March 2026</span>
+                        <button><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-weekday">Mon</div>
+                    <div class="calendar-weekday">Tue</div>
+                    <div class="calendar-weekday">Wed</div>
+                    <div class="calendar-weekday">Thu</div>
+                    <div class="calendar-weekday">Fri</div>
+                    <div class="calendar-weekday">Sat</div>
+                    <div class="calendar-weekday">Sun</div>
+                    
+                    <div class="calendar-day">
+                        <div class="date">24</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">25</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">26</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">27</div>
+                        <div class="calendar-event">BTC</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">28</div>
+                        <div class="calendar-event">ETH</div>
+                        <div class="calendar-event">BNB</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">1</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">2</div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="date">3</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">4</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">5</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">6</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">7</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">8</div>
+                    </div>
+                    <div class="calendar-day today">
+                        <div class="date">9</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contracts -->
+            <div class="contracts-section">
+                <div class="section-header">
+                    <h3>Available Contracts</h3>
+                    <div class="filter-tabs">
+                        <span class="filter-tab active">All</span>
+                        <span class="filter-tab">BTC</span>
+                        <span class="filter-tab">ETH</span>
+                        <span class="filter-tab">Altcoins</span>
+                    </div>
+                </div>
+
+                <div class="contracts-grid">
+                    <!-- BTC Quarterly -->
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <span class="contract-symbol">BTC</span>
+                            <span class="contract-type">Quarterly</span>
+                        </div>
+                        <div class="contract-name">Bitcoin Futures</div>
+                        
+                        <div class="contract-dates">
+                            <div class="date-row">
+                                <span class="date-label">Listing</span>
+                                <span class="date-value">Dec 27, 2025</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Expiry</span>
+                                <span class="date-value">Mar 27, 2026</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Days Left</span>
+                                <span class="date-value">24 days</span>
+                            </div>
+                        </div>
+
+                        <div class="contract-price">
+                            <span class="price-label">Last Price</span>
+                            <span class="price-value">$69,420</span>
+                        </div>
+
+                        <div class="contract-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">$124M</div>
+                                <div class="metric-label">Open Interest</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">$45M</div>
+                                <div class="metric-label">24h Volume</div>
+                            </div>
+                        </div>
+
+                        <div class="contract-actions">
+                            <button class="trade-btn">Trade</button>
+                            <button class="details-btn">Details</button>
+                        </div>
+                    </div>
+
+                    <!-- BTC Bi-Quarterly -->
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <span class="contract-symbol">BTC</span>
+                            <span class="contract-type">Bi-Quarterly</span>
+                        </div>
+                        <div class="contract-name">Bitcoin Futures</div>
+                        
+                        <div class="contract-dates">
+                            <div class="date-row">
+                                <span class="date-label">Listing</span>
+                                <span class="date-value">Dec 27, 2025</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Expiry</span>
+                                <span class="date-value">Jun 26, 2026</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Days Left</span>
+                                <span class="date-value">115 days</span>
+                            </div>
+                        </div>
+
+                        <div class="contract-price">
+                            <span class="price-label">Last Price</span>
+                            <span class="price-value">$70,890</span>
+                        </div>
+
+                        <div class="contract-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">$89M</div>
+                                <div class="metric-label">Open Interest</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">$23M</div>
+                                <div class="metric-label">24h Volume</div>
+                            </div>
+                        </div>
+
+                        <div class="contract-actions">
+                            <button class="trade-btn">Trade</button>
+                            <button class="details-btn">Details</button>
+                        </div>
+                    </div>
+
+                    <!-- ETH Quarterly -->
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <span class="contract-symbol">ETH</span>
+                            <span class="contract-type">Quarterly</span>
+                        </div>
+                        <div class="contract-name">Ethereum Futures</div>
+                        
+                        <div class="contract-dates">
+                            <div class="date-row">
+                                <span class="date-label">Listing</span>
+                                <span class="date-value">Dec 27, 2025</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Expiry</span>
+                                <span class="date-value">Mar 27, 2026</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Days Left</span>
+                                <span class="date-value">24 days</span>
+                            </div>
+                        </div>
+
+                        <div class="contract-price">
+                            <span class="price-label">Last Price</span>
+                            <span class="price-value">$3,550</span>
+                        </div>
+
+                        <div class="contract-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">$56M</div>
+                                <div class="metric-label">Open Interest</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">$18M</div>
+                                <div class="metric-label">24h Volume</div>
+                            </div>
+                        </div>
+
+                        <div class="contract-actions">
+                            <button class="trade-btn">Trade</button>
+                            <button class="details-btn">Details</button>
+                        </div>
+                    </div>
+
+                    <!-- ETH Bi-Quarterly -->
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <span class="contract-symbol">ETH</span>
+                            <span class="contract-type">Bi-Quarterly</span>
+                        </div>
+                        <div class="contract-name">Ethereum Futures</div>
+                        
+                        <div class="contract-dates">
+                            <div class="date-row">
+                                <span class="date-label">Listing</span>
+                                <span class="date-value">Dec 27, 2025</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Expiry</span>
+                                <span class="date-value">Jun 26, 2026</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Days Left</span>
+                                <span class="date-value">115 days</span>
+                            </div>
+                        </div>
+
+                        <div class="contract-price">
+                            <span class="price-label">Last Price</span>
+                            <span class="price-value">$3,620</span>
+                        </div>
+
+                        <div class="contract-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">$34M</div>
+                                <div class="metric-label">Open Interest</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">$12M</div>
+                                <div class="metric-label">24h Volume</div>
+                            </div>
+                        </div>
+
+                        <div class="contract-actions">
+                            <button class="trade-btn">Trade</button>
+                            <button class="details-btn">Details</button>
+                        </div>
+                    </div>
+
+                    <!-- SOL Quarterly -->
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <span class="contract-symbol">SOL</span>
+                            <span class="contract-type">Quarterly</span>
+                        </div>
+                        <div class="contract-name">Solana Futures</div>
+                        
+                        <div class="contract-dates">
+                            <div class="date-row">
+                                <span class="date-label">Listing</span>
+                                <span class="date-value">Dec 27, 2025</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Expiry</span>
+                                <span class="date-value">Mar 27, 2026</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Days Left</span>
+                                <span class="date-value">24 days</span>
+                            </div>
+                        </div>
+
+                        <div class="contract-price">
+                            <span class="price-label">Last Price</span>
+                            <span class="price-value">$148</span>
+                        </div>
+
+                        <div class="contract-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">$23M</div>
+                                <div class="metric-label">Open Interest</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">$8M</div>
+                                <div class="metric-label">24h Volume</div>
+                            </div>
+                        </div>
+
+                        <div class="contract-actions">
+                            <button class="trade-btn">Trade</button>
+                            <button class="details-btn">Details</button>
+                        </div>
+                    </div>
+
+                    <!-- BNB Quarterly -->
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <span class="contract-symbol">BNB</span>
+                            <span class="contract-type">Quarterly</span>
+                        </div>
+                        <div class="contract-name">Binance Coin Futures</div>
+                        
+                        <div class="contract-dates">
+                            <div class="date-row">
+                                <span class="date-label">Listing</span>
+                                <span class="date-value">Dec 27, 2025</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Expiry</span>
+                                <span class="date-value">Mar 27, 2026</span>
+                            </div>
+                            <div class="date-row">
+                                <span class="date-label">Days Left</span>
+                                <span class="date-value">24 days</span>
+                            </div>
+                        </div>
+
+                        <div class="contract-price">
+                            <span class="price-label">Last Price</span>
+                            <span class="price-value">$585</span>
+                        </div>
+
+                        <div class="contract-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">$18M</div>
+                                <div class="metric-label">Open Interest</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">$6M</div>
+                                <div class="metric-label">24h Volume</div>
+                            </div>
+                        </div>
+
+                        <div class="contract-actions">
+                            <button class="trade-btn">Trade</button>
+                            <button class="details-btn">Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basis Chart -->
+            <div class="chart-section">
+                <div class="chart-header">
+                    <h3>BTC Basis Chart</h3>
+                    <div class="chart-controls">
+                        <span class="chart-control active">1W</span>
+                        <span class="chart-control">1M</span>
+                        <span class="chart-control">3M</span>
+                        <span class="chart-control">All</span>
+                    </div>
+                </div>
+                <canvas id="basisChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Initialize Basis Chart
+        const ctx = document.getElementById('basisChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'BTC Spot',
+                    data: [42000, 45000, 48000, 52000, 58000, 62000, 68000, 72000, 68000, 71000, 69000, 68142],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59,130,246,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }, {
+                    label: 'BTC Futures (Mar)',
+                    data: [42500, 45500, 48500, 52500, 58500, 62500, 68500, 72500, 68500, 71500, 69500, 69420],
+                    borderColor: '#F0B90B',
+                    backgroundColor: 'rgba(240,185,11,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#8A8D92' }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1C1D22',
+                        titleColor: '#fff',
+                        bodyColor: '#8A8D92',
+                        borderColor: '#F0B90B',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: { color: '#2B2D33' },
+                        ticks: { 
+                            color: '#8A8D92',
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#8A8D92' }
+                    }
+                }
+            }
+        });
+
+        // Filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Chart controls
+        document.querySelectorAll('.chart-control').forEach(control => {
+            control.addEventListener('click', function() {
+                document.querySelectorAll('.chart-control').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update chart data based on timeframe
+                // Mock implementation
+                if (this.textContent === '1W') {
+                    chart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    chart.data.datasets[0].data = [67800, 68100, 67900, 68200, 68150, 68300, 68142];
+                    chart.data.datasets[1].data = [67900, 68200, 68000, 68300, 68250, 68400, 69420];
+                } else if (this.textContent === '1M') {
+                    chart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                    chart.data.datasets[0].data = [65000, 67000, 68000, 68142];
+                    chart.data.datasets[1].data = [65500, 67500, 68500, 69420];
+                } else {
+                    chart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    chart.data.datasets[0].data = [42000, 45000, 48000, 52000, 58000, 62000, 68000, 72000, 68000, 71000, 69000, 68142];
+                    chart.data.datasets[1].data = [42500, 45500, 48500, 52500, 58500, 62500, 68500, 72500, 68500, 71500, 69500, 69420];
+                }
+                chart.update();
+            });
+        });
+    </script>
+</body>
+</html>

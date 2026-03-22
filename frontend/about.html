@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --border: #2B2D33;
+        }
+        body { background: var(--bg-primary); color: var(--text-primary); }
+        .main-nav { background: rgba(10,11,13,0.95); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .about-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+        }
+
+        .mission-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 4rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .mission-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-section p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .value-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: black;
+        }
+
+        .value-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .value-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: black;
+        }
+
+        .team-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .team-role {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .timeline {
+            margin: 4rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-year {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            min-width: 100px;
+        }
+
+        .timeline-content h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="index.html" style="color: var(--text-primary); text-decoration: none;">Home</a>
+            <a href="market-spot.html" style="color: var(--text-primary); text-decoration: none;">Markets</a>
+        </div>
+    </nav>
+
+    <div class="about-wrapper">
+        <div class="hero-section">
+            <h1>The Future of Finance</h1>
+            <p>Building the most accessible, secure, and innovative cryptocurrency trading platform for everyone.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">37M+</div>
+                <div class="stat-label">Users Worldwide</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$7.6B</div>
+                <div class="stat-label">Daily Volume</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">60+</div>
+                <div class="stat-label">Blockchains</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Security Incidents</div>
+            </div>
+        </div>
+
+        <div class="mission-section">
+            <h2>Our Mission</h2>
+            <p>To democratize access to cryptocurrency trading through innovative technology, transparent practices, and unwavering commitment to security. We believe that everyone deserves the opportunity to participate in the future of finance.</p>
+        </div>
+
+        <h2 style="text-align: center; margin: 3rem 0;">Our Values</h2>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="value-title">Security First</div>
+                <div class="value-desc">Bank-grade security with multi-signature wallets and 98% cold storage.</div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-bolt"></i></div>
+                <div class="value-title">Innovation</div>
+                <div class="value-desc">Constantly pushing the boundaries of what's possible in crypto.</div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-users"></i></div>
+                <div class="value-title">User-Centric</div>
+                <div class="value-desc">Building products that our users love and trust.</div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-handshake"></i></div>
+                <div class="value-title">Transparency</div>
+                <div class="value-desc">Clear fees, open communication, and honest practices.</div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-globe"></i></div>
+                <div class="value-title">Global Access</div>
+                <div class="value-desc">Serving users in over 40 countries with local payment methods.</div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-heart"></i></div>
+                <div class="value-title">Community</div>
+                <div class="value-desc">Building a community of passionate crypto enthusiasts.</div>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; margin: 3rem 0;">Our Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">2020</div>
+                <div class="timeline-content">
+                    <h3>The Beginning</h3>
+                    <p>Ever Finance was founded with a vision to create the most user-friendly crypto trading platform.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2021</div>
+                <div class="timeline-content">
+                    <h3>First 1M Users</h3>
+                    <p>Reached 1 million users and expanded to support 20+ blockchains.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2022</div>
+                <div class="timeline-content">
+                    <h3>Launch of Derivatives</h3>
+                    <p>Introduced futures, options, and perpetual trading with up to 100x leverage.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                <div class="timeline-content">
+                    <h3>Global Expansion</h3>
+                    <p>Expanded to 40+ countries and launched our crypto card.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-content">
+                    <h3>AI Trading</h3>
+                    <p>Introduced AI-powered trading bots and copy trading features.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-content">
+                    <h3>37M Users Strong</h3>
+                    <p>Today, we serve over 37 million users with $7.6B daily volume.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; margin: 3rem 0;">Leadership Team</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">JD</div>
+                <div class="team-name">John Doe</div>
+                <div class="team-role">CEO & Co-founder</div>
+                <div class="team-desc">Former Goldman Sachs, 10+ years in fintech</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">JS</div>
+                <div class="team-name">Jane Smith</div>
+                <div class="team-role">CTO</div>
+                <div class="team-desc">Ex-Google, blockchain architect</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">MJ</div>
+                <div class="team-name">Michael Johnson</div>
+                <div class="team-role">CFO</div>
+                <div class="team-desc">Former JP Morgan, 15 years in finance</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">SW</div>
+                <div class="team-name">Sarah Wilson</div>
+                <div class="team-role">Head of Product</div>
+                <div class="team-desc">Led product at Coinbase for 4 years</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

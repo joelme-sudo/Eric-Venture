@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futures Market – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .market-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .market-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .market-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .market-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .market-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .market-stats {
+            display: flex;
+            gap: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Market Tabs */
+        .market-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .market-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .market-tab:hover {
+            color: var(--accent);
+        }
+
+        .market-tab.active {
+            color: var(--accent);
+        }
+
+        .market-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        /* Filters */
+        .filters-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.25rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .filter-btn:hover {
+            color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .search-box i {
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            outline: none;
+            width: 250px;
+        }
+
+        /* Market Table */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .market-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .market-table th {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: left;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .market-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .market-table tr:hover {
+            background: var(--bg-secondary);
+            cursor: pointer;
+        }
+
+        .market-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .asset-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .asset-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: black;
+        }
+
+        .asset-info {
+            flex: 1;
+        }
+
+        .asset-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .asset-symbol {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .price-cell {
+            font-weight: 600;
+        }
+
+        .change-cell {
+            font-weight: 600;
+        }
+
+        .change-cell.positive {
+            color: var(--green);
+        }
+
+        .change-cell.negative {
+            color: var(--red);
+        }
+
+        .volume-cell {
+            color: var(--text-secondary);
+        }
+
+        .oi-cell {
+            color: var(--text-secondary);
+        }
+
+        .funding-cell {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .basis-cell {
+            font-weight: 600;
+        }
+
+        .basis-cell.positive {
+            color: var(--green);
+        }
+
+        .basis-cell.negative {
+            color: var(--red);
+        }
+
+        .badge {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            padding: 0.1rem 0.3rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .page-btn.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .market-table {
+                font-size: 0.9rem;
+            }
+            .market-table th, 
+            .market-table td {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .market-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .market-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box input {
+                width: 100%;
+            }
+            .market-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Futures Market Content -->
+    <div class="market-wrapper">
+        <div class="market-container">
+            <!-- Header -->
+            <div class="market-header">
+                <h1>Futures Market</h1>
+                <div class="market-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Total OI</div>
+                        <div class="stat-value">$18.2B</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">24h Volume</div>
+                        <div class="stat-value">$45.6B</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Active Contracts</div>
+                        <div class="stat-value">124</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Tabs -->
+            <div class="market-tabs">
+                <span class="market-tab">All</span>
+                <span class="market-tab active">Perpetual</span>
+                <span class="market-tab">Quarterly</span>
+                <span class="market-tab">Bi-Quarterly</span>
+                <span class="market-tab">Next Quarter</span>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <span class="filter-btn active">All</span>
+                    <span class="filter-btn">Gainer</span>
+                    <span class="filter-btn">Loser</span>
+                    <span class="filter-btn">Volume</span>
+                    <span class="filter-btn">OI</span>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search contracts...">
+                </div>
+            </div>
+
+            <!-- Market Table -->
+            <div class="table-container">
+                <table class="market-table">
+                    <thead>
+                        <tr>
+                            <th>Contract</th>
+                            <th>Mark Price</th>
+                            <th>Index Price</th>
+                            <th>24h Change</th>
+                            <th>24h Volume</th>
+                            <th>Open Interest</th>
+                            <th>Funding Rate</th>
+                            <th>Basis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- BTC Perpetual -->
+                        <tr onclick="window.location='perpetual.html?symbol=BTC'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">₿</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Bitcoin Perpetual</div>
+                                        <div class="asset-symbol">BTCUSDT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$68,142.50</td>
+                            <td class="price-cell">$68,140.20</td>
+                            <td class="change-cell positive">+2.4%</td>
+                            <td class="volume-cell">$1.24B</td>
+                            <td class="oi-cell">$5.67B</td>
+                            <td class="funding-cell">0.0100%</td>
+                            <td class="basis-cell positive">+0.03%</td>
+                        </tr>
+
+                        <!-- ETH Perpetual -->
+                        <tr onclick="window.location='perpetual.html?symbol=ETH'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">Ξ</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Ethereum Perpetual</div>
+                                        <div class="asset-symbol">ETHUSDT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$3,502.80</td>
+                            <td class="price-cell">$3,501.90</td>
+                            <td class="change-cell positive">+1.2%</td>
+                            <td class="volume-cell">$892M</td>
+                            <td class="oi-cell">$3.21B</td>
+                            <td class="funding-cell">0.0085%</td>
+                            <td class="basis-cell positive">+0.02%</td>
+                        </tr>
+
+                        <!-- BNB Perpetual -->
+                        <tr onclick="window.location='perpetual.html?symbol=BNB'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">BNB</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">BNB Perpetual</div>
+                                        <div class="asset-symbol">BNBUSDT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$578.20</td>
+                            <td class="price-cell">$578.10</td>
+                            <td class="change-cell negative">-0.3%</td>
+                            <td class="volume-cell">$456M</td>
+                            <td class="oi-cell">$1.89B</td>
+                            <td class="funding-cell">0.0050%</td>
+                            <td class="basis-cell negative">-0.01%</td>
+                        </tr>
+
+                        <!-- SOL Perpetual -->
+                        <tr onclick="window.location='perpetual.html?symbol=SOL'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">SOL</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Solana Perpetual</div>
+                                        <div class="asset-symbol">SOLUSDT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$145.20</td>
+                            <td class="price-cell">$145.10</td>
+                            <td class="change-cell positive">+5.7%</td>
+                            <td class="volume-cell">$234M</td>
+                            <td class="oi-cell">$890M</td>
+                            <td class="funding-cell">0.0120%</td>
+                            <td class="basis-cell positive">+0.08%</td>
+                        </tr>
+
+                        <!-- XRP Perpetual -->
+                        <tr onclick="window.location='perpetual.html?symbol=XRP'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">XRP</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Ripple Perpetual</div>
+                                        <div class="asset-symbol">XRPUSDT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$0.5823</td>
+                            <td class="price-cell">$0.5821</td>
+                            <td class="change-cell positive">+1.8%</td>
+                            <td class="volume-cell">$123M</td>
+                            <td class="oi-cell">$456M</td>
+                            <td class="funding-cell">0.0065%</td>
+                            <td class="basis-cell positive">+0.04%</td>
+                        </tr>
+
+                        <!-- ADA Perpetual -->
+                        <tr onclick="window.location='perpetual.html?symbol=ADA'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">ADA</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Cardano Perpetual</div>
+                                        <div class="asset-symbol">ADAUSDT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$0.4532</td>
+                            <td class="price-cell">$0.4531</td>
+                            <td class="change-cell positive">+3.2%</td>
+                            <td class="volume-cell">$89M</td>
+                            <td class="oi-cell">$234M</td>
+                            <td class="funding-cell">0.0090%</td>
+                            <td class="basis-cell positive">+0.02%</td>
+                        </tr>
+
+                        <!-- DOGE Perpetual -->
+                        <tr onclick="window.location='perpetual.html?symbol=DOGE'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">Ð</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Dogecoin Perpetual</div>
+                                        <div class="asset-symbol">DOGEUSDT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$0.0876</td>
+                            <td class="price-cell">$0.0875</td>
+                            <td class="change-cell positive">+4.5%</td>
+                            <td class="volume-cell">$67M</td>
+                            <td class="oi-cell">$178M</td>
+                            <td class="funding-cell">0.0110%</td>
+                            <td class="basis-cell positive">+0.06%</td>
+                        </tr>
+
+                        <!-- BTC Quarterly -->
+                        <tr onclick="window.location='delivery.html?symbol=BTC'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">₿</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Bitcoin Quarterly <span class="badge">MAR 27</span></div>
+                                        <div class="asset-symbol">BTC-27MAR26</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$69,420.00</td>
+                            <td class="price-cell">$68,140.20</td>
+                            <td class="change-cell positive">+3.1%</td>
+                            <td class="volume-cell">$456M</td>
+                            <td class="oi-cell">$1.23B</td>
+                            <td class="funding-cell">--</td>
+                            <td class="basis-cell positive">+1.88%</td>
+                        </tr>
+
+                        <!-- ETH Quarterly -->
+                        <tr onclick="window.location='delivery.html?symbol=ETH'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">Ξ</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Ethereum Quarterly <span class="badge">MAR 27</span></div>
+                                        <div class="asset-symbol">ETH-27MAR26</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$3,550.00</td>
+                            <td class="price-cell">$3,501.90</td>
+                            <td class="change-cell positive">+1.8%</td>
+                            <td class="volume-cell">$234M</td>
+                            <td class="oi-cell">$890M</td>
+                            <td class="funding-cell">--</td>
+                            <td class="basis-cell positive">+1.37%</td>
+                        </tr>
+
+                        <!-- BTC Bi-Quarterly -->
+                        <tr onclick="window.location='delivery.html?symbol=BTC&expiry=JUN'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">₿</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Bitcoin Bi-Quarterly <span class="badge">JUN 26</span></div>
+                                        <div class="asset-symbol">BTC-26JUN26</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$70,890.00</td>
+                            <td class="price-cell">$68,140.20</td>
+                            <td class="change-cell positive">+4.2%</td>
+                            <td class="volume-cell">$189M</td>
+                            <td class="oi-cell">$567M</td>
+                            <td class="funding-cell">--</td>
+                            <td class="basis-cell positive">+4.03%</td>
+                        </tr>
+
+                        <!-- ETH Bi-Quarterly -->
+                        <tr onclick="window.location='delivery.html?symbol=ETH&expiry=JUN'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">Ξ</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Ethereum Bi-Quarterly <span class="badge">JUN 26</span></div>
+                                        <div class="asset-symbol">ETH-26JUN26</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$3,620.00</td>
+                            <td class="price-cell">$3,501.90</td>
+                            <td class="change-cell positive">+2.3%</td>
+                            <td class="volume-cell">$98M</td>
+                            <td class="oi-cell">$234M</td>
+                            <td class="funding-cell">--</td>
+                            <td class="basis-cell positive">+3.37%</td>
+                        </tr>
+
+                        <!-- SOL Quarterly -->
+                        <tr onclick="window.location='delivery.html?symbol=SOL'">
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">SOL</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Solana Quarterly <span class="badge">MAR 27</span></div>
+                                        <div class="asset-symbol">SOL-27MAR26</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$148.50</td>
+                            <td class="price-cell">$145.10</td>
+                            <td class="change-cell positive">+6.2%</td>
+                            <td class="volume-cell">$67M</td>
+                            <td class="oi-cell">$145M</td>
+                            <td class="funding-cell">--</td>
+                            <td class="basis-cell positive">+2.34%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">5</button>
+                <button class="page-btn"><i class="fas fa-ellipsis-h"></i></button>
+                <button class="page-btn">12</button>
+                <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Tab switching
+        document.querySelectorAll('.market-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.market-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real app, would fetch different contract types
+                console.log('Switched to', this.textContent);
+            });
+        });
+
+        // Filter switching
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real app, would sort/filter the table
+                console.log('Filter by', this.textContent);
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-box input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.market-table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Pagination
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.querySelector('.fa-chevron-left') || this.querySelector('.fa-chevron-right') || this.querySelector('.fa-ellipsis-h')) {
+                    return;
+                }
+                document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real app, would load next page of data
+                console.log('Page', this.textContent);
+            });
+        });
+    </script>
+</body>
+</html>

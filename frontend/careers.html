@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --border: #2B2D33;
+        }
+        body { background: var(--bg-primary); color: var(--text-primary); }
+        .main-nav { background: rgba(10,11,13,0.95); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .careers-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .benefit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .benefit-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .departments {
+            margin: 4rem 0;
+        }
+
+        .dept-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dept-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .dept-tab:hover {
+            color: var(--accent);
+        }
+
+        .dept-tab.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .job-listings {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .job-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .job-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .job-info h3 {
+            margin-bottom: 0.25rem;
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .job-type {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        .culture-section {
+            margin: 4rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .culture-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .culture-text p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .culture-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .culture-stat {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        @media (max-width: 1024px) {
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .culture-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="index.html" style="color: var(--text-primary); text-decoration: none;">Home</a>
+            <a href="about.html" style="color: var(--text-primary); text-decoration: none;">About</a>
+        </div>
+    </nav>
+
+    <div class="careers-wrapper">
+        <div class="hero-section">
+            <h1>Join the Future of Finance</h1>
+            <p>Build the next generation of crypto trading platform with a global team of innovators.</p>
+        </div>
+
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-home"></i></div>
+                <div class="benefit-title">Remote First</div>
+                <div class="benefit-desc">Work from anywhere in the world</div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-heart"></i></div>
+                <div class="benefit-title">Health Insurance</div>
+                <div class="benefit-desc">Comprehensive coverage for you and family</div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="benefit-title">Equity</div>
+                <div class="benefit-desc">Stock options for all employees</div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon"><i class="fas fa-umbrella-beach"></i></div>
+                <div class="benefit-title">Unlimited PTO</div>
+                <div class="benefit-desc">Take time when you need it</div>
+            </div>
+        </div>
+
+        <div class="departments">
+            <div class="dept-tabs">
+                <span class="dept-tab active">All Departments</span>
+                <span class="dept-tab">Engineering</span>
+                <span class="dept-tab">Product</span>
+                <span class="dept-tab">Design</span>
+                <span class="dept-tab">Marketing</span>
+                <span class="dept-tab">Operations</span>
+            </div>
+
+            <div class="job-listings">
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3>Senior Blockchain Engineer</h3>
+                        <div class="job-meta">
+                            <span>Remote</span>
+                            <span>Full-time</span>
+                            <span>$150k - $200k</span>
+                        </div>
+                    </div>
+                    <span class="job-type">Engineering</span>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3>Frontend Developer</h3>
+                        <div class="job-meta">
+                            <span>Remote</span>
+                            <span>Full-time</span>
+                            <span>$120k - $160k</span>
+                        </div>
+                    </div>
+                    <span class="job-type">Engineering</span>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3>Product Manager - Trading</h3>
+                        <div class="job-meta">
+                            <span>Remote</span>
+                            <span>Full-time</span>
+                            <span>$130k - $180k</span>
+                        </div>
+                    </div>
+                    <span class="job-type">Product</span>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3>UI/UX Designer</h3>
+                        <div class="job-meta">
+                            <span>Remote</span>
+                            <span>Full-time</span>
+                            <span>$100k - $140k</span>
+                        </div>
+                    </div>
+                    <span class="job-type">Design</span>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3>Marketing Lead</h3>
+                        <div class="job-meta">
+                            <span>Remote</span>
+                            <span>Full-time</span>
+                            <span>$110k - $150k</span>
+                        </div>
+                    </div>
+                    <span class="job-type">Marketing</span>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3>Community Manager</h3>
+                        <div class="job-meta">
+                            <span>Remote</span>
+                            <span>Full-time</span>
+                            <span>$70k - $90k</span>
+                        </div>
+                    </div>
+                    <span class="job-type">Marketing</span>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3>Customer Support Specialist</h3>
+                        <div class="job-meta">
+                            <span>Remote</span>
+                            <span>Full-time</span>
+                            <span>$50k - $70k</span>
+                        </div>
+                    </div>
+                    <span class="job-type">Operations</span>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3>Compliance Officer</h3>
+                        <div class="job-meta">
+                            <span>Remote</span>
+                            <span>Full-time</span>
+                            <span>$90k - $130k</span>
+                        </div>
+                    </div>
+                    <span class="job-type">Operations</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="culture-section">
+            <div class="culture-text">
+                <h2>Our Culture</h2>
+                <p>We're building the future of finance with a diverse, global team. We value innovation, transparency, and putting users first. Join us in making crypto accessible to everyone.</p>
+            </div>
+            <div class="culture-stats">
+                <div class="culture-stat">
+                    <div class="stat-number">37</div>
+                    <div>Nationalities</div>
+                </div>
+                <div class="culture-stat">
+                    <div class="stat-number">40+</div>
+                    <div>Countries</div>
+                </div>
+                <div class="culture-stat">
+                    <div class="stat-number">50%</div>
+                    <div>Women in Leadership</div>
+                </div>
+                <div class="culture-stat">
+                    <div class="stat-number">∞</div>
+                    <div>Learning Budget</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

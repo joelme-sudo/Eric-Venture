@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --red: #F6465D;
+            --border: #2B2D33;
+        }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .main-nav { background: rgba(10,11,13,0.95); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .security-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .security-header {
+            margin-bottom: 2rem;
+        }
+
+        .security-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .security-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+        }
+
+        .badge-enabled {
+            background: var(--green);
+            color: black;
+        }
+
+        .badge-disabled {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .security-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .security-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .device-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .device-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .device-info {
+            flex: 1;
+        }
+
+        .device-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .device-details {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .current-badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+        }
+
+        .btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: black;
+        }
+
+        .btn-danger {
+            background: var(--red);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="settings.html" style="color: var(--text-primary); text-decoration: none;">Settings</a>
+            <a href="customer-dashboard.html" style="color: var(--text-primary); text-decoration: none;">Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="security-wrapper">
+        <div class="security-header">
+            <h1>Security Center</h1>
+        </div>
+
+        <div class="security-grid">
+            <div>
+                <!-- 2FA Card -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <span class="card-title">Two-Factor Authentication</span>
+                        <span class="status-badge badge-disabled">Disabled</span>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Add an extra layer of security to your account</p>
+                    <button class="btn btn-primary">Enable 2FA</button>
+                </div>
+
+                <!-- Password Card -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <span class="card-title">Password</span>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Last changed 30 days ago</p>
+                    <button class="btn">Change Password</button>
+                </div>
+
+                <!-- Whitelist Card -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <span class="card-title">Withdrawal Whitelist</span>
+                        <span class="status-badge badge-disabled">Off</span>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Only allow withdrawals to whitelisted addresses</p>
+                    
+                    <div class="security-item">
+                        <div class="item-info">
+                            <h3>BTC Address</h3>
+                            <p>1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</p>
+                        </div>
+                        <button class="btn" style="padding: 0.25rem 1rem;">Edit</button>
+                    </div>
+                    
+                    <div class="security-item">
+                        <div class="item-info">
+                            <h3>ETH Address</h3>
+                            <p>0x1234...5678</p>
+                        </div>
+                        <button class="btn" style="padding: 0.25rem 1rem;">Edit</button>
+                    </div>
+                    
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">Add New Address</button>
+                </div>
+
+                <!-- Login History -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <span class="card-title">Recent Login Activity</span>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-icon"><i class="fas fa-laptop"></i></div>
+                        <div class="device-info">
+                            <div class="device-name">Windows PC · Chrome</div>
+                            <div class="device-details">Lagos, Nigeria · 10 minutes ago</div>
+                        </div>
+                        <span class="current-badge">Current</span>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="device-info">
+                            <div class="device-name">iPhone 14 · Safari</div>
+                            <div class="device-details">Lagos, Nigeria · 2 hours ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-icon"><i class="fas fa-laptop"></i></div>
+                        <div class="device-info">
+                            <div class="device-name">MacBook · Firefox</div>
+                            <div class="device-details">Abuja, Nigeria · 2 days ago</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">View Full History</button>
+                </div>
+            </div>
+
+            <div>
+                <!-- Security Score -->
+                <div class="security-card">
+                    <h3 style="margin-bottom: 1rem;">Security Score</h3>
+                    <div style="font-size: 3rem; color: var(--accent); margin-bottom: 0.5rem;">65/100</div>
+                    <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; margin-bottom: 1rem;">
+                        <div style="width: 65%; height: 100%; background: var(--accent); border-radius: 4px;"></div>
+                    </div>
+                    
+                    <div class="security-item">
+                        <span>2FA Enabled</span>
+                        <span style="color: var(--red);">✗</span>
+                    </div>
+                    <div class="security-item">
+                        <span>Strong Password</span>
+                        <span style="color: var(--green);">✓</span>
+                    </div>
+                    <div class="security-item">
+                        <span>Withdrawal Whitelist</span>
+                        <span style="color: var(--red);">✗</span>
+                    </div>
+                    <div class="security-item">
+                        <span>Anti-Phishing Code</span>
+                        <span style="color: var(--green);">✓</span>
+                    </div>
+                </div>
+
+                <!-- Active Sessions -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <span class="card-title">Active Sessions</span>
+                        <button class="btn" style="padding: 0.25rem 0.5rem;">Logout All</button>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-icon"><i class="fas fa-laptop"></i></div>
+                        <div class="device-info">
+                            <div class="device-name">Windows PC</div>
+                            <div class="device-details">Current session</div>
+                        </div>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="device-info">
+                            <div class="device-name">iPhone 14</div>
+                            <div class="device-details">Last active 2h ago</div>
+                        </div>
+                        <button class="btn" style="padding: 0.25rem 0.5rem;">Revoke</button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="security-card">
+                    <h3 style="margin-bottom: 1rem;">Quick Actions</h3>
+                    <button class="btn" style="width: 100%; margin-bottom: 0.5rem;">Download Security Log</button>
+                    <button class="btn" style="width: 100%; margin-bottom: 0.5rem;">Enable Email Alerts</button>
+                    <button class="btn btn-danger" style="width: 100%;">Lock Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

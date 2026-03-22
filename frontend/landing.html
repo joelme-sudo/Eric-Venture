@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eriv Venture – The Ultimate Crypto Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Navigation - FIXED */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff, #F0B90B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--bg-secondary);
+            padding: 2rem 5%;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 6rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        /* Market Preview */
+        .market-preview {
+            padding: 6rem 5%;
+            background: var(--bg-secondary);
+        }
+
+        .market-tabs {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .market-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .market-tab.active {
+            color: var(--accent);
+        }
+
+        .market-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .market-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .market-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .market-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .positive { color: var(--green); }
+        .negative { color: var(--red); }
+
+        /* Earn Products */
+        .earn-products {
+            padding: 6rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .earn-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .earn-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .apy {
+            font-size: 2.5rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        /* Tools Section */
+        .tools {
+            padding: 6rem 5%;
+            background: var(--bg-secondary);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 3rem auto 0;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(240,185,11,0.1);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        /* CTA */
+        .cta {
+            padding: 6rem 5%;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: black;
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Footer - FIXED */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 3rem;
+        }
+
+        .footer-col h4 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            max-width: 1400px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .earn-grid { grid-template-columns: repeat(2, 1fr); }
+            .tools-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-menu { display: none; } /* Hide on mobile, add hamburger later */
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation - FIXED -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h1>The Ultimate Crypto Platform</h1>
+            <p style="font-size: 1.2rem; color: var(--text-secondary);">Trade, earn, and grow with the most advanced tools. 0% fees on spot trading.</p>
+            <div class="hero-stats">
+                <div><span class="stat-number">37M+</span><br>Users</div>
+                <div><span class="stat-number">60+</span><br>Chains</div>
+                <div><span class="stat-number">$7.6B</span><br>24h Volume</div>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <a href="register.html" class="btn-primary">Get Started</a>
+                <a href="market-spot.html" class="btn-secondary">View Markets</a>
+            </div>
+        </div>
+        <div>
+            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80" style="width:100%; border-radius:1rem;">
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="stats-grid">
+            <div><span class="stat-number">$2.45T</span><br>Market Cap</div>
+            <div><span class="stat-number">1,247</span><br>Trading Pairs</div>
+            <div><span class="stat-number">40+</span><br>Countries</div>
+            <div><span class="stat-number">0</span><br>Security Incidents</div>
+        </div>
+    </section>
+
+    <!-- Market Preview -->
+    <section class="market-preview">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">Live Markets</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">Real-time prices from 60+ blockchains</p>
+        
+        <div class="market-tabs">
+            <div class="market-tab active">Spot</div>
+            <div class="market-tab">Futures</div>
+            <div class="market-tab">New Listings</div>
+            <div class="market-tab">Pre-market</div>
+        </div>
+
+        <table class="market-table">
+            <thead>
+                <tr>
+                    <th>Coin</th>
+                    <th>Price</th>
+                    <th>24h Change</th>
+                    <th>24h Volume</th>
+                    <th>Market Cap</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr onclick="window.location='spot.html?pair=BTCUSDT'">
+                    <td><span style="font-weight:bold;">BTC</span> Bitcoin</td>
+                    <td>$68,142</td>
+                    <td class="positive">+2.4%</td>
+                    <td>$32.4B</td>
+                    <td>$1.34T</td>
+                </tr>
+                <tr onclick="window.location='spot.html?pair=ETHUSDT'">
+                    <td><span style="font-weight:bold;">ETH</span> Ethereum</td>
+                    <td>$3,502</td>
+                    <td class="positive">+1.2%</td>
+                    <td>$18.7B</td>
+                    <td>$421B</td>
+                </tr>
+                <tr onclick="window.location='spot.html?pair=BNBUSDT'">
+                    <td><span style="font-weight:bold;">BNB</span> Binance Coin</td>
+                    <td>$578</td>
+                    <td class="negative">-0.3%</td>
+                    <td>$8.9B</td>
+                    <td>$89B</td>
+                </tr>
+                <tr onclick="window.location='spot.html?pair=SOLUSDT'">
+                    <td><span style="font-weight:bold;">SOL</span> Solana</td>
+                    <td>$145</td>
+                    <td class="positive">+5.7%</td>
+                    <td>$4.2B</td>
+                    <td>$62B</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <h2 style="text-align: center; font-size: 2.5rem;">Why Choose Eric Venture?</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">The most complete crypto platform</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p style="color: var(--text-secondary);">100k+ transactions per second with zero downtime</p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">🔒</div>
+                <h3>Bank-Grade Security</h3>
+                <p style="color: var(--text-secondary);">Multi-signature wallets, cold storage for 98% of funds</p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">🌐</div>
+                <h3>60+ Blockchains</h3>
+                <p style="color: var(--text-secondary);">Support for all major L1s and L2s</p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">🤖</div>
+                <h3>AI-Powered</h3>
+                <p style="color: var(--text-secondary);">Smart trading bots and predictive analytics</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Earn Products -->
+    <section class="earn-products">
+        <h2 style="text-align: center; font-size: 2.5rem;">Earn Passive Income</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">Up to 10% APY on your crypto</p>
+        
+        <div class="earn-grid">
+            <div class="earn-card">
+                <h3>Flexible Savings</h3>
+                <div class="apy">5% APY</div>
+                <p style="color: var(--text-secondary);">Withdraw anytime</p>
+                <a href="earn-flexible.html" class="btn-primary" style="margin-top:1rem; display:inline-block;">Earn Now</a>
+            </div>
+            <div class="earn-card">
+                <h3>Fixed Term</h3>
+                <div class="apy">10% APY</div>
+                <p style="color: var(--text-secondary);">30, 60, 90 days</p>
+                <a href="#" class="btn-primary" style="margin-top:1rem; display:inline-block;">Earn Now</a>
+            </div>
+            <div class="earn-card">
+                <h3>Staking</h3>
+                <div class="apy">8% APY</div>
+                <p style="color: var(--text-secondary);">Support network security</p>
+                <a href="staking.html" class="btn-primary" style="margin-top:1rem; display:inline-block;">Stake Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools">
+        <h2 style="text-align: center; font-size: 2.5rem;">Powerful Trading Tools</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">Everything you need to succeed</p>
+        
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-copy"></i></div>
+                <h4>Copy Trading</h4>
+                <p style="color:var(--text-secondary);">Follow top traders</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-robot"></i></div>
+                <h4>Trading Bot</h4>
+                <p style="color:var(--text-secondary);">Automate strategies</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-chart-line"></i></div>
+                <h4>Grid Trading</h4>
+                <p style="color:var(--text-secondary);">Profit from volatility</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-gamepad"></i></div>
+                <h4>Demo Trading</h4>
+                <p style="color:var(--text-secondary);">Practice with $100k</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-credit-card"></i></div>
+                <h4>Crypto Card</h4>
+                <p style="color:var(--text-secondary);">Spend anywhere</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-gift"></i></div>
+                <h4>Gift Cards</h4>
+                <p style="color:var(--text-secondary);">5,000+ options</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-phone"></i></div>
+                <h4>Mobile Refill</h4>
+                <p style="color:var(--text-secondary);">40+ countries</p>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-handshake"></i></div>
+                <h4>P2P Trading</h4>
+                <p style="color:var(--text-secondary);">0% fees</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2 style="font-size: 3rem;">Start Trading Today</h2>
+        <p style="color: var(--text-secondary); font-size: 1.2rem; margin: 1rem 0;">Join 37M+ users worldwide</p>
+        <div class="cta-buttons">
+            <a href="register.html" class="btn-primary">Sign Up Now</a>
+            <a href="demo-trading.html" class="btn-secondary">Try Demo</a>
+        </div>
+    </section>
+
+    <!-- Footer - FIXED -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Products</h4>
+                <a href="spot.html">Spot Trading</a>
+                <a href="futures.html">Futures</a>
+                <a href="options-trading.html">Options</a>
+                <a href="margin.html">Margin</a>
+                <a href="convert.html">Convert</a>
+            </div>
+            <div class="footer-col">
+                <h4>Earn</h4>
+                <a href="earn-flexible.html">Flexible Savings</a>
+                <a href="staking.html">Staking</a>
+                <a href="launchpad.html">Launchpad</a>
+            </div>
+            <div class="footer-col">
+                <h4>Tools</h4>
+                <a href="trading-bot.html">Trading Bot</a>
+                <a href="grid-trading.html">Grid Trading</a>
+                <a href="demo-trading.html">Demo Trading</a>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <a href="card.html">Crypto Card</a>
+                <a href="gift-cards.html">Gift Cards</a>
+                <a href="mobile-refill.html">Mobile Refill</a>
+                <a href="p2p.html">P2P Trading</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About</a>
+                <a href="#">Careers</a>
+                <a href="#">Blog</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Erice Venture. 0 incidents, 37M+ users, 60+ chains.
+        </div>
+    </footer>
+
+    <script>
+        // Live price updates
+        async function updatePrices() {
+            try {
+                const res = await fetch('http://localhost:5001/api/ai/prices');
+                const data = await res.json();
+                // Update hero stats if needed
+            } catch (err) {
+                console.log('Price update error:', err);
+            }
+        }
+        updatePrices();
+        setInterval(updatePrices, 30000);
+    </script>
+</body>
+</html>

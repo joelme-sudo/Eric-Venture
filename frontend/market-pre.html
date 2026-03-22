@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-market – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .premarket-wrapper {
+            padding: 2rem;
+            position: relative;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Animated Background */
+        .premarket-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .premarket-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .premarket-header {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premarket-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .premarket-header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .premarket-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .premarket-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Filters */
+        .filters-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.25rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .filter-tab:hover {
+            color: var(--accent);
+        }
+
+        .filter-tab.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 0.5rem;
+            width: 250px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .search-box i {
+            color: var(--text-secondary);
+        }
+
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .project-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .project-badge.whitelist {
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            color: white;
+        }
+
+        .project-badge.ended {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .project-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .project-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .countdown {
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 1.2rem;
+            border: 1px solid var(--border);
+        }
+
+        .countdown span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            background: var(--bg-secondary);
+            height: 8px;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+            border-radius: 4px;
+        }
+
+        .project-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .project-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .participate-btn {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .participate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .participate-btn.whitelist {
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            color: white;
+        }
+
+        .participate-btn.ended {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            cursor: not-allowed;
+        }
+
+        /* Calendar Section */
+        .calendar-section {
+            margin-top: 3rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            min-height: 100px;
+        }
+
+        .calendar-day.today {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent-glow);
+        }
+
+        .calendar-day .date {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-event {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .project-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .search-box input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html" class="active">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Pre-market Content -->
+    <div class="premarket-wrapper">
+        <div class="premarket-container">
+            <!-- Header -->
+            <div class="premarket-header">
+                <div class="premarket-header-content">
+                    <h1>Pre-market Trading</h1>
+                    <p>Trade newly minted tokens before they hit major exchanges. Get early access to the most promising projects.</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Active Projects</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">$124M</div>
+                            <div class="stat-label">Total Raised</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">1,247%</div>
+                            <div class="stat-label">Avg ROI</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">234K</div>
+                            <div class="stat-label">Participants</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filter-tabs">
+                    <span class="filter-tab active">All Projects</span>
+                    <span class="filter-tab">Live Now</span>
+                    <span class="filter-tab">Whitelist Open</span>
+                    <span class="filter-tab">Ended</span>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search projects...">
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="project-grid">
+                <!-- Project 1 - Live -->
+                <div class="project-card">
+                    <span class="project-badge">LIVE</span>
+                    <div class="project-logo">ZK</div>
+                    <div class="project-name">zkSync Era</div>
+                    <div class="project-desc">Layer 2 scaling solution for Ethereum with zero-knowledge proofs. 10x cheaper fees.</div>
+                    
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.45</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">FDV</div>
+                            <div class="metric-value">$45M</div>
+                        </div>
+                    </div>
+
+                    <div class="countdown">
+                        <span id="countdown1">02:14:23</span> remaining
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 84%;"></div>
+                    </div>
+
+                    <div class="project-footer">
+                        <div class="project-price">$0.45</div>
+                        <button class="participate-btn">Participate</button>
+                    </div>
+                </div>
+
+                <!-- Project 2 - Live -->
+                <div class="project-card">
+                    <span class="project-badge">LIVE</span>
+                    <div class="project-logo">ARB</div>
+                    <div class="project-name">Arbitrum Nova</div>
+                    <div class="project-desc">Optimistic rollup for gaming and social applications with sub-cent fees.</div>
+                    
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.32</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">FDV</div>
+                            <div class="metric-value">$32M</div>
+                        </div>
+                    </div>
+
+                    <div class="countdown">
+                        <span id="countdown2">23:45:12</span> remaining
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 56%;"></div>
+                    </div>
+
+                    <div class="project-footer">
+                        <div class="project-price">$0.32</div>
+                        <button class="participate-btn">Participate</button>
+                    </div>
+                </div>
+
+                <!-- Project 3 - Whitelist -->
+                <div class="project-card">
+                    <span class="project-badge whitelist">WHITELIST</span>
+                    <div class="project-logo">STK</div>
+                    <div class="project-name">StarkNet</div>
+                    <div class="project-desc">Validity rollup using STARK proofs for maximum scalability and security.</div>
+                    
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.78</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">FDV</div>
+                            <div class="metric-value">$78M</div>
+                        </div>
+                    </div>
+
+                    <div class="countdown">
+                        <span>Whitelist closes in</span><br>
+                        <span id="countdown3">3d 12h</span>
+                    </div>
+
+                    <div class="project-footer">
+                        <div class="project-price">$0.78</div>
+                        <button class="participate-btn whitelist">Join Whitelist</button>
+                    </div>
+                </div>
+
+                <!-- Project 4 - Upcoming -->
+                <div class="project-card">
+                    <span class="project-badge" style="background: var(--blue); color: white;">UPCOMING</span>
+                    <div class="project-logo">SCL</div>
+                    <div class="project-name">Scroll</div>
+                    <div class="project-desc">Bytecode-level zkEVM for Ethereum compatibility with zero migrations.</div>
+                    
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.89</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">FDV</div>
+                            <div class="metric-value">$89M</div>
+                        </div>
+                    </div>
+
+                    <div class="countdown">
+                        <span>Starts in</span><br>
+                        <span id="countdown4">2d 14h 23m</span>
+                    </div>
+
+                    <div class="project-footer">
+                        <div class="project-price">$0.89</div>
+                        <button class="participate-btn" style="background: var(--blue);">Notify Me</button>
+                    </div>
+                </div>
+
+                <!-- Project 5 - Ended -->
+                <div class="project-card">
+                    <span class="project-badge ended">ENDED</span>
+                    <div class="project-logo">LNE</div>
+                    <div class="project-name">Linea</div>
+                    <div class="project-desc">ConsenSys zkEVM for Ethereum scaling with enterprise-grade security.</div>
+                    
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Launch Price</div>
+                            <div class="metric-value">$0.41</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Current</div>
+                            <div class="metric-value" style="color: var(--green);">$1.24</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%; background: var(--green);"></div>
+                    </div>
+
+                    <div class="project-footer">
+                        <div class="project-price" style="color: var(--green);">+202%</div>
+                        <button class="participate-btn ended">Ended</button>
+                    </div>
+                </div>
+
+                <!-- Project 6 - Upcoming -->
+                <div class="project-card">
+                    <span class="project-badge" style="background: var(--purple); color: white;">HOT</span>
+                    <div class="project-logo">BSS</div>
+                    <div class="project-name">Base</div>
+                    <div class="project-desc">Coinbase L2 built on OP Stack with Coinbase ecosystem integration.</div>
+                    
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.54</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">FDV</div>
+                            <div class="metric-value">$54M</div>
+                        </div>
+                    </div>
+
+                    <div class="countdown">
+                        <span>Starts in</span><br>
+                        <span id="countdown5">5d 02h 18m</span>
+                    </div>
+
+                    <div class="project-footer">
+                        <div class="project-price">$0.54</div>
+                        <button class="participate-btn" style="background: var(--purple);">Notify Me</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <h2>Launch Calendar</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="filter-tab" style="background: var(--bg-secondary);">← Prev</button>
+                        <button class="filter-tab" style="background: var(--bg-secondary);">Next →</button>
+                    </div>
+                </div>
+
+                <div class="calendar-grid">
+                    <div class="calendar-day">
+                        <div class="date">Mon 24</div>
+                        <div class="calendar-event">zkSync</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">Tue 25</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">Wed 26</div>
+                        <div class="calendar-event">Arbitrum</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">Thu 27</div>
+                    </div>
+                    <div class="calendar-day today">
+                        <div class="date">Fri 28</div>
+                        <div class="calendar-event">StarkNet</div>
+                        <div class="calendar-event">Scroll</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">Sat 1</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">Sun 2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timers
+        function updateCountdowns() {
+            const countdowns = [
+                { id: 'countdown1', endTime: Date.now() + 2 * 60 * 60 * 1000 + 14 * 60 * 1000 + 23 * 1000 }, // 2h 14m 23s
+                { id: 'countdown2', endTime: Date.now() + 23 * 60 * 60 * 1000 + 45 * 60 * 1000 + 12 * 1000 }, // 23h 45m 12s
+                { id: 'countdown3', endTime: Date.now() + 3 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000 }, // 3d 12h
+                { id: 'countdown4', endTime: Date.now() + 2 * 24 * 60 * 60 * 1000 + 14 * 60 * 60 * 1000 + 23 * 60 * 1000 }, // 2d 14h 23m
+                { id: 'countdown5', endTime: Date.now() + 5 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000 + 18 * 60 * 1000 } // 5d 2h 18m
+            ];
+
+            const now = Date.now();
+
+            countdowns.forEach(item => {
+                const diff = item.endTime - now;
+                if (diff <= 0) {
+                    document.getElementById(item.id).textContent = 'LIVE';
+                    return;
+                }
+
+                const days = Math.floor(diff / (24 * 60 * 60 * 1000));
+                const hours = Math.floor((diff % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+                const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+                const seconds = Math.floor((diff % (60 * 1000)) / 1000);
+
+                let timeString = '';
+                if (days > 0) {
+                    timeString = `${days}d ${hours}h ${minutes}m`;
+                } else if (hours > 0) {
+                    timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+
+                document.getElementById(item.id).textContent = timeString;
+            });
+        }
+
+        // Filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Update countdown every second
+        updateCountdowns();
+        setInterval(updateCountdowns, 1000);
+    </script>
+</body>
+</html>

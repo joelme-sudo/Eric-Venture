@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Bot – ERIC VENTURE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .bot-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bot-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .bot-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .bot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .bot-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .create-bot-btn {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 0.75rem;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s;
+        }
+
+        .create-bot-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+        }
+
+        .stat-change.positive {
+            color: var(--green);
+        }
+
+        .stat-change.negative {
+            color: var(--red);
+        }
+
+        /* Bot Tabs */
+        .bot-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bot-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .bot-tab:hover {
+            color: var(--accent);
+        }
+
+        .bot-tab.active {
+            color: var(--accent);
+        }
+
+        .bot-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        /* Bot Grid */
+        .bot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .bot-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+        }
+
+        .bot-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .bot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .bot-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .bot-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(14,203,129,0.15);
+            color: var(--green);
+        }
+
+        .status-paused {
+            background: rgba(246,70,93,0.15);
+            color: var(--red);
+        }
+
+        .status-draft {
+            background: rgba(139,92,246,0.15);
+            color: var(--purple);
+        }
+
+        .bot-pair {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .bot-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-weight: 600;
+        }
+
+        .metric-value.positive {
+            color: var(--green);
+        }
+
+        .metric-value.negative {
+            color: var(--red);
+        }
+
+        .bot-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .bot-btn {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bot-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Performance Chart */
+        .chart-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-control {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .chart-control:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .chart-control.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        #performanceChart {
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Templates Section */
+        .templates-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .template-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .template-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .template-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .template-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .template-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Bot Logs */
+        .logs-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logs-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .log-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .log-time {
+            color: var(--text-secondary);
+            min-width: 80px;
+        }
+
+        .log-bot {
+            color: var(--accent);
+            min-width: 100px;
+        }
+
+        .log-message {
+            color: var(--text-primary);
+        }
+
+        .log-message.success {
+            color: var(--green);
+        }
+
+        .log-message.error {
+            color: var(--red);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .bot-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .templates-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .bot-grid {
+                grid-template-columns: 1fr;
+            }
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Trading Bot Content -->
+    <div class="bot-wrapper">
+        <div class="bot-container">
+            <!-- Header -->
+            <div class="bot-header">
+                <h1>Trading Bots</h1>
+                <button class="create-bot-btn">
+                    <i class="fas fa-robot"></i> Create New Bot
+                </button>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Total P&L</span>
+                    </div>
+                    <div class="stat-value">+$12,450</div>
+                    <div class="stat-change positive">+15.3% this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="fas fa-robot"></i>
+                        <span>Active Bots</span>
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-change">2 running, 1 paused</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="fas fa-percent"></i>
+                        <span>Win Rate</span>
+                    </div>
+                    <div class="stat-value">78.5%</div>
+                    <div class="stat-change positive">+5.2% vs last week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Total Trades</span>
+                    </div>
+                    <div class="stat-value">1,247</div>
+                    <div class="stat-change">+234 today</div>
+                </div>
+            </div>
+
+            <!-- Bot Tabs -->
+            <div class="bot-tabs">
+                <span class="bot-tab active">All Bots</span>
+                <span class="bot-tab">Running</span>
+                <span class="bot-tab">Paused</span>
+                <span class="bot-tab">Drafts</span>
+                <span class="bot-tab">Archived</span>
+            </div>
+
+            <!-- Bot Grid -->
+            <div class="bot-grid">
+                <!-- Bot 1 - Grid Trading -->
+                <div class="bot-card">
+                    <div class="bot-header">
+                        <span class="bot-name">BTC Grid Master</span>
+                        <span class="bot-status status-active">● Active</span>
+                    </div>
+                    <div class="bot-pair">BTC/USDT · Grid Trading</div>
+                    
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">24h P&L</div>
+                            <div class="metric-value positive">+$342</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Total P&L</div>
+                            <div class="metric-value positive">+$2,450</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Grid Profit</div>
+                            <div class="metric-value">$124</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Grid APY</div>
+                            <div class="metric-value positive">24.5%</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-actions">
+                        <button class="bot-btn"><i class="fas fa-pause"></i> Pause</button>
+                        <button class="bot-btn"><i class="fas fa-chart-line"></i> Stats</button>
+                        <button class="bot-btn"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                </div>
+
+                <!-- Bot 2 - DCA Bot -->
+                <div class="bot-card">
+                    <div class="bot-header">
+                        <span class="bot-name">ETH DCA Bot</span>
+                        <span class="bot-status status-active">● Active</span>
+                    </div>
+                    <div class="bot-pair">ETH/USDT · DCA</div>
+                    
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">24h P&L</div>
+                            <div class="metric-value positive">+$156</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Total P&L</div>
+                            <div class="metric-value positive">+$890</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Avg Buy</div>
+                            <div class="metric-value">$3,450</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Current</div>
+                            <div class="metric-value positive">$3,502</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-actions">
+                        <button class="bot-btn"><i class="fas fa-pause"></i> Pause</button>
+                        <button class="bot-btn"><i class="fas fa-chart-line"></i> Stats</button>
+                        <button class="bot-btn"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                </div>
+
+                <!-- Bot 3 - Momentum Bot -->
+                <div class="bot-card">
+                    <div class="bot-header">
+                        <span class="bot-name">SOL Momentum</span>
+                        <span class="bot-status status-paused">⏸ Paused</span>
+                    </div>
+                    <div class="bot-pair">SOL/USDT · Momentum</div>
+                    
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">24h P&L</div>
+                            <div class="metric-value">$0</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Total P&L</div>
+                            <div class="metric-value positive">+$567</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Win Rate</div>
+                            <div class="metric-value">82%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Trades</div>
+                            <div class="metric-value">156</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-actions">
+                        <button class="bot-btn"><i class="fas fa-play"></i> Start</button>
+                        <button class="bot-btn"><i class="fas fa-chart-line"></i> Stats</button>
+                        <button class="bot-btn"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                </div>
+
+                <!-- Bot 4 - Arbitrage Bot -->
+                <div class="bot-card">
+                    <div class="bot-header">
+                        <span class="bot-name">Cross-Ex Arb</span>
+                        <span class="bot-status status-draft">📝 Draft</span>
+                    </div>
+                    <div class="bot-pair">Multiple · Arbitrage</div>
+                    
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Est. APY</div>
+                            <div class="metric-value positive">+18.5%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Min Capital</div>
+                            <div class="metric-value">$5,000</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Exchanges</div>
+                            <div class="metric-value">3</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Pairs</div>
+                            <div class="metric-value">5</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-actions">
+                        <button class="bot-btn"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="bot-btn"><i class="fas fa-rocket"></i> Deploy</button>
+                        <button class="bot-btn"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+
+                <!-- Bot 5 - Scalping Bot -->
+                <div class="bot-card">
+                    <div class="bot-header">
+                        <span class="bot-name">BTC Scalper</span>
+                        <span class="bot-status status-active">● Active</span>
+                    </div>
+                    <div class="bot-pair">BTC/USDT · Scalping</div>
+                    
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">24h P&L</div>
+                            <div class="metric-value positive">+$89</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Total P&L</div>
+                            <div class="metric-value positive">+$1,234</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Trades/day</div>
+                            <div class="metric-value">45</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Win Rate</div>
+                            <div class="metric-value">76%</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-actions">
+                        <button class="bot-btn"><i class="fas fa-pause"></i> Pause</button>
+                        <button class="bot-btn"><i class="fas fa-chart-line"></i> Stats</button>
+                        <button class="bot-btn"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                </div>
+
+                <!-- Bot 6 - Market Making -->
+                <div class="bot-card">
+                    <div class="bot-header">
+                        <span class="bot-name">ETH Market Maker</span>
+                        <span class="bot-status status-active">● Active</span>
+                    </div>
+                    <div class="bot-pair">ETH/USDT · MM</div>
+                    
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">24h P&L</div>
+                            <div class="metric-value positive">+$234</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Total P&L</div>
+                            <div class="metric-value positive">+$3,456</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Spread</div>
+                            <div class="metric-value">0.05%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$1.2M</div>
+                        </div>
+                    </div>
+
+                    <div class="bot-actions">
+                        <button class="bot-btn"><i class="fas fa-pause"></i> Pause</button>
+                        <button class="bot-btn"><i class="fas fa-chart-line"></i> Stats</button>
+                        <button class="bot-btn"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Chart -->
+            <div class="chart-section">
+                <div class="chart-header">
+                    <h3>Bot Performance</h3>
+                    <div class="chart-controls">
+                        <span class="chart-control active">1D</span>
+                        <span class="chart-control">1W</span>
+                        <span class="chart-control">1M</span>
+                        <span class="chart-control">3M</span>
+                        <span class="chart-control">1Y</span>
+                        <span class="chart-control">All</span>
+                    </div>
+                </div>
+                <canvas id="performanceChart"></canvas>
+            </div>
+
+            <!-- Bot Templates -->
+            <div class="templates-section">
+                <div class="section-header">
+                    <h3>Bot Templates</h3>
+                    <span class="badge">Quick Start</span>
+                </div>
+                <div class="templates-grid">
+                    <div class="template-card">
+                        <div class="template-icon"><i class="fas fa-grid-2"></i></div>
+                        <div class="template-name">Grid Trading</div>
+                        <div class="template-desc">Profit from sideways markets</div>
+                    </div>
+                    <div class="template-card">
+                        <div class="template-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="template-name">Trend Following</div>
+                        <div class="template-desc">Ride the momentum</div>
+                    </div>
+                    <div class="template-card">
+                        <div class="template-icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="template-name">DCA Bot</div>
+                        <div class="template-desc">Dollar cost averaging</div>
+                    </div>
+                    <div class="template-card">
+                        <div class="template-icon"><i class="fas fa-scale-balanced"></i></div>
+                        <div class="template-name">Arbitrage</div>
+                        <div class="template-desc">Cross-exchange profits</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bot Logs -->
+            <div class="logs-section">
+                <div class="logs-header">
+                    <h3>Bot Activity Log</h3>
+                    <span class="badge">Live</span>
+                </div>
+                <div class="logs-list">
+                    <div class="log-item">
+                        <span class="log-time">10:23:45</span>
+                        <span class="log-bot">BTC Grid</span>
+                        <span class="log-message success">Buy order executed: 0.01 BTC @ $68,142</span>
+                    </div>
+                    <div class="log-item">
+                        <span class="log-time">10:22:30</span>
+                        <span class="log-bot">ETH DCA</span>
+                        <span class="log-message">Next buy scheduled in 45 minutes</span>
+                    </div>
+                    <div class="log-item">
+                        <span class="log-time">10:21:15</span>
+                        <span class="log-bot">SOL Momentum</span>
+                        <span class="log-message success">Take profit triggered: +$45</span>
+                    </div>
+                    <div class="log-item">
+                        <span class="log-time">10:20:00</span>
+                        <span class="log-bot">BTC Scalper</span>
+                        <span class="log-message success">Sold 0.05 BTC @ $68,150</span>
+                    </div>
+                    <div class="log-item">
+                        <span class="log-time">10:18:30</span>
+                        <span class="log-bot">ETH Market Maker</span>
+                        <span class="log-message">Spread updated to 0.05%</span>
+                    </div>
+                    <div class="log-item">
+                        <span class="log-time">10:15:00</span>
+                        <span class="log-bot">BTC Grid</span>
+                        <span class="log-message">Grid profit: $12.50 from 3 trades</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Performance Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+                datasets: [{
+                    label: 'BTC Grid Bot',
+                    data: [10000, 10050, 10120, 10200, 10350, 10400, 10520, 10600],
+                    borderColor: '#F0B90B',
+                    backgroundColor: 'rgba(240,185,11,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }, {
+                    label: 'ETH DCA Bot',
+                    data: [10000, 10030, 10080, 10150, 10200, 10280, 10340, 10400],
+                    borderColor: '#0ECB81',
+                    backgroundColor: 'rgba(14,203,129,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }, {
+                    label: 'SOL Momentum',
+                    data: [10000, 9980, 10020, 10090, 10130, 10080, 10150, 10200],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59,130,246,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#8A8D92' }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1C1D22',
+                        titleColor: '#fff',
+                        bodyColor: '#8A8D92',
+                        borderColor: '#F0B90B',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: { color: '#2B2D33' },
+                        ticks: { 
+                            color: '#8A8D92',
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#8A8D92' }
+                    }
+                }
+            }
+        });
+
+        // Tab switching
+        document.querySelectorAll('.bot-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.bot-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Chart controls
+        document.querySelectorAll('.chart-control').forEach(control => {
+            control.addEventListener('click', function() {
+                document.querySelectorAll('.chart-control').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update chart data based on timeframe
+                if (this.textContent === '1D') {
+                    chart.data.labels = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
+                    chart.data.datasets[0].data = [10000, 10050, 10120, 10200, 10350, 10400, 10520, 10600];
+                    chart.data.datasets[1].data = [10000, 10030, 10080, 10150, 10200, 10280, 10340, 10400];
+                    chart.data.datasets[2].data = [10000, 9980, 10020, 10090, 10130, 10080, 10150, 10200];
+                } else if (this.textContent === '1W') {
+                    chart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    chart.data.datasets[0].data = [10000, 10500, 10800, 11200, 11500, 11800, 12200];
+                    chart.data.datasets[1].data = [10000, 10300, 10600, 10900, 11200, 11500, 11800];
+                    chart.data.datasets[2].data = [10000, 9900, 10200, 10500, 10800, 10600, 11000];
+                } else {
+                    chart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                    chart.data.datasets[0].data = [10000, 11500, 12800, 14200];
+                    chart.data.datasets[1].data = [10000, 11200, 12300, 13400];
+                    chart.data.datasets[2].data = [10000, 10800, 11500, 12200];
+                }
+                chart.update();
+            });
+        });
+    </script>
+</body>
+</html>

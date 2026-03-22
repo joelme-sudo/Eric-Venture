@@ -1,0 +1,200 @@
+<!-- navigation.html -->
+<nav class="main-nav">
+    <div class="nav-container">
+        <div class="nav-left">
+            <div class="logo">ERIC VENTURE</div>
+            <div class="nav-menu">
+                <div class="nav-item dropdown">
+                    <span>Trade <i class="fas fa-chevron-down"></i></span>
+                    <div class="dropdown-content">
+                        <a href="spot.html">Spot Trading</a>
+                        <a href="futures.html">Futures</a>
+                        <a href="margin.html">Margin Trading</a>
+                        <a href="options.html">Options</a>
+                        <div class="divider"></div>
+                        <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        <a href="block-trade.html">Block Trade <span class="badge">OTC</span></a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <span>Markets <i class="fas fa-chevron-down"></i></span>
+                    <div class="dropdown-content">
+                        <a href="market-spot.html">Spot Market</a>
+                        <a href="market-futures.html">Futures Market</a>
+                        <a href="market-new.html">New Listings</a>
+                        <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        <div class="divider"></div>
+                        <a href="market-cap.html">Market Cap</a>
+                        <a href="gainers-losers.html">Gainers/Losers</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                    <div class="dropdown-content">
+                        <a href="perpetual.html">Perpetual</a>
+                        <a href="delivery.html">Delivery Futures</a>
+                        <a href="options-trading.html">Options</a>
+                        <a href="structured.html">Structured Products</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <span>Earn <i class="fas fa-chevron-down"></i></span>
+                    <div class="dropdown-content">
+                        <a href="earn-flexible.html">Flexible Savings <span class="badge">5% APY</span></a>
+                        <a href="earn-fixed.html">Fixed Term <span class="badge">Up to 10%</span></a>
+                        <a href="staking.html">Staking</a>
+                        <a href="lending.html">Lending <span class="badge">Borrow</span></a>
+                        <div class="divider"></div>
+                        <a href="dual-investment.html">Dual Investment</a>
+                        <a href="launchpad.html">Launchpad</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <span>Tools <i class="fas fa-chevron-down"></i></span>
+                    <div class="dropdown-content">
+                        <a href="copy-trading.html">Copy Trading</a>
+                        <a href="trading-bot.html">Trading Bot</a>
+                        <a href="grid-trading.html">Grid Trading</a>
+                        <a href="demo-trading.html">Demo Trading</a>
+                        <div class="divider"></div>
+                        <a href="calculator.html">Calculator</a>
+                        <a href="tax-tool.html">Tax Tool</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <span>More <i class="fas fa-chevron-down"></i></span>
+                    <div class="dropdown-content">
+                        <a href="card.html">Crypto Card</a>
+                        <a href="gift-cards.html">Gift Cards</a>
+                        <a href="mobile-refill.html">Mobile Refill</a>
+                        <a href="p2p.html">P2P Trading</a>
+                        <div class="divider"></div>
+                        <a href="academy.html">Academy</a>
+                        <a href="support.html">Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="nav-icon"><i class="fas fa-bell"></i></div>
+            <div class="nav-icon"><i class="fas fa-qrcode"></i></div>
+            <div class="nav-icon"><i class="fas fa-moon"></i></div>
+            <a href="login.html" class="nav-btn">Log In</a>
+            <a href="register.html" class="nav-btn primary">Sign Up</a>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .main-nav {
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+    }
+    .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+    }
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #F0B90B, #FFD700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .nav-menu {
+        display: flex;
+        gap: 2rem;
+    }
+    .nav-item {
+        position: relative;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-weight: 500;
+        padding: 0.5rem 0;
+    }
+    .nav-item:hover {
+        color: var(--accent);
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        padding: 1rem 0;
+        min-width: 240px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        z-index: 1001;
+    }
+    .nav-item:hover .dropdown-content {
+        display: block;
+    }
+    .dropdown-content a {
+        display: block;
+        padding: 0.75rem 1.5rem;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: background 0.2s;
+    }
+    .dropdown-content a:hover {
+        background: var(--bg-secondary);
+        color: var(--accent);
+    }
+    .dropdown-content .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 0.5rem 0;
+    }
+    .badge {
+        background: var(--accent);
+        color: black;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.7rem;
+        margin-left: 0.5rem;
+        font-weight: 600;
+    }
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    .nav-icon {
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 1.2rem;
+    }
+    .nav-icon:hover {
+        color: var(--accent);
+    }
+    .nav-btn {
+        padding: 0.5rem 1.2rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .nav-btn.primary {
+        background: var(--accent);
+        color: black;
+    }
+    .nav-btn:not(.primary) {
+        border: 1px solid var(--border);
+        color: var(--text-primary);
+    }
+</style>

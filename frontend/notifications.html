@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --red: #F6465D;
+            --border: #2B2D33;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .notifications-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .notifications-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: black;
+            border: none;
+        }
+
+        .notifications-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab:hover {
+            color: var(--accent);
+        }
+
+        .tab.active {
+            color: var(--accent);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .notifications-list {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .notification-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .notification-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .notification-item.unread {
+            background: rgba(240,185,11,0.05);
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-trade {
+            background: var(--green);
+            color: black;
+        }
+
+        .icon-security {
+            background: var(--accent);
+            color: black;
+        }
+
+        .icon-system {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .icon-promo {
+            background: var(--red);
+            color: white;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+        }
+
+        .notification-time {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .notification-message {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.1rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+        }
+
+        .unread-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            align-self: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="settings.html" style="color: var(--text-primary); text-decoration: none;">Settings</a>
+            <a href="customer-dashboard.html" style="color: var(--text-primary); text-decoration: none;">Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="notifications-wrapper">
+        <div class="notifications-header">
+            <h1>Notifications</h1>
+            <div class="header-actions">
+                <button class="btn">
+                    <i class="fas fa-check-double"></i> Mark all as read
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+        </div>
+
+        <div class="notifications-tabs">
+            <span class="tab active">All</span>
+            <span class="tab">Unread</span>
+            <span class="tab">Trading</span>
+            <span class="tab">Security</span>
+            <span class="tab">System</span>
+            <span class="tab">Promotions</span>
+        </div>
+
+        <div class="notifications-list">
+            <!-- Unread notification -->
+            <div class="notification-item unread">
+                <div class="notification-icon icon-trade">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <span class="notification-title">Order Executed</span>
+                        <span class="notification-time">5 min ago</span>
+                    </div>
+                    <div class="notification-message">
+                        Your limit order to buy 0.01 BTC at $68,142.50 has been executed.
+                    </div>
+                    <span class="notification-badge">Trading</span>
+                </div>
+                <div class="unread-dot"></div>
+            </div>
+
+            <!-- Read notification -->
+            <div class="notification-item">
+                <div class="notification-icon icon-security">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <span class="notification-title">New Login Detected</span>
+                        <span class="notification-time">2 hours ago</span>
+                    </div>
+                    <div class="notification-message">
+                        New login from iPhone 14 in Lagos, Nigeria. If this wasn't you, secure your account immediately.
+                    </div>
+                    <span class="notification-badge">Security</span>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon icon-trade">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <span class="notification-title">Deposit Confirmed</span>
+                        <span class="notification-time">5 hours ago</span>
+                    </div>
+                    <div class="notification-message">
+                        Your deposit of 1,000 USDT has been confirmed and added to your account.
+                    </div>
+                    <span class="notification-badge">Trading</span>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon icon-system">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <span class="notification-title">Trading Bot Update</span>
+                        <span class="notification-time">Yesterday</span>
+                    </div>
+                    <div class="notification-message">
+                        Your BTC Grid Master bot has completed 15 trades today with total profit of $45.20.
+                    </div>
+                    <span class="notification-badge">System</span>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon icon-promo">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <span class="notification-title">Special Offer</span>
+                        <span class="notification-time">2 days ago</span>
+                    </div>
+                    <div class="notification-message">
+                        Get 50% off trading fees for the next 7 days. Limited time offer!
+                    </div>
+                    <span class="notification-badge">Promotion</span>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon icon-security">
+                    <i class="fas fa-key"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <span class="notification-title">API Key Created</span>
+                        <span class="notification-time">3 days ago</span>
+                    </div>
+                    <div class="notification-message">
+                        A new API key "Trading Bot v2" was created from your account.
+                    </div>
+                    <span class="notification-badge">Security</span>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon icon-trade">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <span class="notification-title">Withdrawal Completed</span>
+                        <span class="notification-time">4 days ago</span>
+                    </div>
+                    <div class="notification-message">
+                        Your withdrawal of 0.5 BTC has been sent to your external wallet.
+                    </div>
+                    <span class="notification-badge">Trading</span>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon icon-system">
+                    <i class="fas fa-dragon"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <span class="notification-title">New Feature: Pre-market</span>
+                        <span class="notification-time">5 days ago</span>
+                    </div>
+                    <div class="notification-message">
+                        Trade newly minted tokens before they hit major exchanges. Check out Pre-market now!
+                    </div>
+                    <span class="notification-badge">System</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load more button -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="btn" style="padding: 1rem 3rem;">Load More</button>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Mark as read on click
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.remove('unread');
+                const dot = this.querySelector('.unread-dot');
+                if (dot) dot.remove();
+            });
+        });
+    </script>
+</body>
+</html>

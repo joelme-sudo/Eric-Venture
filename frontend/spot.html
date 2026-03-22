@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot Trading – ERIC VENTURE</title>
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --red: #F6465D;
+            --border: #2B2D33;
+        }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .main-nav {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .trading-container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 1.5rem;
+        }
+        .chart-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        .order-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        .pair-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .pair-price {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .pair-change.positive { color: var(--green); }
+        .pair-change.negative { color: var(--red); }
+        .timeframes {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .timeframe {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        .timeframe.active {
+            background: var(--accent);
+            color: black;
+        }
+        #tvchart {
+            height: 500px;
+            width: 100%;
+        }
+        .order-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .order-tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+        }
+        .order-tab.active {
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent);
+        }
+        .order-input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        .order-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .buy-btn {
+            background: var(--green);
+            color: black;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .sell-btn {
+            background: var(--red);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .order-book {
+            margin-top: 2rem;
+        }
+        .order-header {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+        }
+        .order-row.ask .price { color: var(--red); }
+        .order-row.bid .price { color: var(--green); }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-pre.html">Pre-market</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="nav-icon"><i class="fas fa-bell"></i></div>
+                <div class="nav-icon"><i class="fas fa-qrcode"></i></div>
+                <div class="nav-icon"><i class="fas fa-moon"></i></div>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="trading-container">
+        <div class="chart-section">
+            <div class="pair-info">
+                <div>
+                    <h2>BTC/USDT</h2>
+                    <div class="pair-price" id="currentPrice">$68,142</div>
+                    <div class="pair-change positive" id="priceChange">+2.4%</div>
+                </div>
+                <div class="timeframes">
+                    <span class="timeframe">1m</span>
+                    <span class="timeframe">5m</span>
+                    <span class="timeframe">15m</span>
+                    <span class="timeframe active">1h</span>
+                    <span class="timeframe">4h</span>
+                    <span class="timeframe">1d</span>
+                </div>
+            </div>
+            <div id="tvchart"></div>
+        </div>
+
+        <div class="order-section">
+            <div class="order-tabs">
+                <span class="order-tab active">Limit</span>
+                <span class="order-tab">Market</span>
+                <span class="order-tab">Stop</span>
+            </div>
+            
+            <div class="order-form">
+                <input type="text" class="order-input" placeholder="Price (USDT)" value="68142" id="price">
+                <input type="text" class="order-input" placeholder="Amount (BTC)" value="0.01" id="amount">
+                <div style="margin-bottom:1rem;">Total: <span id="total">681.42</span> USDT</div>
+                <div class="order-buttons">
+                    <button class="buy-btn" onclick="placeOrder('buy')">Buy BTC</button>
+                    <button class="sell-btn" onclick="placeOrder('sell')">Sell BTC</button>
+                </div>
+            </div>
+
+            <div class="order-book">
+                <h4>Order Book</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <div class="order-header">Asks</div>
+                        <div id="asks"></div>
+                    </div>
+                    <div>
+                        <div class="order-header">Bids</div>
+                        <div id="bids"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'login.html';
+
+        new TradingView.widget({
+            "container_id": "tvchart",
+            "width": "100%",
+            "height": 500,
+            "symbol": "BINANCE:BTCUSDT",
+            "interval": "60",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "enable_publishing": false,
+            "hide_side_toolbar": false,
+            "allow_symbol_change": true
+        });
+
+        async function updatePrice() {
+            try {
+                const res = await fetch('http://localhost:5001/api/market/price/BTCUSDT');
+                const data = await res.json();
+                document.getElementById('currentPrice').textContent = `$${data.price.toLocaleString()}`;
+                document.getElementById('priceChange').textContent = `${data.change > 0 ? '+' : ''}${data.change}%`;
+                document.getElementById('priceChange').className = data.change >= 0 ? 'pair-change positive' : 'pair-change negative';
+            } catch (err) {
+                console.log('Price update error');
+            }
+        }
+
+        document.getElementById('price').addEventListener('input', updateTotal);
+        document.getElementById('amount').addEventListener('input', updateTotal);
+
+        function updateTotal() {
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            document.getElementById('total').textContent = (price * amount).toFixed(2);
+        }
+
+        async function placeOrder(type) {
+            const price = document.getElementById('price').value;
+            const amount = document.getElementById('amount').value;
+            
+            const res = await fetch('http://localhost:5001/api/trade/spot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    pair: 'BTCUSDT',
+                    type: type,
+                    price: parseFloat(price),
+                    amount: parseFloat(amount)
+                })
+            });
+            
+            const data = await res.json();
+            alert(data.success ? 'Order placed!' : 'Order failed');
+        }
+
+        setInterval(updatePrice, 5000);
+        updatePrice();
+    </script>
+</body>
+</html>

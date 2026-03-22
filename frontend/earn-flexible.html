@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexible Savings – ERIC VENTURE</title>
+    <style>
+        .earn-products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .earn-product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+        }
+        .apy-large {
+            font-size: 3rem;
+            color: var(--green);
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="earn-products-grid">
+        <div class="earn-product-card">
+            <h3>BTC Flexible</h3>
+            <div class="apy-large">5.2%</div>
+            <p>No lockup, withdraw anytime</p>
+            <button class="btn-primary">Subscribe</button>
+        </div>
+        <div class="earn-product-card">
+            <h3>ETH Flexible</h3>
+            <div class="apy-large">4.8%</div>
+            <p>Daily interest distribution</p>
+            <button class="btn-primary">Subscribe</button>
+        </div>
+        <div class="earn-product-card">
+            <h3>USDT Flexible</h3>
+            <div class="apy-large">6.1%</div>
+            <p>Stablecoin earnings</p>
+            <button class="btn-primary">Subscribe</button>
+        </div>
+    </div>
+</body>
+</html>

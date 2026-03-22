@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Margin Trading – ERIC VENTURE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .margin-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .margin-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .margin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .margin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .margin-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .account-summary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 3rem;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Account Overview */
+        .account-overview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .overview-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .overview-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .overview-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .overview-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-change {
+            font-size: 0.9rem;
+        }
+
+        .overview-change.positive {
+            color: var(--green);
+        }
+
+        .overview-change.negative {
+            color: var(--red);
+        }
+
+        /* Tabs */
+        .margin-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: var(--bg-card);
+            padding: 0.25rem;
+            border-radius: 0.75rem;
+            width: fit-content;
+            border: 1px solid var(--border);
+        }
+
+        .margin-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .margin-tab:hover {
+            color: var(--accent);
+        }
+
+        .margin-tab.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        /* Borrow Section */
+        .borrow-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .borrow-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .borrow-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .borrow-card:hover {
+            border-color: var(--accent);
+        }
+
+        .borrow-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .borrow-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(240,185,11,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .borrow-info {
+            flex: 1;
+        }
+
+        .borrow-symbol {
+            font-weight: 600;
+        }
+
+        .borrow-name {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .borrow-rate {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .borrow-input {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            margin: 0.5rem 0;
+        }
+
+        .borrow-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .borrow-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        /* Positions Table */
+        .positions-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .positions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .positions-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            font-weight: 500;
+        }
+
+        .positions-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .positions-table tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .asset-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .asset-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(240,185,11,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .position-positive {
+            color: var(--green);
+        }
+
+        .position-negative {
+            color: var(--red);
+        }
+
+        .close-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        /* Interest Rates */
+        .rates-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .rate-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .rate-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .rate-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .rate-bar {
+            height: 4px;
+            background: var(--bg-secondary);
+            border-radius: 2px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .rate-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #FFD700);
+            border-radius: 2px;
+        }
+
+        /* Risk Metrics */
+        .risk-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .risk-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .risk-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .risk-warning {
+            color: var(--red);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Chart Container - FIXED SIZE */
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            height: 300px; /* Fixed height */
+            width: 100%;
+        }
+
+        #marginChart {
+            height: 220px !important; /* Fixed height for chart */
+            width: 100% !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .account-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .borrow-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .rates-section {
+                grid-template-columns: 1fr;
+            }
+            .risk-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .account-overview {
+                grid-template-columns: 1fr;
+            }
+            .borrow-grid {
+                grid-template-columns: 1fr;
+            }
+            .account-summary {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .chart-container {
+                height: 250px;
+            }
+            #marginChart {
+                height: 170px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Margin Trading Content -->
+    <div class="margin-wrapper">
+        <div class="margin-container">
+            <!-- Header -->
+            <div class="margin-header">
+                <h1>Margin Trading</h1>
+                <div class="account-summary">
+                    <div class="summary-item">
+                        <div class="summary-label">Total Balance</div>
+                        <div class="summary-value" id="totalBalance">$124,567</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Margin Used</div>
+                        <div class="summary-value" id="marginUsed">$45,678</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Available</div>
+                        <div class="summary-value" id="available">$78,889</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Overview -->
+            <div class="account-overview">
+                <div class="overview-card">
+                    <div class="overview-header">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Equity</span>
+                    </div>
+                    <div class="overview-value">$124,567</div>
+                    <div class="overview-change positive">+12.4% today</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-header">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <span>Borrowed</span>
+                    </div>
+                    <div class="overview-value">$45,678</div>
+                    <div class="overview-change">3.2% APR</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Margin Level</span>
+                    </div>
+                    <div class="overview-value">273%</div>
+                    <div class="overview-change positive">Safe</div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="margin-tabs">
+                <span class="margin-tab active">Borrow</span>
+                <span class="margin-tab">Repay</span>
+                <span class="margin-tab">Positions</span>
+                <span class="margin-tab">History</span>
+            </div>
+
+            <!-- Borrow Section -->
+            <div class="borrow-section">
+                <div class="section-title">
+                    <h3>Borrow Assets</h3>
+                    <span class="badge">Up to 5x leverage</span>
+                </div>
+                <div class="borrow-grid">
+                    <div class="borrow-card">
+                        <div class="borrow-header">
+                            <div class="borrow-icon">₿</div>
+                            <div class="borrow-info">
+                                <div class="borrow-symbol">BTC</div>
+                                <div class="borrow-name">Bitcoin</div>
+                            </div>
+                        </div>
+                        <div class="borrow-rate">2.5% APR</div>
+                        <div>Available: 2.5 BTC</div>
+                        <input type="number" class="borrow-input" placeholder="Amount" value="0.1">
+                        <button class="borrow-btn">Borrow BTC</button>
+                    </div>
+                    <div class="borrow-card">
+                        <div class="borrow-header">
+                            <div class="borrow-icon">Ξ</div>
+                            <div class="borrow-info">
+                                <div class="borrow-symbol">ETH</div>
+                                <div class="borrow-name">Ethereum</div>
+                            </div>
+                        </div>
+                        <div class="borrow-rate">2.8% APR</div>
+                        <div>Available: 45.2 ETH</div>
+                        <input type="number" class="borrow-input" placeholder="Amount" value="1">
+                        <button class="borrow-btn">Borrow ETH</button>
+                    </div>
+                    <div class="borrow-card">
+                        <div class="borrow-header">
+                            <div class="borrow-icon">₮</div>
+                            <div class="borrow-info">
+                                <div class="borrow-symbol">USDT</div>
+                                <div class="borrow-name">Tether</div>
+                            </div>
+                        </div>
+                        <div class="borrow-rate">3.5% APR</div>
+                        <div>Available: 150,000 USDT</div>
+                        <input type="number" class="borrow-input" placeholder="Amount" value="1000">
+                        <button class="borrow-btn">Borrow USDT</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Open Positions -->
+            <div class="positions-section">
+                <div class="section-title">
+                    <h3>Open Positions</h3>
+                    <span class="badge">2 positions</span>
+                </div>
+                <table class="positions-table">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Borrowed</th>
+                            <th>Value</th>
+                            <th>Interest</th>
+                            <th>P&L</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">₿</div>
+                                    <div>BTC</div>
+                                </div>
+                            </td>
+                            <td>0.5 BTC</td>
+                            <td>$34,071</td>
+                            <td>$12.50</td>
+                            <td class="position-positive">+$1,245</td>
+                            <td><button class="close-btn">Close</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">Ξ</div>
+                                    <div>ETH</div>
+                                </div>
+                            </td>
+                            <td>5 ETH</td>
+                            <td>$17,510</td>
+                            <td>$8.75</td>
+                            <td class="position-negative">-$234</td>
+                            <td><button class="close-btn">Close</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Interest Rates -->
+            <div class="rates-section">
+                <div class="rate-card">
+                    <div class="rate-header">
+                        <span>Borrow APR</span>
+                        <span>Weighted Avg</span>
+                    </div>
+                    <div class="rate-value">2.9%</div>
+                    <div class="rate-bar">
+                        <div class="rate-fill" style="width: 45%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+                        <span>Min: 2.5%</span>
+                        <span>Max: 3.5%</span>
+                    </div>
+                </div>
+                <div class="rate-card">
+                    <div class="rate-header">
+                        <span>Lend APR</span>
+                        <span>Earn interest</span>
+                    </div>
+                    <div class="rate-value">1.8%</div>
+                    <div class="rate-bar">
+                        <div class="rate-fill" style="width: 30%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+                        <span>Min: 1.2%</span>
+                        <span>Max: 2.4%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Metrics -->
+            <div class="risk-section">
+                <div class="risk-card">
+                    <div class="risk-label">Liquidation Price</div>
+                    <div class="risk-value">$42,500</div>
+                    <div class="risk-warning">-38%</div>
+                </div>
+                <div class="risk-card">
+                    <div class="risk-label">Maintenance Margin</div>
+                    <div class="risk-value">$18,500</div>
+                    <div class="risk-warning">15% of equity</div>
+                </div>
+                <div class="risk-card">
+                    <div class="risk-label">Interest Due</div>
+                    <div class="risk-value">$21.25</div>
+                    <div class="risk-warning">Next: 2d 4h</div>
+                </div>
+                <div class="risk-card">
+                    <div class="risk-label">Max Leverage</div>
+                    <div class="risk-value">3.2x</div>
+                    <div class="risk-warning">Current usage</div>
+                </div>
+            </div>
+
+            <!-- Chart - FIXED SIZE -->
+            <div class="chart-container">
+                <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Margin Utilization (Last 30 Days)</h3>
+                <canvas id="marginChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Initialize Chart - FIXED SIZE
+        const ctx = document.getElementById('marginChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10'],
+                datasets: [{
+                    label: 'Borrowed ($)',
+                    data: [25000, 28000, 32000, 38000, 42000, 45000, 48000, 52000, 58000, 62000],
+                    borderColor: '#F0B90B',
+                    backgroundColor: 'rgba(240,185,11,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointHoverRadius: 5
+                }, {
+                    label: 'Collateral ($)',
+                    data: [45000, 52000, 58000, 68000, 75000, 82000, 88000, 95000, 105000, 115000],
+                    borderColor: '#0ECB81',
+                    backgroundColor: 'rgba(14,203,129,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointHoverRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: { 
+                            color: '#8A8D92',
+                            boxWidth: 12,
+                            padding: 10
+                        },
+                        position: 'top'
+                    },
+                    tooltip: {
+                        backgroundColor: '#1C1D22',
+                        titleColor: '#fff',
+                        bodyColor: '#8A8D92',
+                        borderColor: '#F0B90B',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: { color: '#2B2D33' },
+                        ticks: { 
+                            color: '#8A8D92',
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#8A8D92' }
+                    }
+                }
+            }
+        });
+
+        // Tab switching
+        document.querySelectorAll('.margin-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.margin-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Fetch real balances
+        async function fetchBalances() {
+            if (!token) return;
+            try {
+                const res = await fetch('http://localhost:5001/api/user/balance', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                // Update UI with real data
+                document.getElementById('totalBalance').textContent = `$${data.totalUSD.toFixed(2)}`;
+                // Mock margin data for now
+                document.getElementById('marginUsed').textContent = `$${(data.totalUSD * 0.3).toFixed(2)}`;
+                document.getElementById('available').textContent = `$${(data.totalUSD * 0.7).toFixed(2)}`;
+            } catch (err) {
+                console.log('Using mock data');
+            }
+        }
+
+        fetchBalances();
+        setInterval(fetchBalances, 30000);
+    </script>
+</body>
+</html>

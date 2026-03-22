@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referrals – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --border: #2B2D33;
+        }
+        body { background: var(--bg-primary); color: var(--text-primary); }
+        .main-nav { background: rgba(10,11,13,0.95); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        .logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .referrals-wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+        }
+
+        .referral-link-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .link-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .link-input {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: black;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0 2rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .share-btn {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .share-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .tier-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .tier-card.popular::before {
+            content: '🔥 POPULAR';
+            position: absolute;
+            top: -0.5rem;
+            right: 1rem;
+            background: var(--accent);
+            color: black;
+            padding: 0.25rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tier-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-rate {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .tier-requirement {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .referrals-table {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .table-row:hover {
+            background: var(--bg-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tiers-grid {
+                grid-template-columns: 1fr;
+            }
+            .table-header, .table-row {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="settings.html" style="color: var(--text-primary); text-decoration: none;">Settings</a>
+            <a href="customer-dashboard.html" style="color: var(--text-primary); text-decoration: none;">Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="referrals-wrapper">
+        <div class="hero-section">
+            <h1>Refer & Earn</h1>
+            <p style="color: var(--text-secondary); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Invite friends to Ever Finance and earn up to 30% of their trading fees forever
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">24</div>
+                <div class="stat-label">Total Referrals</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">$1,245</div>
+                <div class="stat-label">Total Earned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">$8,450</div>
+                <div class="stat-label">Trading Volume</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Active Traders</div>
+            </div>
+        </div>
+
+        <div class="referral-link-box">
+            <h3>Your Referral Link</h3>
+            <div class="link-container">
+                <input type="text" class="link-input" value="https://ever.finance/ref/johndoe123" readonly>
+                <button class="copy-btn">Copy</button>
+            </div>
+            <div class="share-buttons">
+                <button class="share-btn"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                <button class="share-btn"><i class="fab fa-telegram"></i> Telegram</button>
+                <button class="share-btn"><i class="fab fa-twitter"></i> Twitter</button>
+                <button class="share-btn"><i class="fab fa-facebook"></i> Facebook</button>
+                <button class="share-btn"><i class="fas fa-envelope"></i> Email</button>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem;">Reward Tiers</h2>
+        <div class="tiers-grid">
+            <div class="tier-card">
+                <div class="tier-name">Bronze</div>
+                <div class="tier-rate">20%</div>
+                <div class="tier-requirement">0-5 referrals</div>
+                <ul class="tier-features">
+                    <li>20% trading fee commission</li>
+                    <li>Standard support</li>
+                    <li>Monthly payouts</li>
+                </ul>
+                <button class="copy-btn" style="width: 100%;">Current Tier</button>
+            </div>
+
+            <div class="tier-card popular">
+                <div class="tier-name">Silver</div>
+                <div class="tier-rate">25%</div>
+                <div class="tier-requirement">6-20 referrals</div>
+                <ul class="tier-features">
+                    <li>25% trading fee commission</li>
+                    <li>Priority support</li>
+                    <li>Bi-weekly payouts</li>
+                    <li>Exclusive webinars</li>
+                </ul>
+                <button class="copy-btn" style="width: 100%;">Need 2 more</button>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-name">Gold</div>
+                <div class="tier-rate">30%</div>
+                <div class="tier-requirement">20+ referrals</div>
+                <ul class="tier-features">
+                    <li>30% trading fee commission</li>
+                    <li>VIP support</li>
+                    <li>Weekly payouts</li>
+                    <li>Exclusive events</li>
+                    <li>Custom analytics</li>
+                </ul>
+                <button class="copy-btn" style="width: 100%;">Need 8 more</button>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem;">Recent Referrals</h2>
+        <div class="referrals-table">
+            <div class="table-header">
+                <span>Friend</span>
+                <span>Date Joined</span>
+                <span>Trades</span>
+                <span>Volume</span>
+                <span>Earned</span>
+            </div>
+            <div class="table-row">
+                <span>alice***@gmail.com</span>
+                <span>Mar 2, 2026</span>
+                <span>24</span>
+                <span>$12,450</span>
+                <span style="color: var(--green);">+$45.20</span>
+            </div>
+            <div class="table-row">
+                <span>bob***@yahoo.com</span>
+                <span>Feb 28, 2026</span>
+                <span>18</span>
+                <span>$8,230</span>
+                <span style="color: var(--green);">+$32.50</span>
+            </div>
+            <div class="table-row">
+                <span>charlie***@hotmail.com</span>
+                <span>Feb 25, 2026</span>
+                <span>32</span>
+                <span>$15,670</span>
+                <span style="color: var(--green);">+$78.35</span>
+            </div>
+            <div class="table-row">
+                <span>diana***@gmail.com</span>
+                <span>Feb 20, 2026</span>
+                <span>15</span>
+                <span>$5,890</span>
+                <span style="color: var(--green);">+$22.80</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

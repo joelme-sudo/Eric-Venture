@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Trading – ERIC VENTURES</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .grid-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .grid-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .grid-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .grid-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .grid-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .create-grid-btn {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 0.75rem;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s;
+        }
+
+        .create-grid-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+        }
+
+        .stat-change.positive {
+            color: var(--green);
+        }
+
+        .stat-change.negative {
+            color: var(--red);
+        }
+
+        /* Grid Tabs */
+        .grid-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .grid-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .grid-tab:hover {
+            color: var(--accent);
+        }
+
+        .grid-tab.active {
+            color: var(--accent);
+        }
+
+        .grid-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        /* Grid Creation Panel */
+        .creation-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .pair-selector {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+        }
+
+        .pair-option {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .pair-option.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .grid-config {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .config-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem;
+        }
+
+        .config-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .config-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .config-input:focus {
+            color: var(--accent);
+        }
+
+        .config-hint {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Grid Visualization */
+        .visualization-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .vis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .vis-title {
+            font-weight: 600;
+        }
+
+        .vis-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .vis-stat {
+            text-align: center;
+        }
+
+        .vis-stat-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .vis-stat-value {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .grid-canvas {
+            position: relative;
+            height: 300px;
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .grid-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.3;
+        }
+
+        .price-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green);
+            z-index: 2;
+        }
+
+        .grid-order {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .grid-order.buy {
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green);
+        }
+
+        .grid-order.sell {
+            background: var(--red);
+            box-shadow: 0 0 10px var(--red);
+        }
+
+        .grid-range {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .range-value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Grid Cards */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+        }
+
+        .grid-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-pair {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .card-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-running {
+            background: rgba(14,203,129,0.15);
+            color: var(--green);
+        }
+
+        .status-paused {
+            background: rgba(246,70,93,0.15);
+            color: var(--red);
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .card-stat {
+            text-align: center;
+        }
+
+        .card-stat-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-stat-value {
+            font-weight: 600;
+        }
+
+        .card-stat-value.positive {
+            color: var(--green);
+        }
+
+        .card-stat-value.negative {
+            color: var(--red);
+        }
+
+        .card-range {
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .range-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .range-label {
+            color: var(--text-secondary);
+        }
+
+        .range-number {
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .card-btn {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .card-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Performance Chart */
+        .chart-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-control {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .chart-control:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .chart-control.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        #gridChart {
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-config {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .grid-config {
+                grid-template-columns: 1fr;
+            }
+            .grid-cards {
+                grid-template-columns: 1fr;
+            }
+            .vis-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Grid Trading Content -->
+    <div class="grid-wrapper">
+        <div class="grid-container">
+            <!-- Header -->
+            <div class="grid-header">
+                <h1>Grid Trading</h1>
+                <button class="create-grid-btn">
+                    <i class="fas fa-plus"></i> Create New Grid
+                </button>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Total P&L</span>
+                    </div>
+                    <div class="stat-value">+$8,450</div>
+                    <div class="stat-change positive">+12.3% this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="fas fa-grid-2"></i>
+                        <span>Active Grids</span>
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-change">2 running, 1 paused</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="fas fa-percent"></i>
+                        <span>Avg APY</span>
+                    </div>
+                    <div class="stat-value">24.5%</div>
+                    <div class="stat-change positive">+5.2% vs last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Grid Trades</span>
+                    </div>
+                    <div class="stat-value">3,456</div>
+                    <div class="stat-change">+234 today</div>
+                </div>
+            </div>
+
+            <!-- Grid Tabs -->
+            <div class="grid-tabs">
+                <span class="grid-tab active">All Grids</span>
+                <span class="grid-tab">Running</span>
+                <span class="grid-tab">Paused</span>
+                <span class="grid-tab">Ended</span>
+                <span class="grid-tab">Drafts</span>
+            </div>
+
+            <!-- Grid Creation Panel -->
+            <div class="creation-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Quick Grid Setup</span>
+                    <div class="pair-selector">
+                        <span class="pair-option active">BTC/USDT</span>
+                        <span class="pair-option">ETH/USDT</span>
+                        <span class="pair-option">BNB/USDT</span>
+                        <span class="pair-option">SOL/USDT</span>
+                    </div>
+                </div>
+
+                <div class="grid-config">
+                    <div class="config-item">
+                        <div class="config-label">Lower Price</div>
+                        <input type="text" class="config-input" value="65000" id="lowerPrice">
+                        <div class="config-hint">≈ $65,000</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label">Upper Price</div>
+                        <input type="text" class="config-input" value="72000" id="upperPrice">
+                        <div class="config-hint">≈ $72,000</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label">Grid Lines</div>
+                        <input type="text" class="config-input" value="20" id="gridLines">
+                        <div class="config-hint">20 intervals</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label">Investment</div>
+                        <input type="text" class="config-input" value="10000" id="investment">
+                        <div class="config-hint">≈ $10,000</div>
+                    </div>
+                </div>
+
+                <!-- Grid Visualization -->
+                <div class="visualization-section">
+                    <div class="vis-header">
+                        <span class="vis-title">Grid Preview</span>
+                        <div class="vis-stats">
+                            <div class="vis-stat">
+                                <div class="vis-stat-label">Grid APY</div>
+                                <div class="vis-stat-value">24.5%</div>
+                            </div>
+                            <div class="vis-stat">
+                                <div class="vis-stat-label">Grid Profit</div>
+                                <div class="vis-stat-value">$2,450</div>
+                            </div>
+                            <div class="vis-stat">
+                                <div class="vis-stat-label">Grid Spread</div>
+                                <div class="vis-stat-value">$350</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-canvas" id="gridCanvas">
+                        <!-- Grid lines will be generated by JavaScript -->
+                    </div>
+
+                    <div class="grid-range">
+                        <span>Lower: <span class="range-value" id="displayLower">$65,000</span></span>
+                        <span>Current: <span class="range-value" style="color: var(--green);" id="currentPrice">$68,142</span></span>
+                        <span>Upper: <span class="range-value" id="displayUpper">$72,000</span></span>
+                    </div>
+                </div>
+
+                <button class="create-grid-btn" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-play"></i> Start Grid Trading
+                </button>
+            </div>
+
+            <!-- Active Grids -->
+            <div class="grid-cards">
+                <!-- Grid 1 - BTC Grid -->
+                <div class="grid-card">
+                    <div class="card-header">
+                        <span class="card-pair">BTC/USDT</span>
+                        <span class="card-status status-running">● Running</span>
+                    </div>
+
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="card-stat-label">24h P&L</div>
+                            <div class="card-stat-value positive">+$342</div>
+                        </div>
+                        <div class="card-stat">
+                            <div class="card-stat-label">Total P&L</div>
+                            <div class="card-stat-value positive">+$2,450</div>
+                        </div>
+                    </div>
+
+                    <div class="card-range">
+                        <div class="range-row">
+                            <span class="range-label">Range</span>
+                            <span class="range-number">$65,000 - $72,000</span>
+                        </div>
+                        <div class="range-row">
+                            <span class="range-label">Grids</span>
+                            <span class="range-number">20 lines</span>
+                        </div>
+                        <div class="range-row">
+                            <span class="range-label">Investment</span>
+                            <span class="range-number">$10,000</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="card-btn"><i class="fas fa-pause"></i> Pause</button>
+                        <button class="card-btn"><i class="fas fa-chart-line"></i> Details</button>
+                        <button class="card-btn"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                </div>
+
+                <!-- Grid 2 - ETH Grid -->
+                <div class="grid-card">
+                    <div class="card-header">
+                        <span class="card-pair">ETH/USDT</span>
+                        <span class="card-status status-running">● Running</span>
+                    </div>
+
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="card-stat-label">24h P&L</div>
+                            <div class="card-stat-value positive">+$156</div>
+                        </div>
+                        <div class="card-stat">
+                            <div class="card-stat-label">Total P&L</div>
+                            <div class="card-stat-value positive">+$890</div>
+                        </div>
+                    </div>
+
+                    <div class="card-range">
+                        <div class="range-row">
+                            <span class="range-label">Range</span>
+                            <span class="range-number">$3,200 - $3,800</span>
+                        </div>
+                        <div class="range-row">
+                            <span class="range-label">Grids</span>
+                            <span class="range-number">15 lines</span>
+                        </div>
+                        <div class="range-row">
+                            <span class="range-label">Investment</span>
+                            <span class="range-number">$5,000</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="card-btn"><i class="fas fa-pause"></i> Pause</button>
+                        <button class="card-btn"><i class="fas fa-chart-line"></i> Details</button>
+                        <button class="card-btn"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                </div>
+
+                <!-- Grid 3 - SOL Grid (Paused) -->
+                <div class="grid-card">
+                    <div class="card-header">
+                        <span class="card-pair">SOL/USDT</span>
+                        <span class="card-status status-paused">⏸ Paused</span>
+                    </div>
+
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="card-stat-label">24h P&L</div>
+                            <div class="card-stat-value">$0</div>
+                        </div>
+                        <div class="card-stat">
+                            <div class="card-stat-label">Total P&L</div>
+                            <div class="card-stat-value positive">+$567</div>
+                        </div>
+                    </div>
+
+                    <div class="card-range">
+                        <div class="range-row">
+                            <span class="range-label">Range</span>
+                            <span class="range-number">$120 - $160</span>
+                        </div>
+                        <div class="range-row">
+                            <span class="range-label">Grids</span>
+                            <span class="range-number">10 lines</span>
+                        </div>
+                        <div class="range-row">
+                            <span class="range-label">Investment</span>
+                            <span class="range-number">$2,000</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="card-btn"><i class="fas fa-play"></i> Start</button>
+                        <button class="card-btn"><i class="fas fa-chart-line"></i> Details</button>
+                        <button class="card-btn"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Chart -->
+            <div class="chart-section">
+                <div class="chart-header">
+                    <h3>Grid Performance</h3>
+                    <div class="chart-controls">
+                        <span class="chart-control active">1D</span>
+                        <span class="chart-control">1W</span>
+                        <span class="chart-control">1M</span>
+                        <span class="chart-control">3M</span>
+                        <span class="chart-control">1Y</span>
+                    </div>
+                </div>
+                <canvas id="gridChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Grid Visualization
+        function updateGridVisualization() {
+            const canvas = document.getElementById('gridCanvas');
+            canvas.innerHTML = '';
+            
+            const lower = parseFloat(document.getElementById('lowerPrice').value) || 65000;
+            const upper = parseFloat(document.getElementById('upperPrice').value) || 72000;
+            const lines = parseInt(document.getElementById('gridLines').value) || 20;
+            const current = 68142;
+            
+            document.getElementById('displayLower').textContent = '$' + lower.toLocaleString();
+            document.getElementById('displayUpper').textContent = '$' + upper.toLocaleString();
+            document.getElementById('currentPrice').textContent = '$' + current.toLocaleString();
+            
+            const height = 300;
+            const priceRange = upper - lower;
+            const currentPos = ((current - lower) / priceRange) * 100;
+            
+            // Add grid lines
+            for (let i = 0; i <= lines; i++) {
+                const line = document.createElement('div');
+                line.className = 'grid-line';
+                const pos = (i / lines) * 100;
+                line.style.top = (100 - pos) + '%';
+                canvas.appendChild(line);
+            }
+            
+            // Add price line
+            const priceLine = document.createElement('div');
+            priceLine.className = 'price-line';
+            priceLine.style.top = (100 - currentPos) + '%';
+            canvas.appendChild(priceLine);
+            
+            // Add buy/sell orders
+            for (let i = 1; i < lines; i++) {
+                const pos = (i / lines) * 100;
+                if (pos < currentPos) {
+                    const buy = document.createElement('div');
+                    buy.className = 'grid-order buy';
+                    buy.style.left = '30%';
+                    buy.style.top = (100 - pos) + '%';
+                    canvas.appendChild(buy);
+                } else {
+                    const sell = document.createElement('div');
+                    sell.className = 'grid-order sell';
+                    sell.style.left = '70%';
+                    sell.style.top = (100 - pos) + '%';
+                    canvas.appendChild(sell);
+                }
+            }
+        }
+
+        // Input listeners
+        document.getElementById('lowerPrice').addEventListener('input', updateGridVisualization);
+        document.getElementById('upperPrice').addEventListener('input', updateGridVisualization);
+        document.getElementById('gridLines').addEventListener('input', updateGridVisualization);
+        document.getElementById('investment').addEventListener('input', updateGridVisualization);
+
+        // Initialize visualization
+        updateGridVisualization();
+
+        // Performance Chart
+        const ctx = document.getElementById('gridChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+                datasets: [{
+                    label: 'BTC Grid',
+                    data: [10000, 10050, 10120, 10200, 10350, 10400, 10520, 10600],
+                    borderColor: '#F0B90B',
+                    backgroundColor: 'rgba(240,185,11,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }, {
+                    label: 'ETH Grid',
+                    data: [5000, 5020, 5050, 5080, 5120, 5150, 5180, 5220],
+                    borderColor: '#0ECB81',
+                    backgroundColor: 'rgba(14,203,129,0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#8A8D92' }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1C1D22',
+                        titleColor: '#fff',
+                        bodyColor: '#8A8D92',
+                        borderColor: '#F0B90B',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: { color: '#2B2D33' },
+                        ticks: { 
+                            color: '#8A8D92',
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#8A8D92' }
+                    }
+                }
+            }
+        });
+
+        // Tab switching
+        document.querySelectorAll('.grid-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.grid-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Pair selector
+        document.querySelectorAll('.pair-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.pair-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                updateGridVisualization();
+            });
+        });
+
+        // Chart controls
+        document.querySelectorAll('.chart-control').forEach(control => {
+            control.addEventListener('click', function() {
+                document.querySelectorAll('.chart-control').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update chart data based on timeframe
+                if (this.textContent === '1D') {
+                    chart.data.labels = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
+                    chart.data.datasets[0].data = [10000, 10050, 10120, 10200, 10350, 10400, 10520, 10600];
+                    chart.data.datasets[1].data = [5000, 5020, 5050, 5080, 5120, 5150, 5180, 5220];
+                } else if (this.textContent === '1W') {
+                    chart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    chart.data.datasets[0].data = [10000, 10300, 10600, 10900, 11200, 11500, 11800];
+                    chart.data.datasets[1].data = [5000, 5100, 5200, 5300, 5400, 5500, 5600];
+                } else {
+                    chart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                    chart.data.datasets[0].data = [10000, 10800, 11500, 12200];
+                    chart.data.datasets[1].data = [5000, 5300, 5600, 5900];
+                }
+                chart.update();
+            });
+        });
+    </script>
+</body>
+</html>

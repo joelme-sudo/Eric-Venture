@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .convert-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background */
+        .convert-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.1) 0%, transparent 50%);
+            animation: rotate 40s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .convert-container {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .convert-card {
+            background: rgba(28,29,34,0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(240,185,11,0.2);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .convert-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .convert-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .convert-header p {
+            color: var(--text-secondary);
+        }
+
+        /* Swap Box */
+        .swap-box {
+            background: var(--bg-secondary);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .swap-section {
+            margin-bottom: 1rem;
+        }
+
+        .swap-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .swap-input-group {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 0.5rem;
+        }
+
+        .swap-input-group:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        .currency-select {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .currency-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .amount-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            text-align: right;
+        }
+
+        .amount-input:focus {
+            outline: none;
+        }
+
+        .amount-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        /* Swap Icon */
+        .swap-icon {
+            display: flex;
+            justify-content: center;
+            margin: 0.5rem 0;
+        }
+
+        .swap-icon button {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .swap-icon button:hover {
+            background: var(--accent);
+            color: black;
+            transform: rotate(180deg);
+        }
+
+        /* Rate Info */
+        .rate-info {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .rate-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .rate-value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--green);
+        }
+
+        /* Convert Button */
+        .convert-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            border: none;
+            border-radius: 1rem;
+            color: black;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .convert-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .convert-btn.loading .btn-text {
+            display: none;
+        }
+
+        .convert-btn.loading .spinner {
+            display: block;
+        }
+
+        /* Recent Conversions */
+        .recent-section {
+            margin-top: 2rem;
+        }
+
+        .recent-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .recent-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .recent-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .recent-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .recent-pair {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .recent-rate {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        /* Error Message */
+        .error {
+            color: var(--red);
+            margin-top: 1rem;
+            text-align: center;
+            min-height: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .convert-card {
+                padding: 1.5rem;
+            }
+            .recent-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Convert Section -->
+    <div class="convert-wrapper">
+        <div class="convert-container">
+            <div class="convert-card">
+                <div class="convert-header">
+                    <h1>Convert</h1>
+                    <p>Zero fees, best rates</p>
+                </div>
+
+                <!-- Swap Box -->
+                <div class="swap-box">
+                    <!-- From -->
+                    <div class="swap-section">
+                        <div class="swap-label">
+                            <span>From</span>
+                            <span class="balance" id="fromBalance">Balance: 0.00</span>
+                        </div>
+                        <div class="swap-input-group">
+                            <select class="currency-select" id="fromCurrency" onchange="updateRate()">
+                                <option value="BTC">BTC</option>
+                                <option value="ETH">ETH</option>
+                                <option value="USDT" selected>USDT</option>
+                                <option value="BNB">BNB</option>
+                                <option value="SOL">SOL</option>
+                                <option value="XRP">XRP</option>
+                            </select>
+                            <input type="number" class="amount-input" id="fromAmount" placeholder="0.00" value="100" oninput="updateRate()">
+                        </div>
+                    </div>
+
+                    <!-- Swap Icon -->
+                    <div class="swap-icon">
+                        <button onclick="swapCurrencies()">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                    </div>
+
+                    <!-- To -->
+                    <div class="swap-section">
+                        <div class="swap-label">
+                            <span>To</span>
+                            <span class="balance" id="toBalance">Balance: 0.00</span>
+                        </div>
+                        <div class="swap-input-group">
+                            <select class="currency-select" id="toCurrency" onchange="updateRate()">
+                                <option value="USDT" selected>USDT</option>
+                                <option value="BTC">BTC</option>
+                                <option value="ETH">ETH</option>
+                                <option value="BNB">BNB</option>
+                                <option value="SOL">SOL</option>
+                                <option value="XRP">XRP</option>
+                            </select>
+                            <input type="number" class="amount-input" id="toAmount" placeholder="0.00" readonly value="100">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rate Info -->
+                <div class="rate-info" id="rateInfo">
+                    <div class="rate-row">
+                        <span>Exchange Rate</span>
+                        <span class="rate-value" id="rate">1 USDT = 1 USDT</span>
+                    </div>
+                    <div class="rate-row">
+                        <span>Network Fee</span>
+                        <span class="rate-value" style="color: var(--green);">0 USDT</span>
+                    </div>
+                    <div class="fee-row">
+                        <span>You save</span>
+                        <span>0 USDT (0%)</span>
+                    </div>
+                </div>
+
+                <!-- Convert Button -->
+                <button class="convert-btn" onclick="convert()" id="convertBtn">
+                    <span class="btn-text">Preview Convert</span>
+                    <div class="spinner"></div>
+                </button>
+
+                <!-- Recent Conversions -->
+                <div class="recent-section">
+                    <div class="recent-title">
+                        <i class="fas fa-history"></i>
+                        <span>Recent Conversions</span>
+                    </div>
+                    <div class="recent-grid">
+                        <div class="recent-item" onclick="quickConvert('BTC', 'USDT')">
+                            <div class="recent-pair">BTC → USDT</div>
+                            <div class="recent-rate">1 BTC = $68,142</div>
+                        </div>
+                        <div class="recent-item" onclick="quickConvert('ETH', 'USDT')">
+                            <div class="recent-pair">ETH → USDT</div>
+                            <div class="recent-rate">1 ETH = $3,502</div>
+                        </div>
+                        <div class="recent-item" onclick="quickConvert('USDT', 'BTC')">
+                            <div class="recent-pair">USDT → BTC</div>
+                            <div class="recent-rate">1 USDT = 0.0000147 BTC</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div id="error" class="error"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        let prices = { btc: 68142, eth: 3502, bnb: 578, sol: 145, xrp: 0.58 };
+        let userBalances = { BTC: 0, ETH: 0, USDT: 1000, BNB: 0, SOL: 0, XRP: 0 };
+
+        // Fetch real prices
+        async function fetchPrices() {
+            try {
+                const res = await fetch('http://localhost:5001/api/ai/prices');
+                const data = await res.json();
+                prices = {
+                    btc: data.btc,
+                    eth: data.eth,
+                    bnb: 578,  // These would come from a real API
+                    sol: 145,
+                    xrp: 0.58
+                };
+                updateRate();
+            } catch (err) {
+                console.log('Using mock prices');
+            }
+        }
+
+        // Fetch user balances
+        async function fetchBalances() {
+            if (!token) return;
+            try {
+                const res = await fetch('http://localhost:5001/api/user/balance', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    userBalances = {
+                        BTC: data.btc || 0,
+                        ETH: data.eth || 0,
+                        USDT: data.usdt || 1000,
+                        BNB: 0,
+                        SOL: 0,
+                        XRP: 0
+                    };
+                    updateBalances();
+                }
+            } catch (err) {
+                console.log('Using mock balances');
+            }
+        }
+
+        // Update displayed balances
+        function updateBalances() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            document.getElementById('fromBalance').textContent = `Balance: ${userBalances[from].toFixed(4)} ${from}`;
+            document.getElementById('toBalance').textContent = `Balance: ${userBalances[to].toFixed(4)} ${to}`;
+        }
+
+        // Calculate conversion rate
+        function getRate(from, to) {
+            if (from === to) return 1;
+            
+            const fromPrice = prices[from.toLowerCase()] || 1;
+            const toPrice = prices[to.toLowerCase()] || 1;
+            
+            return fromPrice / toPrice;
+        }
+
+        // Update rate and to amount
+        function updateRate() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
+            
+            const rate = getRate(from, to);
+            const toAmount = amount * rate;
+            
+            document.getElementById('toAmount').value = toAmount.toFixed(6);
+            document.getElementById('rate').textContent = `1 ${from} = ${rate.toFixed(6)} ${to}`;
+            
+            // Update rate info
+            const rateInfo = document.getElementById('rateInfo');
+            rateInfo.innerHTML = `
+                <div class="rate-row">
+                    <span>Exchange Rate</span>
+                    <span class="rate-value">1 ${from} = ${rate.toFixed(6)} ${to}</span>
+                </div>
+                <div class="rate-row">
+                    <span>Network Fee</span>
+                    <span class="rate-value" style="color: var(--green);">0 ${to}</span>
+                </div>
+                <div class="fee-row">
+                    <span>You save</span>
+                    <span>0 ${to} (0%)</span>
+                </div>
+            `;
+            
+            updateBalances();
+        }
+
+        // Swap currencies
+        function swapCurrencies() {
+            const fromSelect = document.getElementById('fromCurrency');
+            const toSelect = document.getElementById('toCurrency');
+            const fromAmount = document.getElementById('fromAmount');
+            
+            const temp = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = temp;
+            
+            // Swap amounts
+            const toAmount = document.getElementById('toAmount').value;
+            fromAmount.value = toAmount;
+            
+            updateRate();
+        }
+
+        // Quick convert preset
+        function quickConvert(from, to) {
+            document.getElementById('fromCurrency').value = from;
+            document.getElementById('toCurrency').value = to;
+            document.getElementById('fromAmount').value = 1;
+            updateRate();
+        }
+
+        // Execute conversion
+        async function convert() {
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const amount = parseFloat(document.getElementById('fromAmount').value);
+            const btn = document.getElementById('convertBtn');
+            
+            if (!amount || amount <= 0) {
+                document.getElementById('error').textContent = 'Please enter a valid amount';
+                return;
+            }
+            
+            if (amount > userBalances[from]) {
+                document.getElementById('error').textContent = `Insufficient ${from} balance`;
+                return;
+            }
+            
+            btn.classList.add('loading');
+            btn.disabled = true;
+            document.getElementById('error').textContent = '';
+            
+            try {
+                const res = await fetch('http://localhost:5001/api/convert/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ from, to, amount })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    alert(`✅ Converted ${amount} ${from} to ${data.received.toFixed(6)} ${to}`);
+                    fetchBalances();
+                    document.getElementById('fromAmount').value = '';
+                    updateRate();
+                } else {
+                    document.getElementById('error').textContent = data.error || 'Conversion failed';
+                }
+            } catch (err) {
+                document.getElementById('error').textContent = 'Connection error';
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }
+
+        // Initial load
+        fetchPrices();
+        fetchBalances();
+        setInterval(fetchPrices, 30000);
+    </script>
+</body>
+</html>

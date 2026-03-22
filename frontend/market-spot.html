@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot Market – ERIC VENTURE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --orange: #f97316;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .market-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .market-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .market-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .market-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .market-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .market-stats {
+            display: flex;
+            gap: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Market Tabs */
+        .market-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .market-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .market-tab:hover {
+            color: var(--accent);
+        }
+
+        .market-tab.active {
+            color: var(--accent);
+        }
+
+        .market-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        /* Filters */
+        .filters-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.25rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .filter-btn:hover {
+            color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .search-box i {
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            outline: none;
+            width: 250px;
+        }
+
+        /* Market Table */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .market-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .market-table th {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: left;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .market-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .market-table tr:hover {
+            background: var(--bg-secondary);
+            cursor: pointer;
+        }
+
+        .market-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .asset-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .asset-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: black;
+        }
+
+        .asset-info {
+            flex: 1;
+        }
+
+        .asset-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .asset-symbol {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .price-cell {
+            font-weight: 600;
+        }
+
+        .change-cell {
+            font-weight: 600;
+        }
+
+        .change-cell.positive {
+            color: var(--green);
+        }
+
+        .change-cell.negative {
+            color: var(--red);
+        }
+
+        .volume-cell {
+            color: var(--text-secondary);
+        }
+
+        .market-cap-cell {
+            color: var(--text-secondary);
+        }
+
+        .chart-cell {
+            width: 100px;
+        }
+
+        .sparkline {
+            height: 30px;
+            width: 80px;
+        }
+
+        .favorite-star {
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .favorite-star.active {
+            color: var(--accent);
+        }
+
+        .favorite-star:hover {
+            color: var(--accent);
+        }
+
+        /* Gainers/Losers Section */
+        .movement-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .movement-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+
+        .movement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .movement-title {
+            font-weight: 600;
+        }
+
+        .movement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .movement-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .movement-item .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .movement-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: black;
+        }
+
+        .movement-name {
+            font-weight: 500;
+        }
+
+        .movement-change {
+            font-weight: 600;
+        }
+
+        .movement-change.positive {
+            color: var(--green);
+        }
+
+        .movement-change.negative {
+            color: var(--red);
+        }
+
+        /* Categories */
+        .categories-section {
+            margin-bottom: 2rem;
+        }
+
+        .categories-scroll {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-secondary);
+        }
+
+        .categories-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .categories-scroll::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+
+        .categories-scroll::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .category-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.75rem 1.5rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .category-chip.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+
+        .category-chip i {
+            font-size: 1.1rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .page-btn.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .market-table {
+                font-size: 0.9rem;
+            }
+            .market-table th, 
+            .market-table td {
+                padding: 0.75rem;
+            }
+            .movement-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .market-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .market-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box input {
+                width: 100%;
+            }
+            .market-table {
+                display: block;
+                overflow-x: auto;
+            }
+            .chart-cell {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Spot Market Content -->
+    <div class="market-wrapper">
+        <div class="market-container">
+            <!-- Header -->
+            <div class="market-header">
+                <h1>Spot Market</h1>
+                <div class="market-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Total Market Cap</div>
+                        <div class="stat-value">$2.45T</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">24h Volume</div>
+                        <div class="stat-value">$86.3B</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Active Pairs</div>
+                        <div class="stat-value">1,247</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Tabs -->
+            <div class="market-tabs">
+                <span class="market-tab active">All</span>
+                <span class="market-tab">Favorites</span>
+                <span class="market-tab">Gainers</span>
+                <span class="market-tab">Losers</span>
+                <span class="market-tab">Volume</span>
+                <span class="market-tab">New Listings</span>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <span class="filter-btn active">All</span>
+                    <span class="filter-btn">USDⓈ</span>
+                    <span class="filter-btn">BTC</span>
+                    <span class="filter-btn">ETH</span>
+                    <span class="filter-btn">BNB</span>
+                    <span class="filter-btn">Alts</span>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search coins...">
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="categories-section">
+                <div class="categories-scroll">
+                    <span class="category-chip active"><i class="fas fa-fire"></i> Top 100</span>
+                    <span class="category-chip"><i class="fas fa-coins"></i> DeFi</span>
+                    <span class="category-chip"><i class="fas fa-gamepad"></i> Gaming</span>
+                    <span class="category-chip"><i class="fas fa-link"></i> L1/L2</span>
+                    <span class="category-chip"><i class="fas fa-mask"></i> Meme</span>
+                    <span class="category-chip"><i class="fas fa-chart-line"></i> RWA</span>
+                    <span class="category-chip"><i class="fas fa-infinity"></i> AI</span>
+                    <span class="category-chip"><i class="fas fa-shield"></i> Privacy</span>
+                </div>
+            </div>
+
+            <!-- Gainers/Losers Section -->
+            <div class="movement-section">
+                <!-- Top Gainers -->
+                <div class="movement-card">
+                    <div class="movement-header">
+                        <span class="movement-title">🚀 Top Gainers (24h)</span>
+                        <span class="badge">View All</span>
+                    </div>
+                    <div class="movement-list">
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">AI</div>
+                                <span class="movement-name">Fetch.ai</span>
+                                <span class="asset-symbol">FET</span>
+                            </div>
+                            <span class="movement-change positive">+45.2%</span>
+                        </div>
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">RND</div>
+                                <span class="movement-name">Render</span>
+                                <span class="asset-symbol">RNDR</span>
+                            </div>
+                            <span class="movement-change positive">+32.8%</span>
+                        </div>
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">TAO</div>
+                                <span class="movement-name">Bittensor</span>
+                                <span class="asset-symbol">TAO</span>
+                            </div>
+                            <span class="movement-change positive">+28.4%</span>
+                        </div>
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">AKT</div>
+                                <span class="movement-name">Akash</span>
+                                <span class="asset-symbol">AKT</span>
+                            </div>
+                            <span class="movement-change positive">+24.1%</span>
+                        </div>
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">AGIX</div>
+                                <span class="movement-name">Singularity</span>
+                                <span class="asset-symbol">AGIX</span>
+                            </div>
+                            <span class="movement-change positive">+21.5%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Losers -->
+                <div class="movement-card">
+                    <div class="movement-header">
+                        <span class="movement-title">📉 Top Losers (24h)</span>
+                        <span class="badge">View All</span>
+                    </div>
+                    <div class="movement-list">
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">ALGO</div>
+                                <span class="movement-name">Algorand</span>
+                                <span class="asset-symbol">ALGO</span>
+                            </div>
+                            <span class="movement-change negative">-12.3%</span>
+                        </div>
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">ICP</div>
+                                <span class="movement-name">Internet Computer</span>
+                                <span class="asset-symbol">ICP</span>
+                            </div>
+                            <span class="movement-change negative">-9.8%</span>
+                        </div>
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">FIL</div>
+                                <span class="movement-name">Filecoin</span>
+                                <span class="asset-symbol">FIL</span>
+                            </div>
+                            <span class="movement-change negative">-8.4%</span>
+                        </div>
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">ATOM</div>
+                                <span class="movement-name">Cosmos</span>
+                                <span class="asset-symbol">ATOM</span>
+                            </div>
+                            <span class="movement-change negative">-6.7%</span>
+                        </div>
+                        <div class="movement-item">
+                            <div class="asset-info">
+                                <div class="movement-icon">XRP</div>
+                                <span class="movement-name">Ripple</span>
+                                <span class="asset-symbol">XRP</span>
+                            </div>
+                            <span class="movement-change negative">-5.2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Table -->
+            <div class="table-container">
+                <table class="market-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th></th>
+                            <th>Coin</th>
+                            <th>Price</th>
+                            <th>24h Change</th>
+                            <th>24h Volume</th>
+                            <th>Market Cap</th>
+                            <th>Chart</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- BTC -->
+                        <tr onclick="window.location='spot.html?pair=BTCUSDT'">
+                            <td>1</td>
+                            <td><i class="fas fa-star favorite-star active"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">₿</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Bitcoin</div>
+                                        <div class="asset-symbol">BTC</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$68,142.50</td>
+                            <td class="change-cell positive">+2.4%</td>
+                            <td class="volume-cell">$32.4B</td>
+                            <td class="market-cap-cell">$1.34T</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline1"></canvas></td>
+                        </tr>
+
+                        <!-- ETH -->
+                        <tr onclick="window.location='spot.html?pair=ETHUSDT'">
+                            <td>2</td>
+                            <td><i class="fas fa-star favorite-star active"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">Ξ</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Ethereum</div>
+                                        <div class="asset-symbol">ETH</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$3,502.80</td>
+                            <td class="change-cell positive">+1.2%</td>
+                            <td class="volume-cell">$18.7B</td>
+                            <td class="market-cap-cell">$421B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline2"></canvas></td>
+                        </tr>
+
+                        <!-- BNB -->
+                        <tr onclick="window.location='spot.html?pair=BNBUSDT'">
+                            <td>3</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">BNB</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">BNB</div>
+                                        <div class="asset-symbol">BNB</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$578.20</td>
+                            <td class="change-cell negative">-0.3%</td>
+                            <td class="volume-cell">$8.9B</td>
+                            <td class="market-cap-cell">$89B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline3"></canvas></td>
+                        </tr>
+
+                        <!-- SOL -->
+                        <tr onclick="window.location='spot.html?pair=SOLUSDT'">
+                            <td>4</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">SOL</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Solana</div>
+                                        <div class="asset-symbol">SOL</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$145.20</td>
+                            <td class="change-cell positive">+5.7%</td>
+                            <td class="volume-cell">$4.2B</td>
+                            <td class="market-cap-cell">$62B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline4"></canvas></td>
+                        </tr>
+
+                        <!-- XRP -->
+                        <tr onclick="window.location='spot.html?pair=XRPUSDT'">
+                            <td>5</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">XRP</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">XRP</div>
+                                        <div class="asset-symbol">XRP</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$0.5823</td>
+                            <td class="change-cell negative">-5.2%</td>
+                            <td class="volume-cell">$2.1B</td>
+                            <td class="market-cap-cell">$31B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline5"></canvas></td>
+                        </tr>
+
+                        <!-- ADA -->
+                        <tr onclick="window.location='spot.html?pair=ADAUSDT'">
+                            <td>6</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">ADA</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Cardano</div>
+                                        <div class="asset-symbol">ADA</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$0.4532</td>
+                            <td class="change-cell negative">-6.7%</td>
+                            <td class="volume-cell">$890M</td>
+                            <td class="market-cap-cell">$16B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline6"></canvas></td>
+                        </tr>
+
+                        <!-- DOGE -->
+                        <tr onclick="window.location='spot.html?pair=DOGEUSDT'">
+                            <td>7</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">Ð</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Dogecoin</div>
+                                        <div class="asset-symbol">DOGE</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$0.0876</td>
+                            <td class="change-cell positive">+4.5%</td>
+                            <td class="volume-cell">$1.2B</td>
+                            <td class="market-cap-cell">$12.5B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline7"></canvas></td>
+                        </tr>
+
+                        <!-- DOT -->
+                        <tr onclick="window.location='spot.html?pair=DOTUSDT'">
+                            <td>8</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">DOT</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Polkadot</div>
+                                        <div class="asset-symbol">DOT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$7.23</td>
+                            <td class="change-cell negative">-3.1%</td>
+                            <td class="volume-cell">$456M</td>
+                            <td class="market-cap-cell">$9.2B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline8"></canvas></td>
+                        </tr>
+
+                        <!-- LINK -->
+                        <tr onclick="window.location='spot.html?pair=LINKUSDT'">
+                            <td>9</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">LINK</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Chainlink</div>
+                                        <div class="asset-symbol">LINK</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$15.45</td>
+                            <td class="change-cell positive">+2.1%</td>
+                            <td class="volume-cell">$678M</td>
+                            <td class="market-cap-cell">$8.9B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline9"></canvas></td>
+                        </tr>
+
+                        <!-- AVAX -->
+                        <tr onclick="window.location='spot.html?pair=AVAXUSDT'">
+                            <td>10</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">AVAX</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Avalanche</div>
+                                        <div class="asset-symbol">AVAX</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$35.67</td>
+                            <td class="change-cell positive">+1.8%</td>
+                            <td class="volume-cell">$567M</td>
+                            <td class="market-cap-cell">$12.8B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline10"></canvas></td>
+                        </tr>
+
+                        <!-- MATIC -->
+                        <tr onclick="window.location='spot.html?pair=MATICUSDT'">
+                            <td>11</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">MATIC</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Polygon</div>
+                                        <div class="asset-symbol">MATIC</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$0.89</td>
+                            <td class="change-cell negative">-2.3%</td>
+                            <td class="volume-cell">$345M</td>
+                            <td class="market-cap-cell">$8.3B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline11"></canvas></td>
+                        </tr>
+
+                        <!-- UNI -->
+                        <tr onclick="window.location='spot.html?pair=UNIUSDT'">
+                            <td>12</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">UNI</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Uniswap</div>
+                                        <div class="asset-symbol">UNI</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$7.23</td>
+                            <td class="change-cell positive">+0.5%</td>
+                            <td class="volume-cell">$234M</td>
+                            <td class="market-cap-cell">$4.3B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline12"></canvas></td>
+                        </tr>
+
+                        <!-- ATOM -->
+                        <tr onclick="window.location='spot.html?pair=ATOMUSDT'">
+                            <td>13</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">ATOM</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Cosmos</div>
+                                        <div class="asset-symbol">ATOM</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$8.45</td>
+                            <td class="change-cell negative">-6.7%</td>
+                            <td class="volume-cell">$189M</td>
+                            <td class="market-cap-cell">$2.5B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline13"></canvas></td>
+                        </tr>
+
+                        <!-- ICP -->
+                        <tr onclick="window.location='spot.html?pair=ICPUSDT'">
+                            <td>14</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">ICP</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Internet Computer</div>
+                                        <div class="asset-symbol">ICP</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$10.23</td>
+                            <td class="change-cell negative">-9.8%</td>
+                            <td class="volume-cell">$156M</td>
+                            <td class="market-cap-cell">$4.7B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline14"></canvas></td>
+                        </tr>
+
+                        <!-- FIL -->
+                        <tr onclick="window.location='spot.html?pair=FILUSDT'">
+                            <td>15</td>
+                            <td><i class="fas fa-star favorite-star"></i></td>
+                            <td>
+                                <div class="asset-cell">
+                                    <div class="asset-icon">FIL</div>
+                                    <div class="asset-info">
+                                        <div class="asset-name">Filecoin</div>
+                                        <div class="asset-symbol">FIL</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">$5.67</td>
+                            <td class="change-cell negative">-8.4%</td>
+                            <td class="volume-cell">$145M</td>
+                            <td class="market-cap-cell">$2.9B</td>
+                            <td class="chart-cell"><canvas class="sparkline" id="sparkline15"></canvas></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">5</button>
+                <button class="page-btn"><i class="fas fa-ellipsis-h"></i></button>
+                <button class="page-btn">20</button>
+                <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Generate sparkline charts
+        function generateSparkline(id, trend = 'up') {
+            const ctx = document.getElementById(id).getContext('2d');
+            const points = Array.from({ length: 20 }, () => Math.random() * 100);
+            if (trend === 'down') {
+                points.sort((a, b) => b - a);
+            } else {
+                points.sort((a, b) => a - b);
+            }
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: points.map((_, i) => i),
+                    datasets: [{
+                        data: points,
+                        borderColor: trend === 'up' ? '#0ECB81' : '#F6465D',
+                        borderWidth: 1.5,
+                        pointRadius: 0,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { display: false }, y: { display: false } }
+                }
+            });
+        }
+
+        // Generate sparklines with random trends
+        for (let i = 1; i <= 15; i++) {
+            const trend = Math.random() > 0.5 ? 'up' : 'down';
+            generateSparkline(`sparkline${i}`, trend);
+        }
+
+        // Tab switching
+        document.querySelectorAll('.market-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.market-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Switched to', this.textContent);
+            });
+        });
+
+        // Filter switching
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Filter by', this.textContent);
+            });
+        });
+
+        // Category switching
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Category:', this.textContent.trim());
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-box input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.market-table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Favorite stars
+        document.querySelectorAll('.favorite-star').forEach(star => {
+            star.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+            });
+        });
+
+        // Pagination
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.querySelector('.fa-chevron-left') || this.querySelector('.fa-chevron-right') || this.querySelector('.fa-ellipsis-h')) {
+                    return;
+                }
+                document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Page', this.textContent);
+            });
+        });
+
+        // View all badges
+        document.querySelectorAll('.badge').forEach(badge => {
+            badge.addEventListener('click', function() {
+                console.log('View all clicked');
+            });
+        });
+    </script>
+</body>
+</html>

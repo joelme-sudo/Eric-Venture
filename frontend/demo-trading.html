@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Trading – ERIC VENTURE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .demo-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .demo-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .demo-hero {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .demo-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .demo-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .demo-hero p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .demo-balance-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .balance-label {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+
+        .balance-sub {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .reset-btn {
+            background: var(--accent);
+            color: black;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Trading Modes */
+        .modes-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .mode-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.25rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .mode-tab {
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .mode-tab:hover {
+            color: var(--accent);
+        }
+
+        .mode-tab.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        /* Trading Interface */
+        .trading-interface {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .pair-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pair-symbol {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .pair-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .pair-change {
+            font-size: 0.9rem;
+        }
+
+        .pair-change.positive {
+            color: var(--green);
+        }
+
+        .pair-change.negative {
+            color: var(--red);
+        }
+
+        .timeframes {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .timeframe {
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .timeframe.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        #demoChart {
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Order Panel */
+        .order-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .order-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+        }
+
+        .order-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .order-tab.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .order-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .order-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .order-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .order-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .buy-btn {
+            background: linear-gradient(135deg, var(--green), #0fa86a);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .sell-btn {
+            background: linear-gradient(135deg, var(--red), #d43f54);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Positions Table */
+        .positions-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .positions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .positions-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            font-weight: 500;
+        }
+
+        .positions-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pnl-positive {
+            color: var(--green);
+        }
+
+        .pnl-negative {
+            color: var(--red);
+        }
+
+        .close-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Demo Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .try-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .try-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .trading-interface {
+                grid-template-columns: 1fr;
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .mode-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Demo Trading Content -->
+    <div class="demo-wrapper">
+        <div class="demo-container">
+            <!-- Hero Section -->
+            <div class="demo-hero">
+                <div class="demo-hero-content">
+                    <h1>Demo Trading</h1>
+                    <p>Practice trading with $100,000 virtual USD. No risk, real experience.</p>
+                    
+                    <div class="demo-balance-card">
+                        <div class="balance-label">Demo Balance</div>
+                        <div class="balance-amount" id="demoBalance">$100,000.00</div>
+                        <div class="balance-sub">Virtual USD</div>
+                        <button class="reset-btn" onclick="resetBalance()">
+                            <i class="fas fa-undo"></i> Reset Balance
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Active Trades</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">+$3,450</div>
+                    <div class="stat-label">Total P&L</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">78.5%</div>
+                    <div class="stat-label">Win Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Total Trades</div>
+                </div>
+            </div>
+
+            <!-- Trading Modes -->
+            <div class="modes-section">
+                <div class="section-header">
+                    <h2>Trading Modes</h2>
+                    <div class="mode-tabs">
+                        <span class="mode-tab active">Spot</span>
+                        <span class="mode-tab">Futures</span>
+                        <span class="mode-tab">Margin</span>
+                        <span class="mode-tab">Options</span>
+                    </div>
+                </div>
+
+                <!-- Trading Interface -->
+                <div class="trading-interface">
+                    <!-- Chart Section -->
+                    <div class="chart-section">
+                        <div class="chart-header">
+                            <div class="pair-info">
+                                <span class="pair-symbol">BTC/USDT</span>
+                                <span class="pair-price" id="currentPrice">$68,142</span>
+                                <span class="pair-change positive" id="priceChange">+2.4%</span>
+                            </div>
+                            <div class="timeframes">
+                                <span class="timeframe">1m</span>
+                                <span class="timeframe">5m</span>
+                                <span class="timeframe">15m</span>
+                                <span class="timeframe active">1h</span>
+                                <span class="timeframe">4h</span>
+                                <span class="timeframe">1d</span>
+                            </div>
+                        </div>
+                        <canvas id="demoChart"></canvas>
+                    </div>
+
+                    <!-- Order Panel -->
+                    <div class="order-panel">
+                        <div class="order-tabs">
+                            <span class="order-tab active">Limit</span>
+                            <span class="order-tab">Market</span>
+                            <span class="order-tab">Stop</span>
+                        </div>
+
+                        <div class="order-input-group">
+                            <div class="order-label">
+                                <span>Price (USDT)</span>
+                                <span>≈ $68,142</span>
+                            </div>
+                            <input type="text" class="order-input" value="68142" id="orderPrice">
+                        </div>
+
+                        <div class="order-input-group">
+                            <div class="order-label">
+                                <span>Amount (BTC)</span>
+                                <span>Available: 1.45 BTC</span>
+                            </div>
+                            <input type="text" class="order-input" value="0.01" id="orderAmount">
+                        </div>
+
+                        <div class="order-input-group">
+                            <div class="order-label">
+                                <span>Total</span>
+                                <span id="orderTotal">681.42 USDT</span>
+                            </div>
+                        </div>
+
+                        <div class="order-buttons">
+                            <button class="buy-btn">Buy BTC</button>
+                            <button class="sell-btn">Sell BTC</button>
+                        </div>
+
+                        <div style="text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+                            Demo trades • No real funds
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Open Positions -->
+            <div class="positions-section">
+                <h3 style="margin-bottom: 1rem;">Open Positions</h3>
+                <table class="positions-table">
+                    <thead>
+                        <tr>
+                            <th>Pair</th>
+                            <th>Side</th>
+                            <th>Amount</th>
+                            <th>Entry Price</th>
+                            <th>Current Price</th>
+                            <th>P&L</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BTC/USDT</td>
+                            <td style="color: var(--green);">Long</td>
+                            <td>0.5 BTC</td>
+                            <td>$67,890</td>
+                            <td>$68,142</td>
+                            <td class="pnl-positive">+$126</td>
+                            <td><button class="close-btn">Close</button></td>
+                        </tr>
+                        <tr>
+                            <td>ETH/USDT</td>
+                            <td style="color: var(--red);">Short</td>
+                            <td>2.5 ETH</td>
+                            <td>$3,550</td>
+                            <td>$3,502</td>
+                            <td class="pnl-positive">+$120</td>
+                            <td><button class="close-btn">Close</button></td>
+                        </tr>
+                        <tr>
+                            <td>SOL/USDT</td>
+                            <td style="color: var(--green);">Long</td>
+                            <td>10 SOL</td>
+                            <td>$142</td>
+                            <td>$145</td>
+                            <td class="pnl-positive">+$30</td>
+                            <td><button class="close-btn">Close</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Demo Features -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="feature-title">Spot Trading</div>
+                    <div class="feature-desc">Practice spot trading with real-time prices</div>
+                    <button class="try-btn">Try Now</button>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <div class="feature-title">Futures Trading</div>
+                    <div class="feature-desc">Test leverage trading strategies risk-free</div>
+                    <button class="try-btn">Try Now</button>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-scale-balanced"></i></div>
+                    <div class="feature-title">Margin Trading</div>
+                    <div class="feature-desc">Practice borrowing and margin calls</div>
+                    <button class="try-btn">Try Now</button>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
+                    <div class="feature-title">Options Trading</div>
+                    <div class="feature-desc">Test options strategies without risk</div>
+                    <button class="try-btn">Try Now</button>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <div class="feature-title">Trading Bots</div>
+                    <div class="feature-desc">Test automated strategies in demo mode</div>
+                    <button class="try-btn">Try Now</button>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-grid-2"></i></div>
+                    <div class="feature-title">Grid Trading</div>
+                    <div class="feature-desc">Practice grid strategies risk-free</div>
+                    <button class="try-btn">Try Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        let demoBalance = 100000;
+
+        // Initialize Chart
+        const ctx = document.getElementById('demoChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'candlestick',
+            data: {
+                datasets: [{
+                    label: 'BTC/USDT',
+                    data: generateCandleData(),
+                    borderColor: '#F0B90B'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        grid: { color: '#2B2D33' },
+                        ticks: { color: '#8A8D92' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#8A8D92' }
+                    }
+                }
+            }
+        });
+
+        // Generate mock candle data
+        function generateCandleData() {
+            const data = [];
+            let price = 68000;
+            for (let i = 0; i < 50; i++) {
+                const open = price;
+                const close = price + (Math.random() - 0.5) * 1000;
+                const high = Math.max(open, close) + Math.random() * 200;
+                const low = Math.min(open, close) - Math.random() * 200;
+                data.push({ x: i, o: open, h: high, l: low, c: close });
+                price = close;
+            }
+            return data;
+        }
+
+        // Update total calculation
+        document.getElementById('orderPrice').addEventListener('input', updateTotal);
+        document.getElementById('orderAmount').addEventListener('input', updateTotal);
+
+        function updateTotal() {
+            const price = parseFloat(document.getElementById('orderPrice').value) || 0;
+            const amount = parseFloat(document.getElementById('orderAmount').value) || 0;
+            document.getElementById('orderTotal').textContent = (price * amount).toFixed(2) + ' USDT';
+        }
+
+        // Reset demo balance
+        function resetBalance() {
+            demoBalance = 100000;
+            document.getElementById('demoBalance').textContent = '$100,000.00';
+            alert('Demo balance reset to $100,000');
+        }
+
+        // Tab switching
+        document.querySelectorAll('.mode-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.order-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.timeframe').forEach(tf => {
+            tf.addEventListener('click', function() {
+                document.querySelectorAll('.timeframe').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update chart data based on timeframe
+                chart.data.datasets[0].data = generateCandleData();
+                chart.update();
+            });
+        });
+
+        // Price updates
+        function updatePrice() {
+            const change = (Math.random() - 0.5) * 2;
+            const priceEl = document.getElementById('currentPrice');
+            const changeEl = document.getElementById('priceChange');
+            const currentPrice = parseFloat(priceEl.textContent.replace(/[$,]/g, ''));
+            const newPrice = currentPrice + (Math.random() - 0.5) * 100;
+            priceEl.textContent = '$' + newPrice.toFixed(0);
+            changeEl.textContent = (change > 0 ? '+' : '') + change.toFixed(1) + '%';
+            changeEl.className = change >= 0 ? 'pair-change positive' : 'pair-change negative';
+        }
+
+        setInterval(updatePrice, 5000);
+    </script>
+</body>
+</html>

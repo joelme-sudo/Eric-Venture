@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --red: #F6465D;
+            --border: #2B2D33;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .nav-menu a:hover {
+            color: var(--accent);
+        }
+        .nav-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .settings-wrapper {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .settings-header {
+            margin-bottom: 2rem;
+        }
+
+        .settings-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .settings-sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+
+        .settings-menu-item {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .settings-menu-item:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+
+        .settings-menu-item.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .settings-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .settings-section {
+            display: none;
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-label {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent);
+        }
+
+        .toggle-slider {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(26px);
+        }
+
+        .select-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-primary);
+            min-width: 200px;
+        }
+
+        .btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: black;
+            border: none;
+        }
+
+        .btn-danger {
+            background: var(--red);
+            color: white;
+            border: none;
+        }
+
+        .avatar-upload {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: black;
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">ERIC VENTURE</div>
+            <div class="nav-menu">
+                <a href="index.html">Home</a>
+                <a href="market-spot.html">Markets</a>
+                <a href="spot.html">Trade</a>
+                <a href="customer-dashboard.html">Dashboard</a>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-user-circle nav-icon"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="settings-wrapper">
+        <div class="settings-header">
+            <h1>Settings</h1>
+        </div>
+
+        <div class="settings-grid">
+            <!-- Sidebar -->
+            <div class="settings-sidebar">
+                <div class="settings-menu-item active" data-section="profile">
+                    <i class="fas fa-user"></i> Profile
+                </div>
+                <div class="settings-menu-item" data-section="security">
+                    <i class="fas fa-shield-alt"></i> Security
+                </div>
+                <div class="settings-menu-item" data-section="notifications">
+                    <i class="fas fa-bell"></i> Notifications
+                </div>
+                <div class="settings-menu-item" data-section="preferences">
+                    <i class="fas fa-sliders-h"></i> Preferences
+                </div>
+                <div class="settings-menu-item" data-section="api">
+                    <i class="fas fa-key"></i> API Keys
+                </div>
+                <div class="settings-menu-item" data-section="verification">
+                    <i class="fas fa-id-card"></i> Verification
+                </div>
+                <div class="settings-menu-item" data-section="referrals">
+                    <i class="fas fa-users"></i> Referrals
+                </div>
+                <div class="settings-menu-item" data-section="privacy">
+                    <i class="fas fa-lock"></i> Privacy
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="settings-content">
+                <!-- Profile Section -->
+                <div class="settings-section active" id="profile">
+                    <h2 class="section-title">Profile Information</h2>
+                    
+                    <div class="avatar-upload settings-item">
+                        <div class="avatar-preview">JD</div>
+                        <div>
+                            <button class="btn">Change Avatar</button>
+                            <p class="item-desc">JPG, PNG or GIF. Max 2MB.</p>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Full Name</div>
+                            <div class="item-desc">Your legal name</div>
+                        </div>
+                        <input type="text" class="select-input" value="John Doe">
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Email Address</div>
+                            <div class="item-desc">Used for notifications</div>
+                        </div>
+                        <input type="email" class="select-input" value="john@example.com">
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Phone Number</div>
+                            <div class="item-desc">For 2FA and alerts</div>
+                        </div>
+                        <input type="tel" class="select-input" value="+1 234 567 8900">
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Language</div>
+                            <div class="item-desc">Interface language</div>
+                        </div>
+                        <select class="select-input">
+                            <option>English (US)</option>
+                            <option>Spanish</option>
+                            <option>French</option>
+                            <option>German</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Timezone</div>
+                            <div class="item-desc">Your local timezone</div>
+                        </div>
+                        <select class="select-input">
+                            <option>UTC-08:00 (PST)</option>
+                            <option>UTC-05:00 (EST)</option>
+                            <option>UTC+00:00 (GMT)</option>
+                            <option selected>UTC+01:00 (WAT)</option>
+                            <option>UTC+08:00 (SGT)</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary">Save Changes</button>
+                </div>
+
+                <!-- Security Section -->
+                <div class="settings-section" id="security">
+                    <h2 class="section-title">Security Settings</h2>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Two-Factor Authentication</div>
+                            <div class="item-desc">Protect your account with 2FA</div>
+                        </div>
+                        <button class="btn btn-primary">Enable</button>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Change Password</div>
+                            <div class="item-desc">Update your password regularly</div>
+                        </div>
+                        <button class="btn">Change</button>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Withdrawal Whitelist</div>
+                            <div class="item-desc">Only allow withdrawals to whitelisted addresses</div>
+                        </div>
+                        <div class="toggle-switch">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Anti-Phishing Code</div>
+                            <div class="item-desc">Code shown in all emails</div>
+                        </div>
+                        <button class="btn">Set Code</button>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Device Management</div>
+                            <div class="item-desc">Manage logged in devices</div>
+                        </div>
+                        <button class="btn">Manage</button>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Login History</div>
+                            <div class="item-desc">View recent login activity</div>
+                        </div>
+                        <button class="btn">View</button>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div class="settings-section" id="notifications">
+                    <h2 class="section-title">Notification Preferences</h2>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Email Notifications</div>
+                            <div class="item-desc">Receive updates via email</div>
+                        </div>
+                        <div class="toggle-switch active">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Push Notifications</div>
+                            <div class="item-desc">Browser push notifications</div>
+                        </div>
+                        <div class="toggle-switch active">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">SMS Alerts</div>
+                            <div class="item-desc">Critical alerts via SMS</div>
+                        </div>
+                        <div class="toggle-switch">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem;">Email Preferences</h3>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Trade Confirmations</div>
+                            <div class="item-desc">Get emails for trades</div>
+                        </div>
+                        <div class="toggle-switch active">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Marketing Emails</div>
+                            <div class="item-desc">News and promotions</div>
+                        </div>
+                        <div class="toggle-switch">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Security Alerts</div>
+                            <div class="item-desc">Important security updates</div>
+                        </div>
+                        <div class="toggle-switch active">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="settings-section" id="preferences">
+                    <h2 class="section-title">Preferences</h2>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Theme</div>
+                            <div class="item-desc">Dark or light mode</div>
+                        </div>
+                        <select class="select-input">
+                            <option selected>Dark</option>
+                            <option>Light</option>
+                            <option>System Default</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Default Currency</div>
+                            <div class="item-desc">Display currency</div>
+                        </div>
+                        <select class="select-input">
+                            <option>USD ($)</option>
+                            <option>EUR (€)</option>
+                            <option selected>NGN (₦)</option>
+                            <option>GBP (£)</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Chart Theme</div>
+                            <div class="item-desc">TradingView theme</div>
+                        </div>
+                        <select class="select-input">
+                            <option selected>Dark</option>
+                            <option>Light</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Default Leverage</div>
+                            <div class="item-desc">For futures trading</div>
+                        </div>
+                        <select class="select-input">
+                            <option>5x</option>
+                            <option selected>10x</option>
+                            <option>20x</option>
+                            <option>50x</option>
+                            <option>100x</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Slippage Tolerance</div>
+                            <div class="item-desc">For market orders</div>
+                        </div>
+                        <select class="select-input">
+                            <option>0.1%</option>
+                            <option selected>0.5%</option>
+                            <option>1.0%</option>
+                            <option>2.0%</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- API Keys Section -->
+                <div class="settings-section" id="api">
+                    <h2 class="section-title">API Keys</h2>
+                    
+                    <button class="btn btn-primary" style="margin-bottom: 2rem;">
+                        <i class="fas fa-plus"></i> Create New API Key
+                    </button>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Trading Bot v1</div>
+                            <div class="item-desc">Created Mar 1, 2026 · Read/Write</div>
+                        </div>
+                        <div>
+                            <button class="btn" style="margin-right: 0.5rem;">Edit</button>
+                            <button class="btn btn-danger">Revoke</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Portfolio Tracker</div>
+                            <div class="item-desc">Created Feb 15, 2026 · Read Only</div>
+                        </div>
+                        <div>
+                            <button class="btn" style="margin-right: 0.5rem;">Edit</button>
+                            <button class="btn btn-danger">Revoke</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verification Section -->
+                <div class="settings-section" id="verification">
+                    <h2 class="section-title">Verification</h2>
+
+                    <div style="background: var(--bg-secondary); padding: 2rem; border-radius: 1rem; margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: center; gap: 2rem;">
+                            <div style="width: 60px; height: 60px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-check" style="color: black; font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h3>Level 1 Verified</h3>
+                                <p style="color: var(--text-secondary);">Email and phone verified</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-secondary); padding: 2rem; border-radius: 1rem;">
+                        <h3 style="margin-bottom: 1rem;">Level 2 Verification</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Get higher limits by verifying your identity</p>
+                        
+                        <div class="settings-item">
+                            <div class="item-label">
+                                <div class="item-title">Government ID</div>
+                                <div class="item-desc">Passport, Driver's License, or National ID</div>
+                            </div>
+                            <button class="btn">Upload</button>
+                        </div>
+
+                        <div class="settings-item">
+                            <div class="item-label">
+                                <div class="item-title">Proof of Address</div>
+                                <div class="item-desc">Utility bill or bank statement</div>
+                            </div>
+                            <button class="btn">Upload</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Referrals Section -->
+                <div class="settings-section" id="referrals">
+                    <h2 class="section-title">Referral Program</h2>
+
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 1rem; text-align: center;">
+                            <div style="font-size: 2rem; color: var(--accent);">24</div>
+                            <div style="color: var(--text-secondary);">Total Referrals</div>
+                        </div>
+                        <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 1rem; text-align: center;">
+                            <div style="font-size: 2rem; color: var(--accent);">$1,245</div>
+                            <div style="color: var(--text-secondary);">Total Earned</div>
+                        </div>
+                        <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 1rem; text-align: center;">
+                            <div style="font-size: 2rem; color: var(--accent);">30%</div>
+                            <div style="color: var(--text-secondary);">Commission Rate</div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-secondary); padding: 2rem; border-radius: 1rem; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1rem;">Your Referral Link</h3>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="text" class="select-input" style="flex: 1;" value="https://ever.finance/ref/johndoe123" readonly>
+                            <button class="btn btn-primary">Copy</button>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-bottom: 1rem;">Recent Referrals</h3>
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">alice***@gmail.com</div>
+                            <div class="item-desc">Joined Mar 2, 2026</div>
+                        </div>
+                        <div style="color: var(--green);">+$45.20</div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">bob***@yahoo.com</div>
+                            <div class="item-desc">Joined Feb 28, 2026</div>
+                        </div>
+                        <div style="color: var(--green);">+$32.50</div>
+                    </div>
+                </div>
+
+                <!-- Privacy Section -->
+                <div class="settings-section" id="privacy">
+                    <h2 class="section-title">Privacy & Data</h2>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Data Sharing</div>
+                            <div class="item-desc">Share usage data to improve platform</div>
+                        </div>
+                        <div class="toggle-switch">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Activity Tracking</div>
+                            <div class="item-desc">Track account activity</div>
+                        </div>
+                        <div class="toggle-switch active">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Download Personal Data</div>
+                            <div class="item-desc">Export your account data</div>
+                        </div>
+                        <button class="btn">Request Data</button>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="item-label">
+                            <div class="item-title">Delete Account</div>
+                            <div class="item-desc">Permanently delete your account</div>
+                        </div>
+                        <button class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Section switching
+        document.querySelectorAll('.settings-menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.settings-menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                const sectionId = this.dataset.section;
+                document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Toggle switches
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

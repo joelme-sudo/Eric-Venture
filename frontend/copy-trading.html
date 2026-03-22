@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Trading – ERIC VENTURE</title>
+    <style>
+        .leaderboard {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .trader-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .trader-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .roi-positive { color: var(--green); }
+    </style>
+</head>
+<body>
+    <h2>Top Traders</h2>
+    <div id="topTraders"></div>
+    
+    <script>
+        async function loadTopTraders() {
+            const res = await fetch('http://localhost:5001/api/copy-trading/leaderboard');
+            const traders = await res.json();
+            
+            const container = document.getElementById('topTraders');
+            container.innerHTML = traders.map(t => `
+                <div class="trader-card">
+                    <div class="trader-avatar">${t.name[0]}</div>
+                    <div style="flex:1">
+                        <div><strong>${t.name}</strong></div>
+                        <div>Followers: ${t.followers}</div>
+                    </div>
+                    <div>
+                        <div>ROI: <span class="roi-positive">+${t.roi}%</span></div>
+                        <button class="copy-btn" onclick="copyTrader('${t.id}')">Copy</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        async function copyTrader(traderId) {
+            await fetch('http://localhost:5001/api/copy-trading/follow', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ traderId })
+            });
+        }
+        
+        loadTopTraders();
+    </script>
+</body>
+</html>

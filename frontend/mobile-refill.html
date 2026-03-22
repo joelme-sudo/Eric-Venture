@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Refill – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .refill-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .refill-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .refill-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .refill-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .refill-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .refill-header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Main Refill Panel */
+        .refill-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .panel-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .recent-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recent-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Country Selector */
+        .country-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-label {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .country-selector {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .country-option {
+            flex: 1;
+            min-width: 120px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .country-option:hover {
+            border-color: var(--accent);
+        }
+
+        .country-option.active {
+            border-color: var(--accent);
+            background: rgba(240,185,11,0.1);
+        }
+
+        .country-flag {
+            font-size: 1.5rem;
+        }
+
+        .country-info {
+            flex: 1;
+        }
+
+        .country-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .country-code {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Operator Section */
+        .operator-section {
+            margin-bottom: 2rem;
+        }
+
+        .operator-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .operator-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .operator-card:hover {
+            border-color: var(--accent);
+        }
+
+        .operator-card.active {
+            border-color: var(--accent);
+            background: rgba(240,185,11,0.1);
+        }
+
+        .operator-logo {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .operator-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Phone Input */
+        .phone-section {
+            margin-bottom: 2rem;
+        }
+
+        .phone-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .country-code-prefix {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            min-width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .phone-input {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+        }
+
+        .phone-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .contact-saved {
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .contact-saved i {
+            color: var(--accent);
+        }
+
+        /* Amount Section */
+        .amount-section {
+            margin-bottom: 2rem;
+        }
+
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .amount-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .amount-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .amount-btn.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+
+        .custom-amount {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .custom-amount-input {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            color: var(--text-primary);
+        }
+
+        .custom-amount-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .total-value {
+            color: var(--accent);
+        }
+
+        /* Payment Methods */
+        .payment-section {
+            margin-bottom: 2rem;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .payment-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .payment-card:hover {
+            border-color: var(--accent);
+        }
+
+        .payment-card.active {
+            border-color: var(--accent);
+            background: rgba(240,185,11,0.1);
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+        }
+
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .payment-desc {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Pay Button */
+        .pay-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pay-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        /* Recent Refills */
+        .recent-section {
+            margin-top: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .recent-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .recent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .recent-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .recent-info {
+            flex: 1;
+        }
+
+        .recent-number {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .recent-details {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .recent-amount {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .recent-action {
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .recent-action:hover {
+            color: var(--accent);
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .benefit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .benefit-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .operator-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .amount-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .payment-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .recent-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .benefits-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .country-selector {
+                flex-direction: column;
+            }
+            .operator-grid {
+                grid-template-columns: 1fr;
+            }
+            .amount-grid {
+                grid-template-columns: 1fr;
+            }
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+            .recent-grid {
+                grid-template-columns: 1fr;
+            }
+            .benefits-section {
+                grid-template-columns: 1fr;
+            }
+            .phone-input-group {
+                flex-direction: column;
+            }
+            .country-code-prefix {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Refill Content -->
+    <div class="refill-wrapper">
+        <div class="refill-container">
+            <!-- Header -->
+            <div class="refill-header">
+                <h1>Mobile Refill</h1>
+                <p>Top up any phone in 40+ countries. Instant delivery, pay with crypto.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">40+</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">200+</div>
+                    <div class="stat-label">Operators</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Instant</div>
+                    <div class="stat-label">Delivery</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0%</div>
+                    <div class="stat-label">Fees</div>
+                </div>
+            </div>
+
+            <!-- Main Refill Panel -->
+            <div class="refill-panel">
+                <div class="panel-header">
+                    <h2>New Refill</h2>
+                    <button class="recent-btn">
+                        <i class="fas fa-history"></i> Recent
+                    </button>
+                </div>
+
+                <!-- Country Selection -->
+                <div class="country-section">
+                    <div class="section-label">Select Country</div>
+                    <div class="country-selector">
+                        <div class="country-option active">
+                            <span class="country-flag">🇳🇬</span>
+                            <div class="country-info">
+                                <div class="country-name">Nigeria</div>
+                                <div class="country-code">+234</div>
+                            </div>
+                        </div>
+                        <div class="country-option">
+                            <span class="country-flag">🇺🇸</span>
+                            <div class="country-info">
+                                <div class="country-name">United States</div>
+                                <div class="country-code">+1</div>
+                            </div>
+                        </div>
+                        <div class="country-option">
+                            <span class="country-flag">🇬🇧</span>
+                            <div class="country-info">
+                                <div class="country-name">United Kingdom</div>
+                                <div class="country-code">+44</div>
+                            </div>
+                        </div>
+                        <div class="country-option">
+                            <span class="country-flag">🇨🇦</span>
+                            <div class="country-info">
+                                <div class="country-name">Canada</div>
+                                <div class="country-code">+1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operator Selection -->
+                <div class="operator-section">
+                    <div class="section-label">Select Operator</div>
+                    <div class="operator-grid">
+                        <div class="operator-card active">
+                            <div class="operator-logo">📱</div>
+                            <div class="operator-name">MTN</div>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-logo">📱</div>
+                            <div class="operator-name">Glo</div>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-logo">📱</div>
+                            <div class="operator-name">Airtel</div>
+                        </div>
+                        <div class="operator-card">
+                            <div class="operator-logo">📱</div>
+                            <div class="operator-name">9mobile</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="phone-section">
+                    <div class="section-label">Phone Number</div>
+                    <div class="phone-input-group">
+                        <div class="country-code-prefix">+234</div>
+                        <input type="tel" class="phone-input" placeholder="812 345 6789" value="8123456789">
+                    </div>
+                    <div class="contact-saved">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Save to contacts</span>
+                    </div>
+                </div>
+
+                <!-- Amount Selection -->
+                <div class="amount-section">
+                    <div class="section-label">Select Amount</div>
+                    <div class="amount-grid">
+                        <div class="amount-btn">₦500</div>
+                        <div class="amount-btn active">₦1000</div>
+                        <div class="amount-btn">₦2000</div>
+                        <div class="amount-btn">₦5000</div>
+                    </div>
+                    <div class="custom-amount">
+                        <input type="text" class="custom-amount-input" placeholder="Custom amount">
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="summary-section">
+                    <div class="summary-row">
+                        <span>Amount</span>
+                        <span>₦1,000</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Fee</span>
+                        <span class="green">₦0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Exchange Rate</span>
+                        <span>1 USDT = ₦1,500</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span class="total-value">0.67 USDT</span>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="payment-section">
+                    <div class="section-label">Pay with</div>
+                    <div class="payment-grid">
+                        <div class="payment-card active">
+                            <div class="payment-icon">₮</div>
+                            <div class="payment-info">
+                                <div class="payment-name">USDT</div>
+                                <div class="payment-desc">Balance: 1,234.56</div>
+                            </div>
+                        </div>
+                        <div class="payment-card">
+                            <div class="payment-icon">₿</div>
+                            <div class="payment-info">
+                                <div class="payment-name">BTC</div>
+                                <div class="payment-desc">Balance: 0.05</div>
+                            </div>
+                        </div>
+                        <div class="payment-card">
+                            <div class="payment-icon">Ξ</div>
+                            <div class="payment-info">
+                                <div class="payment-name">ETH</div>
+                                <div class="payment-desc">Balance: 0.75</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pay Button -->
+                <button class="pay-btn">
+                    <i class="fas fa-bolt"></i> Pay 0.67 USDT
+                </button>
+            </div>
+
+            <!-- Recent Refills -->
+            <div class="recent-section">
+                <div class="section-header">
+                    <h3>Recent Refills</h3>
+                    <span class="view-all">View All <i class="fas fa-arrow-right"></i></span>
+                </div>
+                <div class="recent-grid">
+                    <div class="recent-card">
+                        <div class="recent-icon"><i class="fas fa-phone"></i></div>
+                        <div class="recent-info">
+                            <div class="recent-number">+234 812 345 6789</div>
+                            <div class="recent-details">MTN • Mar 3, 2026</div>
+                        </div>
+                        <div class="recent-amount">₦1,000</div>
+                        <div class="recent-action"><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+                    <div class="recent-card">
+                        <div class="recent-icon"><i class="fas fa-phone"></i></div>
+                        <div class="recent-info">
+                            <div class="recent-number">+234 803 456 7890</div>
+                            <div class="recent-details">Glo • Mar 2, 2026</div>
+                        </div>
+                        <div class="recent-amount">₦2,000</div>
+                        <div class="recent-action"><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+                    <div class="recent-card">
+                        <div class="recent-icon"><i class="fas fa-phone"></i></div>
+                        <div class="recent-info">
+                            <div class="recent-number">+234 705 678 1234</div>
+                            <div class="recent-details">Airtel • Mar 1, 2026</div>
+                        </div>
+                        <div class="recent-amount">₦500</div>
+                        <div class="recent-action"><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits Section -->
+            <div class="benefits-section">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="benefit-title">Instant Delivery</div>
+                    <div class="benefit-desc">Refills are processed instantly, 24/7</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="benefit-title">Secure Payments</div>
+                    <div class="benefit-desc">All transactions are encrypted</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-gift"></i></div>
+                    <div class="benefit-title">Bonus Rewards</div>
+                    <div class="benefit-desc">Get cashback on every refill</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Country selection
+        document.querySelectorAll('.country-option').forEach(country => {
+            country.addEventListener('click', function() {
+                document.querySelectorAll('.country-option').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Operator selection
+        document.querySelectorAll('.operator-card').forEach(operator => {
+            operator.addEventListener('click', function() {
+                document.querySelectorAll('.operator-card').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Amount button selection
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update summary
+                const amount = this.textContent.replace('₦', '');
+                document.querySelector('.summary-row span:last-child').textContent = '₦' + amount;
+                
+                // Calculate USDT (assuming 1 USDT = 1500 NGN)
+                const usdtAmount = (parseInt(amount) / 1500).toFixed(2);
+                document.querySelector('.total-value').textContent = usdtAmount + ' USDT';
+                document.querySelector('.pay-btn').innerHTML = `<i class="fas fa-bolt"></i> Pay ${usdtAmount} USDT`;
+            });
+        });
+
+        // Custom amount input
+        document.querySelector('.custom-amount-input').addEventListener('input', function() {
+            const amount = this.value;
+            if (amount) {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+                
+                // Update summary
+                document.querySelector('.summary-row span:last-child').textContent = '₦' + amount;
+                
+                // Calculate USDT
+                const usdtAmount = (parseInt(amount) / 1500).toFixed(2);
+                document.querySelector('.total-value').textContent = usdtAmount + ' USDT';
+                document.querySelector('.pay-btn').innerHTML = `<i class="fas fa-bolt"></i> Pay ${usdtAmount} USDT`;
+            }
+        });
+
+        // Payment method selection
+        document.querySelectorAll('.payment-card').forEach(payment => {
+            payment.addEventListener('click', function() {
+                document.querySelectorAll('.payment-card').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Pay button
+        document.querySelector('.pay-btn').addEventListener('click', function() {
+            const amount = document.querySelector('.total-value').textContent;
+            alert(`Confirm refill of ${amount}?`);
+        });
+
+        // Recent refill actions
+        document.querySelectorAll('.recent-action').forEach(action => {
+            action.addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('Quick refill again?');
+            });
+        });
+
+        // Recent refill cards
+        document.querySelectorAll('.recent-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const number = this.querySelector('.recent-number').textContent;
+                document.querySelector('.phone-input').value = number.replace('+234 ', '');
+                alert(`Fill form with ${number}?`);
+            });
+        });
+
+        // Save to contacts
+        document.querySelector('.contact-saved').addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-check-circle')) {
+                icon.classList.remove('fa-check-circle');
+                icon.classList.add('fa-circle');
+                this.style.color = 'var(--text-secondary)';
+            } else {
+                icon.classList.remove('fa-circle');
+                icon.classList.add('fa-check-circle');
+                this.style.color = 'var(--accent)';
+            }
+        });
+    </script>
+</body>
+</html>

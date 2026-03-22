@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --border: #2B2D33;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .privacy-wrapper {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .privacy-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .last-updated {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--accent);
+        }
+
+        .privacy-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .privacy-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .privacy-section h3 {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .privacy-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-section ul {
+            color: var(--text-secondary);
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .privacy-section strong {
+            color: var(--text-primary);
+        }
+
+        .privacy-section a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .privacy-section a:hover {
+            text-decoration: underline;
+        }
+
+        .data-practice {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .practice-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .practice-item:last-child {
+            border-bottom: none;
+        }
+
+        .practice-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent);
+            color: black;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .privacy-wrapper {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="terms.html">Terms</a>
+            <a href="support.html">Support</a>
+        </div>
+    </nav>
+
+    <div class="privacy-wrapper">
+        <div class="privacy-header">
+            <h1>Privacy Policy</h1>
+            <p>How we collect, use, and protect your information</p>
+            <div class="last-updated">Last Updated: March 1, 2026</div>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Our Commitment to Privacy</h2>
+            <p>At Ever Finance, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform. Please read this policy carefully. By using the Platform, you consent to the practices described in this policy.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Information We Collect</h2>
+            <p>We may collect information about you in a variety of ways. The information we may collect includes:</p>
+            
+            <h3>Personal Data</h3>
+            <p>While using our Platform, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. This may include:</p>
+            <ul>
+                <li>Full name and date of birth</li>
+                <li>Email address and phone number</li>
+                <li>Government-issued ID for verification</li>
+                <li>Proof of address documents</li>
+                <li>Bank account or payment method details</li>
+            </ul>
+
+            <h3>Financial Data</h3>
+            <p>We collect information related to your transactions, including trading history, deposit and withdrawal records, and account balances. This information is necessary for the operation of our services and compliance with legal obligations.</p>
+
+            <h3>Technical Data</h3>
+            <p>We automatically collect certain information when you visit our Platform, including:</p>
+            <ul>
+                <li>IP address and browser type</li>
+                <li>Device information and operating system</li>
+                <li>Usage patterns and page views</li>
+                <li>Cookies and similar tracking technologies</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2>How We Use Your Information</h2>
+            <p>We use the information we collect for various purposes, including:</p>
+
+            <div class="data-practice">
+                <div class="practice-item">
+                    <div class="practice-icon"><i class="fas fa-check"></i></div>
+                    <div>
+                        <strong>To provide and maintain our services</strong>
+                        <p style="color: var(--text-secondary); margin-top: 0.25rem;">Process transactions, manage your account, and provide customer support</p>
+                    </div>
+                </div>
+                <div class="practice-item">
+                    <div class="practice-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div>
+                        <strong>To verify your identity</strong>
+                        <p style="color: var(--text-secondary); margin-top: 0.25rem;">Prevent fraud and comply with KYC/AML regulations</p>
+                    </div>
+                </div>
+                <div class="practice-item">
+                    <div class="practice-icon"><i class="fas fa-chart-line"></i></div>
+                    <div>
+                        <strong>To improve our services</strong>
+                        <p style="color: var(--text-secondary); margin-top: 0.25rem;">Analyze usage patterns and enhance user experience</p>
+                    </div>
+                </div>
+                <div class="practice-item">
+                    <div class="practice-icon"><i class="fas fa-bell"></i></div>
+                    <div>
+                        <strong>To send important notices</strong>
+                        <p style="color: var(--text-secondary); margin-top: 0.25rem;">Updates about your account, security alerts, and policy changes</p>
+                    </div>
+                </div>
+                <div class="practice-item">
+                    <div class="practice-icon"><i class="fas fa-gavel"></i></div>
+                    <div>
+                        <strong>To comply with legal obligations</strong>
+                        <p style="color: var(--text-secondary); margin-top: 0.25rem;">Meet regulatory requirements and respond to legal requests</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Sharing Your Information</h2>
+            <p>We may share your information with third parties in certain circumstances:</p>
+            <ul>
+                <li><strong>Service Providers:</strong> We may share information with vendors who help us operate our business (e.g., payment processors, identity verification services).</li>
+                <li><strong>Legal Requirements:</strong> We may disclose information if required to do so by law or in response to valid requests by public authorities.</li>
+                <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or asset sale, your information may be transferred.</li>
+                <li><strong>With Your Consent:</strong> We may share information for other purposes with your explicit consent.</li>
+            </ul>
+            <p>We do not sell your personal information to third parties.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Data Security</h2>
+            <p>We implement a variety of security measures to protect your information:</p>
+            <ul>
+                <li>256-bit encryption for sensitive data</li>
+                <li>Multi-signature wallets with 98% cold storage</li>
+                <li>Regular security audits and penetration testing</li>
+                <li>Two-factor authentication for account access</li>
+                <li>Strict access controls and employee training</li>
+            </ul>
+            <p>While we strive to protect your information, no method of transmission over the Internet is 100% secure. We cannot guarantee absolute security.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Data Retention</h2>
+            <p>We retain your personal information for as long as necessary to provide our services and comply with legal obligations (typically 5-7 years after account closure). You may request deletion of your data, subject to legal requirements.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Your Rights</h2>
+            <p>Depending on your location, you may have certain rights regarding your personal information:</p>
+            <ul>
+                <li><strong>Access:</strong> Request a copy of your personal data</li>
+                <li><strong>Correction:</strong> Update inaccurate information</li>
+                <li><strong>Deletion:</strong> Request deletion of your data</li>
+                <li><strong>Restriction:</strong> Limit how we use your data</li>
+                <li><strong>Portability:</strong> Receive your data in a portable format</li>
+                <li><strong>Objection:</strong> Object to certain data processing</li>
+            </ul>
+            <p>To exercise these rights, please contact us at <a href="mailto:privacy@ever.finance">privacy@ever.finance</a></p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Cookies and Tracking</h2>
+            <p>We use cookies and similar tracking technologies to track activity on our Platform and hold certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.</p>
+            <p>We use the following types of cookies:</p>
+            <ul>
+                <li><strong>Essential Cookies:</strong> Required for platform operation</li>
+                <li><strong>Preference Cookies:</strong> Remember your settings</li>
+                <li><strong>Analytics Cookies:</strong> Understand how users interact with our platform</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2>International Data Transfers</h2>
+            <p>Your information may be transferred to and maintained on servers located outside your country of residence. We ensure appropriate safeguards are in place to protect your information in accordance with this policy.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Children's Privacy</h2>
+            <p>Our Platform is not intended for individuals under the age of 18. We do not knowingly collect personal information from children. If we learn that we have collected personal information from a child, we will take steps to delete that information.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last Updated" date. You are advised to review this policy periodically for any changes.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Contact Us</h2>
+            <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+            <ul>
+                <li>Email: <a href="mailto:privacy@ever.finance">privacy@ever.finance</a></li>
+                <li>Address: 1 Raffles Place, #20-01, Singapore 048616</li>
+                <li>Data Protection Officer: <a href="mailto:dpo@ever.finance">dpo@ever.finance</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</body>
+</html>

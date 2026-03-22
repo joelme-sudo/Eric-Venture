@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Listings – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --accent-glow: rgba(240,185,11,0.3);
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --orange: #f97316;
+            --border: #2B2D33;
+            --border-light: #363843;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        .nav-item:hover {
+            color: var(--accent);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            min-width: 240px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .dropdown-content a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+        .dropdown-content .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.5rem 0;
+        }
+        .badge {
+            background: var(--accent);
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .nav-icon:hover {
+            color: var(--accent);
+        }
+        .nav-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn.primary {
+            background: var(--accent);
+            color: black;
+        }
+        .nav-btn.primary:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .nav-btn:not(.primary) {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .nav-btn:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .new-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .new-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .new-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .new-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .new-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .new-header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Banner */
+        .announcement-banner {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .announcement-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .banner-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .banner-text p {
+            color: var(--text-secondary);
+        }
+
+        .banner-btn {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 2rem;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Tabs */
+        .new-tabs {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .new-tab {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .new-tab:hover {
+            color: var(--accent);
+        }
+
+        .new-tab.active {
+            color: var(--accent);
+        }
+
+        .new-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        /* Filters */
+        .filters-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.25rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .filter-btn:hover {
+            color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .search-box i {
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            outline: none;
+            width: 250px;
+        }
+
+        /* New Listings Grid */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .listing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .listing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+        }
+
+        .listing-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .listing-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .listing-badge.hot {
+            background: linear-gradient(135deg, var(--red), #ff6b6b);
+            color: white;
+        }
+
+        .listing-badge.new {
+            background: linear-gradient(135deg, var(--green), #0fa86a);
+            color: white;
+        }
+
+        .listing-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .listing-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: black;
+        }
+
+        .listing-info {
+            flex: 1;
+        }
+
+        .listing-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .listing-symbol {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .listing-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .listing-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            padding: 1rem;
+        }
+
+        .metric-item {
+            text-align: center;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .metric-value.positive {
+            color: var(--green);
+        }
+
+        .listing-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .tag.chain {
+            background: rgba(59,130,246,0.1);
+            color: var(--blue);
+        }
+
+        .tag.category {
+            background: rgba(240,185,11,0.1);
+            color: var(--accent);
+        }
+
+        .listing-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .listing-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .listing-change {
+            font-weight: 600;
+        }
+
+        .listing-change.positive {
+            color: var(--green);
+        }
+
+        .listing-change.negative {
+            color: var(--red);
+        }
+
+        .trade-btn {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .trade-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Calendar Section */
+        .calendar-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .calendar-nav button {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .calendar-nav button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-weekday {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            min-height: 80px;
+        }
+
+        .calendar-day.today {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent-glow);
+        }
+
+        .calendar-day .date {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .calendar-event {
+            background: linear-gradient(135deg, var(--accent), #FFD700);
+            color: black;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            margin-bottom: 0.2rem;
+            cursor: pointer;
+        }
+
+        .calendar-event.hot {
+            background: linear-gradient(135deg, var(--red), #ff6b6b);
+            color: white;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .page-btn.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .listings-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .calendar-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .listings-grid {
+                grid-template-columns: 1fr;
+            }
+            .calendar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .banner-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .search-box input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">ERIC VENTURE</div>
+                <div class="nav-menu">
+                    <div class="nav-item dropdown">
+                        <span>Trade <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="spot.html">Spot Trading</a>
+                            <a href="futures.html">Futures</a>
+                            <a href="margin.html">Margin Trading</a>
+                            <a href="options-trading.html">Options</a>
+                            <div class="divider"></div>
+                            <a href="convert.html">Convert <span class="badge">Simple</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Markets <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="market-spot.html">Spot Market</a>
+                            <a href="market-futures.html">Futures Market</a>
+                            <a href="market-new.html">New Listings</a>
+                            <a href="market-pre.html">Pre-market <span class="badge">Early</span></a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Derivatives <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="perpetual.html">Perpetual</a>
+                            <a href="delivery.html">Delivery Futures</a>
+                            <a href="options-trading.html">Options</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Earn <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="earn-flexible.html">Flexible Savings <span class="badge">5%</span></a>
+                            <a href="staking.html">Staking</a>
+                            <a href="launchpad.html">Launchpad</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>Tools <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="trading-bot.html">Trading Bot</a>
+                            <a href="grid-trading.html">Grid Trading</a>
+                            <a href="demo-trading.html">Demo Trading</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <span>More <i class="fas fa-chevron-down"></i></span>
+                        <div class="dropdown-content">
+                            <a href="card.html">Crypto Card</a>
+                            <a href="gift-cards.html">Gift Cards</a>
+                            <a href="mobile-refill.html">Mobile Refill</a>
+                            <a href="p2p.html">P2P Trading</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <i class="fas fa-bell nav-icon"></i>
+                <i class="fas fa-qrcode nav-icon"></i>
+                <i class="fas fa-moon nav-icon"></i>
+                <a href="login.html" class="nav-btn">Log In</a>
+                <a href="register.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- New Listings Content -->
+    <div class="new-wrapper">
+        <div class="new-container">
+            <!-- Header -->
+            <div class="new-header">
+                <h1>New Listings</h1>
+                <p>The latest tokens and projects added to Ever Finance</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">New This Week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Total 2026</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$2.4B</div>
+                    <div class="stat-label">Volume</div>
+                </div>
+            </div>
+
+            <!-- Announcement Banner -->
+            <div class="announcement-banner">
+                <div class="banner-content">
+                    <div class="banner-text">
+                        <h2>🚀 Early Access Program</h2>
+                        <p>Be the first to trade new listings. Get up to 50% fee discount for the first 7 days.</p>
+                    </div>
+                    <button class="banner-btn">Learn More →</button>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="new-tabs">
+                <span class="new-tab active">All</span>
+                <span class="new-tab">Today</span>
+                <span class="new-tab">This Week</span>
+                <span class="new-tab">This Month</span>
+                <span class="new-tab">Upcoming</span>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <span class="filter-btn active">All</span>
+                    <span class="filter-btn">Gainers</span>
+                    <span class="filter-btn">Losers</span>
+                    <span class="filter-btn">Volume</span>
+                    <span class="filter-btn">Recently Added</span>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search new listings...">
+                </div>
+            </div>
+
+            <!-- New Listings Grid -->
+            <div class="listings-grid">
+                <!-- Listing 1 - zkSync -->
+                <div class="listing-card">
+                    <span class="listing-badge hot">🔥 HOT</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">ZK</div>
+                        <div class="listing-info">
+                            <div class="listing-name">zkSync Era</div>
+                            <div class="listing-symbol">ZK</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">Layer 2 scaling solution for Ethereum with zero-knowledge proofs</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.45</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+45.2%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$24.5M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$12.3M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">Ethereum L2</span>
+                        <span class="tag category">zkRollup</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$0.45</div>
+                        <div class="listing-change positive">+45.2%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Listing 2 - Arbitrum Nova -->
+                <div class="listing-card">
+                    <span class="listing-badge new">🆕 NEW</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">ARB</div>
+                        <div class="listing-info">
+                            <div class="listing-name">Arbitrum Nova</div>
+                            <div class="listing-symbol">ARB</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">Optimistic rollup for gaming and social applications</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.89</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+12.5%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$8.2M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$5.1M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">Arbitrum</span>
+                        <span class="tag category">Gaming</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$0.89</div>
+                        <div class="listing-change positive">+12.5%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Listing 3 - StarkNet -->
+                <div class="listing-card">
+                    <span class="listing-badge">✨ NEW</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">STRK</div>
+                        <div class="listing-info">
+                            <div class="listing-name">StarkNet</div>
+                            <div class="listing-symbol">STRK</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">Validity rollup using STARK proofs for maximum scalability</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$1.24</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+8.7%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$15.3M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$7.8M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">Ethereum L2</span>
+                        <span class="tag category">ZK-Rollup</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$1.24</div>
+                        <div class="listing-change positive">+8.7%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Listing 4 - Scroll -->
+                <div class="listing-card">
+                    <span class="listing-badge new">🆕 NEW</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">SCR</div>
+                        <div class="listing-info">
+                            <div class="listing-name">Scroll</div>
+                            <div class="listing-symbol">SCR</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">Bytecode-level zkEVM for Ethereum compatibility</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.78</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+23.4%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$11.2M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$4.9M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">zkEVM</span>
+                        <span class="tag category">L2</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$0.78</div>
+                        <div class="listing-change positive">+23.4%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Listing 5 - Linea -->
+                <div class="listing-card">
+                    <span class="listing-badge">✨ NEW</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">LIN</div>
+                        <div class="listing-info">
+                            <div class="listing-name">Linea</div>
+                            <div class="listing-symbol">LIN</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">ConsenSys zkEVM powered by Linea's zero-knowledge technology</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.56</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+15.8%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$6.7M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$3.2M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">zkEVM</span>
+                        <span class="tag category">ConsenSys</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$0.56</div>
+                        <div class="listing-change positive">+15.8%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Listing 6 - Base -->
+                <div class="listing-card">
+                    <span class="listing-badge hot">🔥 HOT</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">BASE</div>
+                        <div class="listing-info">
+                            <div class="listing-name">Base</div>
+                            <div class="listing-symbol">BASE</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">Coinbase L2 built on OP Stack with Coinbase ecosystem</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.34</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+67.2%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$32.1M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$18.5M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">Optimism</span>
+                        <span class="tag category">Coinbase</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$0.34</div>
+                        <div class="listing-change positive">+67.2%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Listing 7 - Mode -->
+                <div class="listing-card">
+                    <span class="listing-badge new">🆕 NEW</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">MODE</div>
+                        <div class="listing-info">
+                            <div class="listing-name">Mode</div>
+                            <div class="listing-symbol">MODE</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">Modular DeFi L2 with native yield and sequencer fee sharing</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.08</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+34.5%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$4.2M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$2.1M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">OP Stack</span>
+                        <span class="tag category">DeFi</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$0.08</div>
+                        <div class="listing-change positive">+34.5%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Listing 8 - Manta -->
+                <div class="listing-card">
+                    <span class="listing-badge">✨ NEW</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">MANTA</div>
+                        <div class="listing-info">
+                            <div class="listing-name">Manta Pacific</div>
+                            <div class="listing-symbol">MANTA</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">Modular L2 for ZK applications with Celestia DA</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$1.12</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+9.3%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$9.8M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$5.4M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">Celestia</span>
+                        <span class="tag category">Modular</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$1.12</div>
+                        <div class="listing-change positive">+9.3%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Listing 9 - Blast -->
+                <div class="listing-card">
+                    <span class="listing-badge hot">🔥 HOT</span>
+                    <div class="listing-header">
+                        <div class="listing-icon">BLAST</div>
+                        <div class="listing-info">
+                            <div class="listing-name">Blast</div>
+                            <div class="listing-symbol">BLAST</div>
+                        </div>
+                    </div>
+                    <div class="listing-desc">L2 with native yield for ETH and stablecoins</div>
+                    
+                    <div class="listing-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Price</div>
+                            <div class="metric-value">$0.18</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">24h Change</div>
+                            <div class="metric-value positive">+89.1%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value">$45.6M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Liquidity</div>
+                            <div class="metric-value">$22.3M</div>
+                        </div>
+                    </div>
+
+                    <div class="listing-tags">
+                        <span class="tag chain">Ethereum</span>
+                        <span class="tag category">Yield</span>
+                    </div>
+
+                    <div class="listing-footer">
+                        <div class="listing-price">$0.18</div>
+                        <div class="listing-change positive">+89.1%</div>
+                        <button class="trade-btn">Trade</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">5</button>
+                <button class="page-btn"><i class="fas fa-ellipsis-h"></i></button>
+                <button class="page-btn">10</button>
+                <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <!-- Upcoming Listings Calendar -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <h3>Upcoming Listings</h3>
+                    <div class="calendar-nav">
+                        <button><i class="fas fa-chevron-left"></i></button>
+                        <span style="padding: 0.5rem;">March 2026</span>
+                        <button><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-weekday">Mon</div>
+                    <div class="calendar-weekday">Tue</div>
+                    <div class="calendar-weekday">Wed</div>
+                    <div class="calendar-weekday">Thu</div>
+                    <div class="calendar-weekday">Fri</div>
+                    <div class="calendar-weekday">Sat</div>
+                    <div class="calendar-weekday">Sun</div>
+                    
+                    <div class="calendar-day">
+                        <div class="date">24</div>
+                        <div class="calendar-event">ZK</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">25</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">26</div>
+                        <div class="calendar-event hot">ARB</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">27</div>
+                    </div>
+                    <div class="calendar-day today">
+                        <div class="date">28</div>
+                        <div class="calendar-event">STRK</div>
+                        <div class="calendar-event hot">BASE</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">1</div>
+                        <div class="calendar-event">MANTA</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">2</div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="date">3</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">4</div>
+                        <div class="calendar-event">SCR</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">5</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">6</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">7</div>
+                        <div class="calendar-event">LIN</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">8</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="date">9</div>
+                        <div class="calendar-event hot">MODE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        // Tab switching
+        document.querySelectorAll('.new-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.new-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Switched to', this.textContent);
+            });
+        });
+
+        // Filter switching
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Filter by', this.textContent);
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-box input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.listing-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('.listing-name').textContent.toLowerCase();
+                const symbol = card.querySelector('.listing-symbol').textContent.toLowerCase();
+                const desc = card.querySelector('.listing-desc').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || symbol.includes(searchTerm) || desc.includes(searchTerm)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Trade buttons
+        document.querySelectorAll('.trade-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.listing-card');
+                const name = card.querySelector('.listing-name').textContent;
+                alert(`Trade ${name} - Redirecting to trading page`);
+                // window.location.href = `spot.html?symbol=${symbol}`;
+            });
+        });
+
+        // Pagination
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.querySelector('.fa-chevron-left') || this.querySelector('.fa-chevron-right') || this.querySelector('.fa-ellipsis-h')) {
+                    return;
+                }
+                document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Page', this.textContent);
+            });
+        });
+
+        // Calendar events
+        document.querySelectorAll('.calendar-event').forEach(event => {
+            event.addEventListener('click', function() {
+                const token = this.textContent;
+                alert(`${token} listing details - Coming soon!`);
+            });
+        });
+
+        // Banner button
+        document.querySelector('.banner-btn').addEventListener('click', function() {
+            alert('Early Access Program - Details coming soon!');
+        });
+    </script>
+</body>
+</html>

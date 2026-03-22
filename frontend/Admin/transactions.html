@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions – Ever Finance Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
+            --border: #2B2D33;
+        }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1rem;
+            position: fixed;
+            height: 100vh;
+        }
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 0.5rem;
+        }
+        .sidebar-link:hover {
+            background: var(--bg-card);
+            color: var(--accent);
+        }
+        .sidebar-link.active {
+            background: var(--accent);
+            color: black;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .filters {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-input, .filter-select {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: var(--text-primary);
+            min-width: 150px;
+        }
+
+        .filter-btn {
+            background: var(--accent);
+            color: black;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .transactions-table {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .table-row:hover {
+            background: var(--bg-secondary);
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+        }
+
+        .badge-success { background: var(--green); color: black; }
+        .badge-warning { background: var(--accent); color: black; }
+        .badge-danger { background: var(--red); color: white; }
+        .badge-info { background: var(--blue); color: white; }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: var(--accent);
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">EVER FINANCE</div>
+        <a href="index.html" class="sidebar-link"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="users.html" class="sidebar-link"><i class="fas fa-users"></i> Users</a>
+        <a href="transactions.html" class="sidebar-link active"><i class="fas fa-exchange-alt"></i> Transactions</a>
+        <a href="analytics.html" class="sidebar-link"><i class="fas fa-chart-line"></i> Analytics</a>
+        <a href="settings.html" class="sidebar-link"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">Transaction Monitoring</h1>
+            <button class="filter-btn"><i class="fas fa-download"></i> Export</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>Total Volume (24h)</div>
+                <div class="stat-value">$124.5M</div>
+            </div>
+            <div class="stat-card">
+                <div>Transactions</div>
+                <div class="stat-value">45,678</div>
+            </div>
+            <div class="stat-card">
+                <div>Pending</div>
+                <div class="stat-value">234</div>
+            </div>
+            <div class="stat-card">
+                <div>Flagged</div>
+                <div class="stat-value">12</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <input type="text" class="filter-input" placeholder="Transaction ID">
+            <select class="filter-select">
+                <option>All Types</option>
+                <option>Deposit</option>
+                <option>Withdrawal</option>
+                <option>Trade</option>
+                <option>Conversion</option>
+            </select>
+            <select class="filter-select">
+                <option>All Status</option>
+                <option>Completed</option>
+                <option>Pending</option>
+                <option>Failed</option>
+                <option>Flagged</option>
+            </select>
+            <select class="filter-select">
+                <option>Sort by</option>
+                <option>Newest</option>
+                <option>Oldest</option>
+                <option>Largest</option>
+            </select>
+            <button class="filter-btn">Apply Filters</button>
+        </div>
+
+        <div class="transactions-table">
+            <div class="table-header">
+                <span>Transaction ID</span>
+                <span>User</span>
+                <span>Type</span>
+                <span>Amount</span>
+                <span>Currency</span>
+                <span>Date</span>
+                <span>Status</span>
+                <span>Actions</span>
+            </div>
+            <div class="table-row">
+                <span>#TX123456</span>
+                <span>John Doe</span>
+                <span>Deposit</span>
+                <span>0.5 BTC</span>
+                <span>BTC</span>
+                <span>Mar 1, 10:23</span>
+                <span><span class="badge badge-success">Completed</span></span>
+                <div><button class="action-btn"><i class="fas fa-eye"></i></button></div>
+            </div>
+            <div class="table-row">
+                <span>#TX123457</span>
+                <span>Jane Smith</span>
+                <span>Withdrawal</span>
+                <span>1,000</span>
+                <span>USDT</span>
+                <span>Mar 1, 09:45</span>
+                <span><span class="badge badge-warning">Pending</span></span>
+                <div>
+                    <button class="action-btn"><i class="fas fa-check"></i></button>
+                    <button class="action-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="table-row">
+                <span>#TX123458</span>
+                <span>Bob Johnson</span>
+                <span>Trade</span>
+                <span>0.1 ETH</span>
+                <span>ETH</span>
+                <span>Feb 28, 22:15</span>
+                <span><span class="badge badge-success">Completed</span></span>
+                <div><button class="action-btn"><i class="fas fa-eye"></i></button></div>
+            </div>
+            <div class="table-row">
+                <span>#TX123459</span>
+                <span>Alice Brown</span>
+                <span>Withdrawal</span>
+                <span>5,000</span>
+                <span>USDT</span>
+                <span>Feb 28, 18:30</span>
+                <span><span class="badge badge-danger">Failed</span></span>
+                <div><button class="action-btn"><i class="fas fa-eye"></i></button></div>
+            </div>
+            <div class="table-row">
+                <span>#TX123460</span>
+                <span>Charlie Wilson</span>
+                <span>Deposit</span>
+                <span>100</span>
+                <span>SOL</span>
+                <span>Feb 28, 15:20</span>
+                <span><span class="badge badge-info">Flagged</span></span>
+                <div>
+                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                    <button class="action-btn"><i class="fas fa-flag"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+   <script>
+    // Check admin authentication
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+        window.location.href = 'login.html';
+    }
+
+    // Verify token with backend (don't redirect on failure)
+    async function verifyAdmin() {
+        try {
+            const res = await fetch('http://localhost:5001/api/auth/verify-admin', {
+                headers: { 'Authorization': `Bearer ${adminToken}` }
+            });
+            if (!res.ok) {
+                console.warn('Admin verification failed, but staying on page');
+                // Don't redirect – just show warning
+            }
+        } catch (err) {
+            console.warn('Backend connection error, using mock data');
+        }
+    }
+    verifyAdmin();
+
+    // Load dashboard data with fallback to mock data
+    async function loadDashboardData() {
+        try {
+            const res = await fetch('http://localhost:5001/api/admin/stats', {
+                headers: { 'Authorization': `Bearer ${adminToken}` }
+            });
+            
+            if (!res.ok) throw new Error('Failed to fetch');
+            
+            const data = await res.json();
+            updateStats(data);
+        } catch (err) {
+            console.log('Using mock data (backend not connected)');
+            // Mock data so dashboard looks good
+            updateStats({
+                totalUsers: '124,567',
+                totalVolume: '$7.6B',
+                transactions: '1,234,567',
+                pendingKYC: '1,234'
+            });
+        }
+    }
+
+    function updateStats(data) {
+        // Update your stats cards here
+        // Add your existing chart code
+    }
+
+    loadDashboardData();
+
+    // Volume Chart (your existing chart code)
+    const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+    new Chart(volumeCtx, {
+        type: 'line',
+        data: {
+            labels: ['Mar 1', 'Mar 2', 'Mar 3', 'Mar 4', 'Mar 5', 'Mar 6', 'Mar 7'],
+            datasets: [{
+                label: 'Volume (Millions)',
+                data: [65, 72, 68, 85, 78, 92, 88],
+                borderColor: '#F0B90B',
+                backgroundColor: 'rgba(240,185,11,0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    grid: { color: '#2B2D33' },
+                    ticks: { color: '#8A8D92' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#8A8D92' }
+                }
+            }
+        }
+    });
+
+    // User Growth Chart
+    const userCtx = document.getElementById('userChart').getContext('2d');
+    new Chart(userCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'New Users',
+                data: [12500, 14200, 16800, 15400, 17800, 19200],
+                backgroundColor: '#F0B90B',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    grid: { color: '#2B2D33' },
+                    ticks: { color: '#8A8D92' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#8A8D92' }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

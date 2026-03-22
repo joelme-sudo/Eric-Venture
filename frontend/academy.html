@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academy – ERIC VENTURE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg-primary: #0A0B0D;
+            --bg-secondary: #141519;
+            --bg-card: #1C1D22;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8A8D92;
+            --accent: #F0B90B;
+            --green: #0ECB81;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --border: #2B2D33;
+        }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .academy-header {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+            border-bottom: 1px solid var(--border);
+        }
+
+        .academy-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 2rem auto;
+            display: flex;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 3rem;
+            overflow: hidden;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 1rem 2rem;
+            background: var(--accent);
+            border: none;
+            color: black;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .category {
+            padding: 0.5rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+
+        .category.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+
+        .courses-grid {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .course-image {
+            height: 160px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .course-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(240,185,11,0.1);
+            color: var(--accent);
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="academy-header">
+        <h1>ERIC Academy</h1>
+        <p style="color:var(--text-secondary);">Learn crypto from basics to advanced trading</p>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search courses...">
+            <button>Search</button>
+        </div>
+
+        <div class="categories">
+            <span class="category active">All</span>
+            <span class="category">Beginner</span>
+            <span class="category">Trading</span>
+            <span class="category">DeFi</span>
+            <span class="category">NFTs</span>
+            <span class="category">Technical Analysis</span>
+        </div>
+    </div>
+
+    <div class="courses-grid">
+        <div class="course-card">
+            <div class="course-image">📚</div>
+            <div class="course-content">
+                <span class="course-tag">Beginner</span>
+                <div class="course-title">Crypto Basics</div>
+                <div class="course-desc">Learn what Bitcoin is, how blockchain works, and how to buy your first crypto.</div>
+                <div class="course-meta">
+                    <span>12 lessons</span>
+                    <span>2.5 hours</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="course-image">📈</div>
+            <div class="course-content">
+                <span class="course-tag">Trading</span>
+                <div class="course-title">Technical Analysis</div>
+                <div class="course-desc">Master chart patterns, indicators, and price action trading strategies.</div>
+                <div class="course-meta">
+                    <span>24 lessons</span>
+                    <span>5 hours</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="course-image">🏦</div>
+            <div class="course-content">
+                <span class="course-tag">DeFi</span>
+                <div class="course-title">DeFi Mastery</div>
+                <div class="course-desc">Understand lending, borrowing, yield farming, and liquidity pools.</div>
+                <div class="course-meta">
+                    <span>18 lessons</span>
+                    <span>4 hours</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
