@@ -6,8 +6,7 @@
     <title>Log In – Eric Venture</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         :root {
             --bg-primary: #0A0B0D;
             --bg-secondary: #141519;
@@ -15,273 +14,133 @@
             --text-primary: #FFFFFF;
             --text-secondary: #8A8D92;
             --accent: #F0B90B;
-            --accent-glow: rgba(240,185,11,0.3);
-            --green: #0ECB81;
             --red: #F6465D;
             --border: #2B2D33;
-            --border-light: #363843;
         }
-
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            flex-direction: column;
         }
-
-        /* Animated Background */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(240,185,11,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.1) 0%, transparent 50%);
-            animation: rotate 40s linear infinite;
-            z-index: -1;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 480px;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .login-card {
-            background: rgba(28,29,34,0.8);
+        .main-nav {
+            background: rgba(10,11,13,0.95);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(240,185,11,0.2);
-            border-radius: 2rem;
-            padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
         .logo {
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #F0B90B, #FFD700);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-align: center;
-            margin-bottom: 2rem;
         }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
         }
-
-        .login-header h1 {
-            font-size: 2rem;
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
             margin-bottom: 0.5rem;
         }
-
-        .login-header p {
+        .subtitle {
             color: var(--text-secondary);
-        }
-
-        .input-group {
             margin-bottom: 1.5rem;
         }
-
-        .input-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
+        .input-group {
+            margin-bottom: 1rem;
         }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 1rem;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-        }
-
-        .input-wrapper input {
+        input {
             width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            background: rgba(20,21,25,0.8);
+            padding: 1rem;
+            background: var(--bg-secondary);
             border: 1px solid var(--border);
-            border-radius: 1rem;
+            border-radius: 0.75rem;
             color: var(--text-primary);
             font-size: 1rem;
-            transition: all 0.3s;
         }
-
-        .input-wrapper input:focus {
+        input:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 2px var(--accent-glow);
-            background: var(--bg-secondary);
         }
-
-        .password-toggle {
-            position: absolute;
-            right: 1rem;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .checkbox-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 1.5rem 0;
-        }
-
-        .remember-me {
+        .checkbox {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            margin: 1rem 0;
             color: var(--text-secondary);
         }
-
-        .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--accent);
-        }
-
-        .forgot-link {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .login-btn {
+        button {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(135deg, #F0B90B, #FFD700);
-            border: none;
-            border-radius: 1rem;
+            background: var(--accent);
             color: black;
-            font-weight: 700;
-            font-size: 1.1rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
         }
-
-        .login-btn:hover {
+        button:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px var(--accent-glow);
+            box-shadow: 0 8px 20px rgba(240,185,11,0.3);
         }
-
-        .login-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .error {
+            color: var(--red);
+            text-align: center;
+            margin-top: 1rem;
         }
-
         .divider {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin: 2rem 0;
+            margin: 1.5rem 0;
             color: var(--text-secondary);
         }
-
-        .divider::before,
-        .divider::after {
+        .divider::before, .divider::after {
             content: '';
             flex: 1;
             height: 1px;
             background: var(--border);
         }
-
         .social-login {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
-
         .social-btn {
-            padding: 0.75rem;
-            background: rgba(20,21,25,0.8);
+            background: var(--bg-secondary);
             border: 1px solid var(--border);
-            border-radius: 1rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            cursor: pointer;
+            padding: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            transition: all 0.2s;
         }
-
-        .social-btn:hover {
-            border-color: var(--accent);
-            background: var(--bg-secondary);
-        }
-
-        .signup-link {
+        .register-link {
             text-align: center;
             color: var(--text-secondary);
         }
-
-        .signup-link a {
+        .register-link a {
             color: var(--accent);
             text-decoration: none;
-            font-weight: 600;
         }
-
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
-
-        .error {
-            color: var(--red);
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #000;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .login-btn.loading .btn-text {
-            display: none;
-        }
-
-        .login-btn.loading .spinner {
-            display: block;
-        }
-
-        /* Responsive */
         @media (max-width: 480px) {
             .login-card {
                 padding: 1.5rem;
@@ -290,167 +149,81 @@
     </style>
 </head>
 <body>
+    <nav class="main-nav">
+        <div class="logo">ERIC VENTURE</div>
+        <a href="register.html" style="color: var(--text-primary); text-decoration: none;">Sign Up</a>
+    </nav>
+
     <div class="login-container">
         <div class="login-card">
-            <div class="logo">ERIC VENTURE</div>
-            
-            <div class="login-header">
-                <h1>Welcome Back</h1>
-                <p>Log in to your account</p>
+            <h2>Welcome Back</h2>
+            <div class="subtitle">Log in to your account</div>
+
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" value="breakthrougheric981@gmail.com">
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" value="Rejoice12">
             </div>
 
-            <form id="loginForm" onsubmit="event.preventDefault(); login();">
-                <!-- Email -->
-                <div class="input-group">
-                    <div class="input-label">
-                        <span>Email</span>
-                    </div>
-                    <div class="input-wrapper">
-                        <span class="input-icon"><i class="fas fa-envelope"></i></span>
-                        <input type="email" id="email" placeholder="you@example.com" required>
-                    </div>
-                </div>
+            <div class="checkbox">
+                <input type="checkbox" id="remember"> Remember me
+                <a href="forgot-password.html" style="margin-left: auto; color: var(--accent); text-decoration: none;">Forgot?</a>
+            </div>
 
-                <!-- Password -->
-                <div class="input-group">
-                    <div class="input-label">
-                        <span>Password</span>
-                    </div>
-                    <div class="input-wrapper">
-                        <span class="input-icon"><i class="fas fa-lock"></i></span>
-                        <input type="password" id="password" placeholder="••••••••" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword()">
-                            <i class="fas fa-eye" id="toggleIcon"></i>
-                        </button>
-                    </div>
-                </div>
+            <button onclick="login()" id="loginBtn">Log In</button>
+            <div id="error" class="error"></div>
 
-                <!-- Remember & Forgot -->
-                <div class="checkbox-group">
-                    <label class="remember-me">
-                        <input type="checkbox" id="remember"> Remember me
-                    </label>
-                    <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
-                </div>
-
-                <!-- Login Button -->
-                <button type="submit" class="login-btn" id="loginBtn">
-                    <span class="btn-text">Log In</span>
-                    <div class="spinner"></div>
-                </button>
-            </form>
-
-            <!-- Social Login -->
             <div class="divider">or continue with</div>
-            
             <div class="social-login">
-                <button class="social-btn" onclick="handleGoogleLogin()">
-                    <i class="fab fa-google"></i> Google
-                </button>
-                <button class="social-btn" onclick="handleAppleLogin()">
-                    <i class="fab fa-apple"></i> Apple
-                </button>
+                <button class="social-btn" onclick="alert('Coming soon')"><i class="fab fa-google"></i> Google</button>
+                <button class="social-btn" onclick="alert('Coming soon')"><i class="fab fa-apple"></i> Apple</button>
             </div>
 
-            <!-- Sign Up Link -->
-            <div class="signup-link">
+            <div class="register-link">
                 Don't have an account? <a href="register.html">Sign up</a>
             </div>
-
-            <!-- Error Message -->
-            <div id="error" class="error"></div>
         </div>
     </div>
 
     <script>
-        // Password visibility toggle
-        function togglePassword() {
-            const password = document.getElementById('password');
-            const icon = document.getElementById('toggleIcon');
-            
-            if (password.type === 'password') {
-                password.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                password.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
+        const API_URL = 'https://eric-venture-api.onrender.com';
 
-        // Email validation
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        // Login function
         async function login() {
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            const remember = document.getElementById('remember').checked;
             const btn = document.getElementById('loginBtn');
             
-            // Validate
             if (!email || !password) {
-                document.getElementById('error').textContent = 'Please fill in all fields';
+                document.getElementById('error').textContent = 'Enter email and password';
                 return;
             }
             
-            if (!isValidEmail(email)) {
-                document.getElementById('error').textContent = 'Please enter a valid email address';
-                return;
-            }
-            
-            // Show loading
-            btn.classList.add('loading');
             btn.disabled = true;
+            btn.textContent = 'Logging in...';
             document.getElementById('error').textContent = '';
             
             try {
-                const res = await fetch('http://localhost:5001/api/auth/login', {
+                const res = await fetch(`${API_URL}/api/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
-                
                 const data = await res.json();
                 
                 if (data.token) {
                     localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    // Set expiry if remember me checked (30 days)
-                    if (remember) {
-                        const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
-                        localStorage.setItem('token_expiry', expiry);
-                    }
-                    
                     window.location.href = 'customer-dashboard.html';
                 } else {
-                    document.getElementById('error').textContent = data.error || 'Invalid email or password';
+                    document.getElementById('error').textContent = data.error || 'Login failed';
                 }
             } catch (err) {
-                document.getElementById('error').textContent = 'Connection error. Please try again.';
+                document.getElementById('error').textContent = 'Connection error. Try again.';
             } finally {
-                btn.classList.remove('loading');
                 btn.disabled = false;
+                btn.textContent = 'Log In';
             }
         }
-
-        // Social login handlers
-        function handleGoogleLogin() {
-            window.location.href = 'http://localhost:5001/api/auth/google';
-        }
-
-        function handleAppleLogin() {
-            window.location.href = 'http://localhost:5001/api/auth/apple';
-        }
-
-        // Enter key submission
-        document.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') login();
-        });
     </script>
 </body>
 </html>
