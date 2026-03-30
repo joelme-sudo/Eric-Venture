@@ -17,30 +17,10 @@
             --green: #0ECB81;
             --border: #2B2D33;
         }
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            padding: 1rem;
-        }
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #F0B90B, #FFD700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        body { background: var(--bg-primary); color: var(--text-primary); padding: 1rem; }
+        .dashboard { max-width: 1200px; margin: 0 auto; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .balance-card {
             background: linear-gradient(135deg, #1E1F23, #25262A);
             border: 1px solid var(--border);
@@ -48,16 +28,8 @@
             padding: 1.5rem;
             margin-bottom: 1.5rem;
         }
-        .balance-amount {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        .quick-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
+        .balance-amount { font-size: 2rem; font-weight: 700; }
+        .quick-actions { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
         .action-btn {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -87,11 +59,7 @@
             padding: 1rem;
             margin-bottom: 1.5rem;
         }
-        .ai-input {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
+        .ai-input { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
         .ai-input input {
             flex: 1;
             padding: 0.75rem;
@@ -109,40 +77,11 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .ai-response {
-            margin-top: 0.5rem;
-            padding: 0.75rem;
-            background: var(--bg-secondary);
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-        }
-        .transactions {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1rem;
-        }
-        .tx-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .logout-btn {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-        }
-        @media (max-width: 768px) {
-            .quick-actions {
-                justify-content: center;
-            }
-            .currency-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        .ai-response { margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-secondary); border-radius: 0.5rem; }
+        .transactions { background: var(--bg-card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem; }
+        .tx-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+        .logout-btn { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.5rem 1rem; cursor: pointer; }
+        @media (max-width: 768px) { .currency-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
