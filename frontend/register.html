@@ -33,9 +33,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
         .logo {
             font-size: 1.5rem;
@@ -59,16 +56,9 @@
             width: 100%;
             max-width: 450px;
         }
-        h2 {
-            margin-bottom: 0.5rem;
-        }
-        .subtitle {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-        .input-group {
-            margin-bottom: 1rem;
-        }
+        h2 { margin-bottom: 0.5rem; }
+        .subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .input-group { margin-bottom: 1rem; }
         input {
             width: 100%;
             padding: 1rem;
@@ -78,30 +68,10 @@
             color: var(--text-primary);
             font-size: 1rem;
         }
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        .password-strength {
-            margin-top: 0.5rem;
-        }
-        .strength-bar {
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin-top: 0.25rem;
-        }
-        .requirements {
-            margin: 1rem 0;
-            font-size: 0.8rem;
-        }
-        .requirement {
-            color: var(--text-secondary);
-            margin: 0.25rem 0;
-        }
-        .requirement.met {
-            color: var(--green);
-        }
+        input:focus { outline: none; border-color: var(--accent); }
+        .requirements { margin: 1rem 0; font-size: 0.8rem; }
+        .requirement { color: var(--text-secondary); margin: 0.25rem 0; }
+        .requirement.met { color: var(--green); }
         .terms {
             margin: 1rem 0;
             display: flex;
@@ -118,21 +88,9 @@
             border-radius: 0.75rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(240,185,11,0.3);
-        }
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .error {
-            color: var(--red);
-            text-align: center;
-            margin-top: 1rem;
-        }
+        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(240,185,11,0.3); }
+        .error { color: var(--red); text-align: center; margin-top: 1rem; }
         .divider {
             display: flex;
             align-items: center;
@@ -140,12 +98,7 @@
             margin: 1.5rem 0;
             color: var(--text-secondary);
         }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
         .social-login {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -154,28 +107,16 @@
         .social-btn {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
-            padding: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
         }
-        .login-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: var(--text-secondary);
-        }
-        .login-link a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+        .login-link { text-align: center; margin-top: 1.5rem; color: var(--text-secondary); }
+        .login-link a { color: var(--accent); text-decoration: none; }
         @media (max-width: 480px) {
-            .register-card {
-                padding: 1.5rem;
-            }
-            .social-login {
-                grid-template-columns: 1fr;
-            }
+            .register-card { padding: 1.5rem; }
+            .social-login { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -190,18 +131,9 @@
             <h2>Create Account</h2>
             <div class="subtitle">Start your crypto journey</div>
 
-            <div class="input-group">
-                <input type="text" id="fullName" placeholder="Full Name">
-            </div>
-            <div class="input-group">
-                <input type="email" id="email" placeholder="Email">
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" placeholder="Password" onkeyup="checkStrength()">
-                <div class="password-strength">
-                    <div class="strength-bar" id="strengthBar"></div>
-                </div>
-            </div>
+            <div class="input-group"><input type="text" id="fullName" placeholder="Full Name"></div>
+            <div class="input-group"><input type="email" id="email" placeholder="Email"></div>
+            <div class="input-group"><input type="password" id="password" placeholder="Password"></div>
 
             <div class="requirements" id="requirements">
                 <div class="requirement" id="req-length">❌ At least 8 characters</div>
@@ -213,7 +145,7 @@
 
             <div class="terms">
                 <input type="checkbox" id="terms">
-                <label>I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></label>
+                <label>I agree to the <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a></label>
             </div>
 
             <button onclick="register()" id="registerBtn">Create Account</button>
@@ -225,9 +157,7 @@
                 <button class="social-btn" onclick="alert('Coming soon')"><i class="fab fa-apple"></i> Apple</button>
             </div>
 
-            <div class="login-link">
-                Already have an account? <a href="login.html">Log in</a>
-            </div>
+            <div class="login-link">Already have an account? <a href="login.html">Log in</a></div>
         </div>
     </div>
 
@@ -235,33 +165,24 @@
         const API_URL = 'https://eric-venture-api.onrender.com';
 
         function checkStrength() {
-            const password = document.getElementById('password').value;
+            const pwd = document.getElementById('password').value;
             const reqs = {
-                length: password.length >= 8,
-                lower: /[a-z]/.test(password),
-                upper: /[A-Z]/.test(password),
-                number: /[0-9]/.test(password),
-                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+                length: pwd.length >= 8,
+                lower: /[a-z]/.test(pwd),
+                upper: /[A-Z]/.test(pwd),
+                number: /[0-9]/.test(pwd),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(pwd)
             };
-            
-            const ids = ['length', 'lower', 'upper', 'number', 'special'];
-            let score = 0;
-            ids.forEach(id => {
+            ['length', 'lower', 'upper', 'number', 'special'].forEach(id => {
                 const el = document.getElementById(`req-${id}`);
                 if (reqs[id]) {
                     el.innerHTML = `✅ ${el.innerHTML.substring(2)}`;
                     el.classList.add('met');
-                    score++;
                 } else {
                     el.innerHTML = `❌ ${el.innerHTML.substring(2)}`;
                     el.classList.remove('met');
                 }
             });
-            
-            const bar = document.getElementById('strengthBar');
-            const colors = ['#ef4444', '#f59e0b', '#f0b90b', '#0ecb81', '#0ecb81'];
-            bar.style.width = `${(score / 5) * 100}%`;
-            bar.style.background = colors[score - 1] || '#2a2b2e';
         }
 
         async function register() {
@@ -293,7 +214,6 @@
                 const data = await res.json();
                 
                 if (res.ok) {
-                    // Auto login
                     const loginRes = await fetch(`${API_URL}/api/auth/login`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -315,6 +235,8 @@
                 btn.textContent = 'Create Account';
             }
         }
+
+        document.getElementById('password').addEventListener('input', checkStrength);
     </script>
 </body>
 </html>
