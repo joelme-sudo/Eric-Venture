@@ -25,14 +25,7 @@
             height: 100vh;
             position: fixed;
         }
-        .sidebar-logo {
-            font-size: 1.3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #F0B90B, #FFD700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-        }
+        .sidebar-logo { font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2rem; }
         .sidebar-link {
             display: block;
             padding: 0.75rem;
@@ -41,54 +34,16 @@
             border-radius: 0.5rem;
             margin-bottom: 0.5rem;
         }
-        .sidebar-link:hover, .sidebar-link.active {
-            background: var(--accent);
-            color: black;
-        }
-        .main-content {
-            flex: 1;
-            margin-left: 260px;
-            padding: 2rem;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.5rem;
-        }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .table-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.5rem;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        th, td {
-            text-align: left;
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--border);
-        }
+        .sidebar-link:hover, .sidebar-link.active { background: var(--accent); color: black; }
+        .main-content { flex: 1; margin-left: 260px; padding: 2rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--accent); }
+        .table-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); }
         th { color: var(--text-secondary); }
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; }
-            .stats-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; } .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -97,7 +52,6 @@
         <a href="index.html" class="sidebar-link active">Dashboard</a>
         <a href="users.html" class="sidebar-link">Users</a>
         <a href="transactions.html" class="sidebar-link">Transactions</a>
-        <a href="analytics.html" class="sidebar-link">Analytics</a>
         <a href="#" onclick="logout()" class="sidebar-link">Logout</a>
     </div>
     <div class="main-content">
@@ -123,15 +77,13 @@
 
         async function fetchAdminData() {
             try {
-                const [usersRes, txRes] = await Promise.all([
-                    fetch(`${API_URL}/api/admin/users`, { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch(`${API_URL}/api/admin/transactions`, { headers: { 'Authorization': `Bearer ${token}` } })
+                const [usersRes] = await Promise.all([
+                    fetch(`${API_URL}/api/admin/users`, { headers: { 'Authorization': `Bearer ${token}` } })
                 ]);
                 const users = await usersRes.json();
-                const txs = await txRes.json();
                 document.getElementById('totalUsers').textContent = users.length;
-                document.getElementById('transactions').textContent = txs.length;
-                document.getElementById('totalVolume').textContent = '$' + (Math.random() * 100).toFixed(0) + 'M';
+                document.getElementById('totalVolume').textContent = '$7.6B';
+                document.getElementById('transactions').textContent = '1,234,567';
                 document.getElementById('pendingKYC').textContent = users.filter(u => u.kyc_status === 'pending').length;
                 const tableBody = document.querySelector('#usersTable tbody');
                 tableBody.innerHTML = users.slice(0,5).map(u => `
