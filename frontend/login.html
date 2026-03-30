@@ -17,13 +17,7 @@
             --red: #F6465D;
             --border: #2B2D33;
         }
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        body { background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
         .main-nav {
             background: rgba(10,11,13,0.95);
             backdrop-filter: blur(12px);
@@ -33,20 +27,8 @@
             justify-content: space-between;
             align-items: center;
         }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #F0B90B, #FFD700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .login-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
+        .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .login-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem; }
         .login-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -55,16 +37,9 @@
             width: 100%;
             max-width: 400px;
         }
-        h2 {
-            margin-bottom: 0.5rem;
-        }
-        .subtitle {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-        .input-group {
-            margin-bottom: 1rem;
-        }
+        h2 { margin-bottom: 0.5rem; }
+        .subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .input-group { margin-bottom: 1rem; }
         input {
             width: 100%;
             padding: 1rem;
@@ -72,19 +47,9 @@
             border: 1px solid var(--border);
             border-radius: 0.75rem;
             color: var(--text-primary);
-            font-size: 1rem;
         }
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        .checkbox {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-            color: var(--text-secondary);
-        }
+        input:focus { outline: none; border-color: var(--accent); }
+        .checkbox { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; color: var(--text-secondary); }
         button {
             width: 100%;
             padding: 1rem;
@@ -94,36 +59,12 @@
             border-radius: 0.75rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(240,185,11,0.3);
-        }
-        .error {
-            color: var(--red);
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            color: var(--text-secondary);
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        .social-login {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
+        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(240,185,11,0.3); }
+        .error { color: var(--red); text-align: center; margin-top: 1rem; }
+        .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; color: var(--text-secondary); }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .social-login { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
         .social-btn {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
@@ -133,19 +74,9 @@
             justify-content: center;
             gap: 0.5rem;
         }
-        .register-link {
-            text-align: center;
-            color: var(--text-secondary);
-        }
-        .register-link a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        @media (max-width: 480px) {
-            .login-card {
-                padding: 1.5rem;
-            }
-        }
+        .register-link { text-align: center; color: var(--text-secondary); }
+        .register-link a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 480px) { .login-card { padding: 1.5rem; } }
     </style>
 </head>
 <body>
@@ -159,12 +90,8 @@
             <h2>Welcome Back</h2>
             <div class="subtitle">Log in to your account</div>
 
-            <div class="input-group">
-                <input type="email" id="email" placeholder="Email" value="breakthrougheric981@gmail.com">
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" placeholder="Password" value="Rejoice12">
-            </div>
+            <div class="input-group"><input type="email" id="email" placeholder="Email" value="breakthrougheric981@gmail.com"></div>
+            <div class="input-group"><input type="password" id="password" placeholder="Password" value="Rejoice12"></div>
 
             <div class="checkbox">
                 <input type="checkbox" id="remember"> Remember me
@@ -180,9 +107,7 @@
                 <button class="social-btn" onclick="alert('Coming soon')"><i class="fab fa-apple"></i> Apple</button>
             </div>
 
-            <div class="register-link">
-                Don't have an account? <a href="register.html">Sign up</a>
-            </div>
+            <div class="register-link">Don't have an account? <a href="register.html">Sign up</a></div>
         </div>
     </div>
 
