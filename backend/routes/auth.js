@@ -50,11 +50,10 @@ router.post('/login', async (req, res) => {
   }
 })
 
-// Admin login (with hardcoded fallback)
+// Admin login
 router.post('/admin-login', async (req, res) => {
   const { email, password } = req.body
   
-  // Hardcoded admin for emergency access
   if (email === 'breakthrougheric981@gmail.com' && password === 'Rejoice12') {
     const token = jwt.sign(
       { id: 1, email, role: 'admin', isAdmin: true },
@@ -64,7 +63,6 @@ router.post('/admin-login', async (req, res) => {
     return res.json({ token, isAdmin: true, user: { id: 1, email, full_name: 'Admin User', role: 'admin' } })
   }
   
-  // Database admin check
   try {
     if (!sql) throw new Error('Database not connected')
     const users = await sql`SELECT * FROM users WHERE email = ${email} AND is_admin = true`
@@ -85,20 +83,4 @@ router.post('/admin-login', async (req, res) => {
   res.status(401).json({ error: 'Invalid admin credentials' })
 })
 
-// Verify admin token
-router.get('/verify-admin', (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1]
-  if (!token) return res.status(401).json({ error: 'Unauthorized' })
-  
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET)
-    if (decoded.role === 'admin' || decoded.isAdmin) {
-      return res.json({ valid: true, user: decoded })
-    }
-    res.status(403).json({ error: 'Not admin' })
-  } catch {
-    res.status(401).json({ error: 'Invalid token' })
-  }
-})
-
-export default router;
+export default router
