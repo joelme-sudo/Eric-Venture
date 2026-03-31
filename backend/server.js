@@ -31,12 +31,12 @@ try {
 
 const app = express()
 
-// CORS - allow frontend to connect
+// CORS - allow all origins for testing
 app.use(cors({
-  origin: ['https://eric-venture.vercel.app', 'http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:5502'],
-  credentials: true
-}))
-app.use(express.json())
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Routes
 app.use('/api/admin', adminRoutes)
