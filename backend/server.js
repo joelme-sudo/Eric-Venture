@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import postgres from 'postgres'
 import adminRoutes from './routes/admin.js'
-import authRoutes from './routes/auth.js'
+import authRoutes from './routes/auth.js';
 import aiRoutes from './routes/ai.js'
 import userRoutes from './routes/user.js'
 import marketRoutes from './routes/market.js'
@@ -40,7 +40,7 @@ app.use(express.json())
 
 // Routes
 app.use('/api/admin', adminRoutes)
-app.use('/api/auth', authRoutes)
+app.use('/api/auth', authRoutes);
 app.use('/api/ai', aiRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/market', marketRoutes)
