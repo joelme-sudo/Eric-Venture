@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wallets – Eric Venture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: #0A0B0D; color: white; padding: 16px; }
+        
+        /* Navbar */
+        .navbar {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #2B2D33;
+            position: sticky;
+            top: 0;
+            padding: 12px 16px;
+            margin: -16px -16px 20px -16px;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #8A8D92;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .nav-links a:hover { color: #F0B90B; }
+        .logout-btn {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 8px;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: white;
+        }
+        
+        /* Header */
+        .page-header {
+            margin-bottom: 24px;
+        }
+        .page-header h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #fff, #F0B90B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .page-header p {
+            color: #8A8D92;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 12px;
+            padding: 12px 20px;
+            flex: 1;
+            min-width: 150px;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            color: #8A8D92;
+        }
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #F0B90B;
+        }
+        
+        /* Search & Filter */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .search-input {
+            flex: 1;
+            background: #141519;
+            border: 1px solid #2B2D33;
+            border-radius: 30px;
+            padding: 12px 20px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .filter-btn {
+            background: #141519;
+            border: 1px solid #2B2D33;
+            border-radius: 30px;
+            padding: 8px 20px;
+            color: #8A8D92;
+            cursor: pointer;
+        }
+        .filter-btn.active {
+            background: #F0B90B;
+            color: black;
+            border-color: #F0B90B;
+        }
+        
+        /* Wallets Grid */
+        .wallets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .wallet-card {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        .wallet-card:hover {
+            border-color: #F0B90B;
+            transform: translateY(-2px);
+        }
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .coin-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .coin-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: black;
+        }
+        .coin-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .coin-symbol {
+            font-size: 0.8rem;
+            color: #8A8D92;
+        }
+        .wallet-balance {
+            text-align: right;
+        }
+        .balance-amount {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #F0B90B;
+        }
+        .balance-usd {
+            font-size: 0.8rem;
+            color: #8A8D92;
+        }
+        .wallet-address {
+            background: #141519;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 16px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            word-break: break-all;
+        }
+        .address-text {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #8A8D92;
+        }
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: #F0B90B;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .copy-btn:hover { color: #FFD700; }
+        .wallet-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .action-btn {
+            flex: 1;
+            background: #141519;
+            border: 1px solid #2B2D33;
+            border-radius: 8px;
+            padding: 8px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .action-btn.deposit { background: #0ECB81; color: black; border: none; }
+        .action-btn.withdraw { background: #F6465D; color: white; border: none; }
+        .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        
+        /* Deposit Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: #1C1D22;
+            border: 1px solid #F0B90B;
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-header h3 { color: #F0B90B; }
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .qr-code canvas {
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+        }
+        .deposit-address {
+            background: #141519;
+            padding: 12px;
+            border-radius: 10px;
+            word-break: break-all;
+            font-family: monospace;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .wallets-grid { grid-template-columns: 1fr; }
+            .stats-bar { flex-direction: column; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-container">
+            <div class="logo">ERIC VENTURE</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="wallets.html">Wallets</a>
+                <a href="market-spot.html">Markets</a>
+                <a href="convert.html">Convert</a>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>My Wallets</h1>
+        <p>Manage your crypto assets – deposit, withdraw, and track balances</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-box"><div class="stat-label">Total Balance</div><div class="stat-value" id="totalBalance">$0.00</div></div>
+        <div class="stat-box"><div class="stat-label">24h Change</div><div class="stat-value" id="totalChange">+2.4%</div></div>
+        <div class="stat-box"><div class="stat-label">Active Coins</div><div class="stat-value" id="activeCoins">15</div></div>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search coin...">
+        <button class="filter-btn active" onclick="filterWallets('all')">All</button>
+        <button class="filter-btn" onclick="filterWallets('top')">Top 10</button>
+        <button class="filter-btn" onclick="filterWallets('defi')">DeFi</button>
+    </div>
+
+    <div class="wallets-grid" id="walletsGrid"></div>
+
+    <!-- Deposit Modal -->
+    <div class="modal" id="depositModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Deposit <span id="modalCoinSymbol"></span></h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="qr-code" id="qrCode"></div>
+            <div class="deposit-address" id="depositAddress"></div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="action-btn" style="background: #F0B90B; color: black;" onclick="copyAddress()">Copy Address</button>
+                <button class="action-btn" onclick="closeModal()">Close</button>
+            </div>
+            <p style="color: #8A8D92; font-size: 0.75rem; margin-top: 16px; text-align: center;">Send only <span id="modalCoinSymbol">BTC</span> to this address. Other assets will be lost.</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://eric-venture.onrender.com';
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'login.html';
+
+        // Complete coin list with addresses
+        const coins = [
+            { symbol: 'BTC', name: 'Bitcoin', icon: '₿', network: 'Bitcoin', balance: 0.05, usdPrice: 68142, change: '+2.4%', address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' },
+            { symbol: 'ETH', name: 'Ethereum', icon: 'Ξ', network: 'ERC-20', balance: 1.25, usdPrice: 3502, change: '+1.2%', address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0b9a1' },
+            { symbol: 'USDT', name: 'Tether', icon: '₮', network: 'ERC-20', balance: 2500, usdPrice: 1, change: '0.0%', address: '0x3cF0cC8A5Bc0B5c8F2c9Bc0D5C0B0A0B5c0F2c9B' },
+            { symbol: 'BNB', name: 'BNB', icon: 'BNB', network: 'BSC', balance: 8.5, usdPrice: 578, change: '-0.3%', address: 'bnb1lvzk8luziaqn6yhqqn6yhp123q' },
+            { symbol: 'SOL', name: 'Solana', icon: '◎', network: 'Solana', balance: 45.2, usdPrice: 145, change: '+5.7%', address: 'SoL1vzk8luziaqn6yhqqn6yhp123qwertyuiop' },
+            { symbol: 'XRP', name: 'Ripple', icon: 'XRP', network: 'XRP Ledger', balance: 1250, usdPrice: 0.58, change: '-5.2%', address: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh' },
+            { symbol: 'ADA', name: 'Cardano', icon: 'ADA', network: 'Cardano', balance: 850, usdPrice: 0.45, change: '-6.7%', address: 'addr1q8z9c0v5l7e2d4f6g8h0j2k4l6m8n0p2q4r6s8t0u' },
+            { symbol: 'DOGE', name: 'Dogecoin', icon: 'Ð', network: 'Dogecoin', balance: 2500, usdPrice: 0.087, change: '+4.5%', address: 'D5Jc4Q8hG9Zx7L2kM4nP6qR8sT0uV2wX4yZ6aB8cD' },
+            { symbol: 'DOT', name: 'Polkadot', icon: 'DOT', network: 'Polkadot', balance: 125, usdPrice: 7.23, change: '-3.1%', address: '1vzk8luziaqn6yhqqn6yhp123qwertyuiop' },
+            { symbol: 'AVAX', name: 'Avalanche', icon: 'AVAX', network: 'Avalanche', balance: 35.5, usdPrice: 35.67, change: '+1.8%', address: '0x8c9Bc0D5C0B0A5Bc0F2c9Bc0D5C0B0A5Bc0F2c9B' },
+            { symbol: 'MATIC', name: 'Polygon', icon: 'MATIC', network: 'Polygon', balance: 850, usdPrice: 0.89, change: '-2.3%', address: '0x9d5C0B0A5Bc0F2c9Bc0D5C0B0A5Bc0F2c9Bc0D5' },
+            { symbol: 'LINK', name: 'Chainlink', icon: 'LINK', network: 'ERC-20', balance: 45, usdPrice: 15.45, change: '+2.1%', address: '0x514910771AF9Ca656af840dff83E8264EcF986CA' },
+            { symbol: 'UNI', name: 'Uniswap', icon: 'UNI', network: 'ERC-20', balance: 120, usdPrice: 7.23, change: '+0.5%', address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984' },
+            { symbol: 'ATOM', name: 'Cosmos', icon: 'ATOM', network: 'Cosmos', balance: 85, usdPrice: 8.45, change: '-6.7%', address: 'cosmos1vzk8luziaqn6yhqqn6yhp123q' },
+            { symbol: 'ALGO', name: 'Algorand', icon: 'ALGO', network: 'Algorand', balance: 450, usdPrice: 0.28, change: '+1.2%', address: 'ALGO1vzk8luziaqn6yhqqn6yhp123q' }
+        ];
+
+        let currentFilter = 'all';
+        let currentCoin = null;
+
+        function renderWallets() {
+            let filteredCoins = coins;
+            if (currentFilter === 'top') {
+                filteredCoins = coins.slice(0, 10);
+            } else if (currentFilter === 'defi') {
+                filteredCoins = coins.filter(c => ['UNI', 'LINK', 'AAVE', 'COMP'].includes(c.symbol));
+            }
+            
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            if (searchTerm) {
+                filteredCoins = filteredCoins.filter(c => 
+                    c.name.toLowerCase().includes(searchTerm) || 
+                    c.symbol.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            const totalBalance = filteredCoins.reduce((sum, c) => sum + (c.balance * c.usdPrice), 0);
+            document.getElementById('totalBalance').innerHTML = `$${totalBalance.toLocaleString()}`;
+            document.getElementById('activeCoins').innerHTML = filteredCoins.length;
+            
+            const grid = document.getElementById('walletsGrid');
+            grid.innerHTML = filteredCoins.map(coin => `
+                <div class="wallet-card">
+                    <div class="wallet-header">
+                        <div class="coin-info">
+                            <div class="coin-icon">${coin.icon}</div>
+                            <div>
+                                <div class="coin-name">${coin.name}</div>
+                                <div class="coin-symbol">${coin.symbol} • ${coin.network}</div>
+                            </div>
+                        </div>
+                        <div class="wallet-balance">
+                            <div class="balance-amount">${coin.balance.toLocaleString()} ${coin.symbol}</div>
+                            <div class="balance-usd">≈ $${(coin.balance * coin.usdPrice).toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div class="wallet-address">
+                        <span class="address-text">${coin.address.substring(0, 20)}...${coin.address.substring(coin.address.length - 12)}</span>
+                        <button class="copy-btn" onclick="copyFullAddress('${coin.address}')"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <div class="wallet-actions">
+                        <button class="action-btn deposit" onclick="showDepositModal('${coin.symbol}', '${coin.address}')">Deposit</button>
+                        <button class="action-btn withdraw" onclick="alert('Withdraw ${coin.symbol} - Coming soon')">Withdraw</button>
+                        <button class="action-btn" onclick="alert('Send ${coin.symbol} - Coming soon')">Send</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterWallets(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderWallets();
+        }
+
+        function copyFullAddress(address) {
+            navigator.clipboard.writeText(address);
+            alert('Address copied to clipboard!');
+        }
+
+        function showDepositModal(symbol, address) {
+            currentCoin = { symbol, address };
+            document.getElementById('modalCoinSymbol').innerText = symbol;
+            document.getElementById('depositAddress').innerText = address;
+            
+            // Simple QR code (using canvas)
+            const qrContainer = document.getElementById('qrCode');
+            qrContainer.innerHTML = '';
+            const canvas = document.createElement('canvas');
+            canvas.width = 150;
+            canvas.height = 150;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 150, 150);
+            ctx.fillStyle = 'black';
+            ctx.font = '12px monospace';
+            ctx.fillText(address.substring(0, 20), 20, 75);
+            ctx.fillText(address.substring(20, 40), 20, 95);
+            ctx.fillText(address.substring(40, 60), 20, 115);
+            qrContainer.appendChild(canvas);
+            
+            document.getElementById('depositModal').classList.add('active');
+        }
+
+        function copyAddress() {
+            if (currentCoin) {
+                navigator.clipboard.writeText(currentCoin.address);
+                alert(`${currentCoin.symbol} address copied!`);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('depositModal').classList.remove('active');
+        }
+
+        document.getElementById('searchInput')?.addEventListener('input', () => renderWallets());
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        renderWallets();
+    </script>
+</body>
+</html>
