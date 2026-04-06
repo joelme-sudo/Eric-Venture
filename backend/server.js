@@ -6,15 +6,15 @@ import authRoutes from './routes/auth.js'
 import userRoutes from './routes/user.js'
 
 // Database connection
-const DATABASE_URL = 'postgresql://postgres.zgszdbkvmiwtfoazwuwl:REJOICE12REJICE%4012@aws-1-eu-central-1.pooler.supabase.com:6543/postgres'
-
+const DATABASE_URL = 'postgresql://postgres.zgszdbkvmiwtfoazwuwl:REJOICE12REJICE%4012@aws-1-eu-central-1.pooler.supabase.com:5432/postgres'
 console.log('🔌 Connecting to database...')
 
 const sql = postgres(DATABASE_URL, {
   ssl: 'require',
   connect_timeout: 15,
   idle_timeout: 20,
-  max: 10
+  max: 10,
+  prepare: false  // Add this line to disable prepared statements
 })
 
 // Test connection
