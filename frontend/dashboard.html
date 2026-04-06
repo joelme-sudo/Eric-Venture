@@ -97,6 +97,12 @@
             font-weight: 700;
             color: #F0B90B;
         }
+        .pair-change {
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+        .pair-change.up { color: #0ECB81; }
+        .pair-change.down { color: #F6465D; }
         .timeframes {
             display: flex;
             gap: 6px;
@@ -114,9 +120,14 @@
             color: black;
         }
         #priceChart {
-            height: 160px;
+            height: 200px;
             width: 100%;
             margin-top: 8px;
+        }
+        .live-price {
+            font-size: 0.7rem;
+            color: #8A8D92;
+            margin-top: 5px;
         }
         .trade-tabs {
             display: flex;
@@ -225,15 +236,9 @@
             font-size: 0.75rem;
         }
         @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .two-col {
-                grid-template-columns: 1fr;
-            }
-            .nav-links {
-                display: none;
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .two-col { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
@@ -259,7 +264,12 @@
 
     <div class="two-col">
         <div class="card">
-            <div><span style="font-size:0.8rem;">BTC/USDT</span><div class="pair-price" id="btcPrice">$0.00</div></div>
+            <div>
+                <span style="font-size:0.8rem;">BTC/USDT</span>
+                <span class="pair-price" id="btcPrice">$0.00</span>
+                <span class="pair-change" id="btcChange"></span>
+                <div class="live-price" id="liveTime">Waiting for data...</div>
+            </div>
             <div class="timeframes">
                 <span class="timeframe active" data-interval="1">1H</span>
                 <span class="timeframe" data-interval="24">1D</span>
@@ -294,22 +304,109 @@
         if (!token) window.location.href = 'login.html';
 
         let priceChart;
+        let chartData = [];
+        let btcWebSocket;
+        let currentPrice = 0;
+        let lastChange = 0;
 
+        // Initialize Chart
         function initChart() {
             const ctx = document.getElementById('priceChart').getContext('2d');
             priceChart = new Chart(ctx, {
                 type: 'line',
-                data: { labels: Array(30).fill(''), datasets: [{ data: [65000,66000,67000,68000,67500,68500,69000,68000,67000,68500], borderColor: '#F0B90B', borderWidth: 2, fill: false, pointRadius: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#2B2D33' } }, x: { display: false } } }
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'BTC/USDT',
+                        data: [],
+                        borderColor: '#F0B90B',
+                        backgroundColor: 'rgba(240,185,11,0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        pointRadius: 0,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { mode: 'index' } },
+                    scales: { y: { grid: { color: '#2B2D33' }, ticks: { color: '#8A8D92' } }, x: { ticks: { color: '#8A8D92' } } }
+                }
             });
         }
 
-        async function fetchBTCPrice() {
+        // Connect to Binance WebSocket for real-time BTC price
+        function connectWebSocket() {
+            btcWebSocket = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
+            
+            btcWebSocket.onopen = () => {
+                document.getElementById('liveTime').innerHTML = '✅ Live data connected';
+                document.getElementById('liveTime').style.color = '#0ECB81';
+            };
+            
+            btcWebSocket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                const price = parseFloat(data.p);
+                const time = new Date(data.T).toLocaleTimeString();
+                
+                // Update current price display
+                currentPrice = price;
+                const change = ((price - lastChange) / lastChange * 100).toFixed(2);
+                document.getElementById('btcPrice').innerHTML = `$${price.toLocaleString()}`;
+                document.getElementById('liveTime').innerHTML = `Last trade: ${time}`;
+                
+                // Add to chart (keep last 50 points)
+                chartData.push(price);
+                if (chartData.length > 50) chartData.shift();
+                
+                // Update chart
+                priceChart.data.labels = chartData.map((_, i) => i);
+                priceChart.data.datasets[0].data = [...chartData];
+                priceChart.update();
+                
+                // Update trade price input
+                document.getElementById('tradePrice').value = price;
+            };
+            
+            btcWebSocket.onerror = (error) => {
+                console.log('WebSocket error:', error);
+                document.getElementById('liveTime').innerHTML = '⚠️ Using demo data';
+                document.getElementById('liveTime').style.color = '#F6465D';
+                useDemoData();
+            };
+        }
+
+        // Fallback: fetch price every 5 seconds if WebSocket fails
+        function useDemoData() {
+            setInterval(async () => {
+                try {
+                    const res = await fetch(`${API_URL}/api/market/price/BTCUSDT`);
+                    const data = await res.json();
+                    const price = data.price;
+                    const change = ((price - lastChange) / lastChange * 100).toFixed(2);
+                    document.getElementById('btcPrice').innerHTML = `$${price.toLocaleString()}`;
+                    document.getElementById('tradePrice').value = price;
+                    
+                    chartData.push(price);
+                    if (chartData.length > 50) chartData.shift();
+                    priceChart.data.labels = chartData.map((_, i) => i);
+                    priceChart.data.datasets[0].data = [...chartData];
+                    priceChart.update();
+                } catch(e) { console.log(e); }
+            }, 5000);
+        }
+
+        // Fetch 24h change
+        async function fetch24hChange() {
             try {
-                const res = await fetch(`${API_URL}/api/market/price/BTCUSDT`);
+                const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
                 const data = await res.json();
-                document.getElementById('btcPrice').innerText = `$${data.price?.toLocaleString() || '68,142'}`;
-                document.getElementById('tradePrice').value = data.price || 68142;
+                const change = parseFloat(data.priceChangePercent).toFixed(2);
+                const changeClass = change >= 0 ? 'up' : 'down';
+                document.getElementById('btcChange').innerHTML = `${change >= 0 ? '+' : ''}${change}%`;
+                document.getElementById('btcChange').className = `pair-change ${changeClass}`;
+                lastChange = parseFloat(data.lastPrice);
             } catch(e) { console.log(e); }
         }
 
@@ -317,7 +414,7 @@
             try {
                 const res = await fetch(`${API_URL}/api/user/balance`, { headers: { 'Authorization': `Bearer ${token}` } });
                 const data = await res.json();
-                document.getElementById('totalBalance').innerText = `$${data.totalUSD?.toFixed(2) || '0.00'}`;
+                document.getElementById('totalBalance').innerHTML = `$${data.totalUSD?.toFixed(2) || '0.00'}`;
             } catch(e) { console.log(e); }
         }
 
@@ -325,7 +422,14 @@
             try {
                 const res = await fetch(`${API_URL}/api/market/all`);
                 const data = await res.json();
-                document.getElementById('marketData').innerHTML = data.slice(0,5).map(c => `<tr><td><strong>${c.symbol}</strong></td><td>$${c.price?.toLocaleString() || '0'}</td><td class="${c.change >= 0 ? 'positive' : 'negative'}">${c.change >= 0 ? '+' : ''}${c.change?.toFixed(1) || '0'}%</td><td><button style="background:#F0B90B;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;" onclick="alert('Trade ${c.symbol}')">Trade</button></td></tr>`).join('');
+                document.getElementById('marketData').innerHTML = data.slice(0,5).map(c => `
+                    <tr onclick="alert('Trade ${c.symbol}')">
+                        <td><strong>${c.symbol}</strong></td>
+                        <td>$${c.price?.toLocaleString() || '0'}</td>
+                        <td class="${c.change >= 0 ? 'positive' : 'negative'}">${c.change >= 0 ? '+' : ''}${c.change?.toFixed(1) || '0'}%</td>
+                        <td><button style="background:#F0B90B;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;">Trade</button></td>
+                    </tr>
+                `).join('');
             } catch(e) { console.log(e); }
         }
 
@@ -338,7 +442,7 @@
         function placeOrder(type) {
             const amount = document.getElementById('tradeAmount').value;
             if (!amount || amount <= 0) { alert('Enter amount'); return; }
-            alert(`${type.toUpperCase()} order: ${amount} BTC`);
+            alert(`${type.toUpperCase()} order: ${amount} BTC at $${currentPrice}`);
         }
 
         async function sendAICommand() {
@@ -347,7 +451,11 @@
             const resp = document.getElementById('aiResponse');
             resp.innerText = 'Processing...';
             try {
-                const res = await fetch(`${API_URL}/api/user/command`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ command: cmd }) });
+                const res = await fetch(`${API_URL}/api/user/command`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
+                    body: JSON.stringify({ command: cmd }) 
+                });
                 const data = await res.json();
                 resp.innerText = data.success ? `✅ ${data.message}` : `❌ ${data.message}`;
                 if (data.success) fetchBalances();
@@ -360,10 +468,12 @@
 
         function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
 
-        fetchBTCPrice();
+        // Initialize everything
+        initChart();
+        connectWebSocket();
+        fetch24hChange();
         fetchBalances();
         fetchMarketData();
-        initChart();
     </script>
 </body>
 </html>
