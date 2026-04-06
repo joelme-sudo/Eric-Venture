@@ -92,42 +92,49 @@
             border-radius: 12px;
             padding: 12px;
         }
+        .price-section {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
         .pair-price {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #F0B90B;
         }
         .pair-change {
-            font-size: 0.8rem;
-            margin-left: 8px;
+            font-size: 0.9rem;
         }
         .pair-change.up { color: #0ECB81; }
         .pair-change.down { color: #F6465D; }
+        .live-status {
+            font-size: 0.7rem;
+            color: #8A8D92;
+            margin-top: 5px;
+        }
         .timeframes {
             display: flex;
-            gap: 6px;
-            margin-top: 8px;
+            gap: 8px;
+            margin: 12px 0;
         }
         .timeframe {
-            padding: 4px 10px;
+            padding: 4px 12px;
             background: #141519;
-            border-radius: 6px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+            transition: all 0.2s;
         }
         .timeframe.active {
             background: #F0B90B;
             color: black;
         }
-        #priceChart {
-            height: 200px;
+        .chart-container {
             width: 100%;
-            margin-top: 8px;
-        }
-        .live-price {
-            font-size: 0.7rem;
-            color: #8A8D92;
-            margin-top: 5px;
+            height: 250px;
+            position: relative;
+            margin-top: 10px;
         }
         .trade-tabs {
             display: flex;
@@ -137,66 +144,68 @@
         .trade-tab {
             flex: 1;
             text-align: center;
-            padding: 6px;
+            padding: 8px;
             background: #141519;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
         .trade-tab.active {
             background: #F0B90B;
             color: black;
         }
         .input-group {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         .input-group label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #8A8D92;
             display: block;
             margin-bottom: 4px;
         }
         .input-group input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             background: #141519;
             border: 1px solid #2B2D33;
             border-radius: 8px;
             color: white;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
         .trade-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 10px;
+            margin-top: 15px;
         }
         .buy-btn {
             background: #0ECB81;
             color: black;
             border: none;
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
+            font-size: 0.9rem;
         }
         .sell-btn {
             background: #F6465D;
             color: white;
             border: none;
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
+            font-size: 0.9rem;
         }
         .market-table {
             width: 100%;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             border-collapse: collapse;
             margin-top: 10px;
         }
         .market-table th, .market-table td {
-            padding: 8px;
+            padding: 10px 8px;
             text-align: left;
             border-bottom: 1px solid #2B2D33;
         }
@@ -206,6 +215,15 @@
         }
         .positive { color: #0ECB81; }
         .negative { color: #F6465D; }
+        .trade-btn {
+            background: #F0B90B;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
         .ai-input {
             display: flex;
             gap: 8px;
@@ -213,14 +231,14 @@
         }
         .ai-input input {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             background: #141519;
             border: 1px solid #2B2D33;
             border-radius: 8px;
             color: white;
         }
         .ai-input button {
-            padding: 8px 16px;
+            padding: 10px 20px;
             background: #F0B90B;
             border: none;
             border-radius: 8px;
@@ -229,16 +247,17 @@
             cursor: pointer;
         }
         .ai-response {
-            margin-top: 8px;
-            padding: 8px;
+            margin-top: 10px;
+            padding: 10px;
             background: #141519;
             border-radius: 8px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
         }
         @media (max-width: 768px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .two-col { grid-template-columns: 1fr; }
             .nav-links { display: none; }
+            .chart-container { height: 180px; }
         }
     </style>
 </head>
@@ -264,38 +283,40 @@
 
     <div class="two-col">
         <div class="card">
-            <div>
-                <span style="font-size:0.8rem;">BTC/USDT</span>
+            <div class="price-section">
+                <span style="font-size:0.9rem;">BTC/USDT</span>
                 <span class="pair-price" id="btcPrice">$0.00</span>
                 <span class="pair-change" id="btcChange"></span>
-                <div class="live-price" id="liveTime">Waiting for data...</div>
             </div>
+            <div class="live-status" id="liveStatus">Connecting to live data...</div>
             <div class="timeframes">
                 <span class="timeframe active" data-interval="1">1H</span>
                 <span class="timeframe" data-interval="24">1D</span>
                 <span class="timeframe" data-interval="168">1W</span>
             </div>
-            <canvas id="priceChart"></canvas>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
         </div>
 
         <div class="card">
             <div class="trade-tabs"><span class="trade-tab active">Limit</span><span class="trade-tab">Market</span></div>
-            <div class="input-group"><label>Price (USDT)</label><input type="number" id="tradePrice" placeholder="0.00"></div>
-            <div class="input-group"><label>Amount (BTC)</label><input type="number" id="tradeAmount" placeholder="0.00"></div>
+            <div class="input-group"><label>Price (USDT)</label><input type="number" id="tradePrice" placeholder="0.00" value="68000"></div>
+            <div class="input-group"><label>Amount (BTC)</label><input type="number" id="tradeAmount" placeholder="0.00" value="0.001"></div>
             <div class="input-group"><label>Total</label><input type="text" id="tradeTotal" readonly placeholder="0.00 USDT"></div>
-            <div class="trade-buttons"><button class="buy-btn" onclick="placeOrder('buy')">Buy</button><button class="sell-btn" onclick="placeOrder('sell')">Sell</button></div>
+            <div class="trade-buttons"><button class="buy-btn" onclick="placeOrder('buy')">Buy BTC</button><button class="sell-btn" onclick="placeOrder('sell')">Sell BTC</button></div>
         </div>
     </div>
 
     <div class="card">
-        <h3 style="font-size:0.9rem;">Market Prices</h3>
-        <table class="market-table"><thead><tr><th>Coin</th><th>Price</th><th>24h</th><th>Action</th></tr></thead><tbody id="marketData"><tr><td colspan="4">Loading...</td></tr></tbody></table>
+        <h3 style="font-size:1rem; margin-bottom:8px;">Market Prices</h3>
+        <table class="market-table"><thead><tr><th>Coin</th><th>Price</th><th>24h</th><th></th></tr></thead><tbody id="marketData"><tr><td colspan="4">Loading...</td></tr></tbody></table>
     </div>
 
     <div class="card">
-        <h3 style="font-size:0.9rem;">🤖 AI Assistant</h3>
-        <div class="ai-input"><input type="text" id="aiCommand" placeholder="deposit 100 USD, balance"><button onclick="sendAICommand()">Send</button></div>
-        <div class="ai-response" id="aiResponse">Ready...</div>
+        <h3 style="font-size:1rem; margin-bottom:8px;">🤖 AI Assistant</h3>
+        <div class="ai-input"><input type="text" id="aiCommand" placeholder="Type a command... e.g., deposit 100 USD, show balance"><button onclick="sendAICommand()">Send</button></div>
+        <div class="ai-response" id="aiResponse">Ready. Try "deposit 100 USD" or "balance"</div>
     </div>
 
     <script>
@@ -305,11 +326,10 @@
 
         let priceChart;
         let chartData = [];
-        let btcWebSocket;
-        let currentPrice = 0;
-        let lastChange = 0;
+        let currentPrice = 68000;
+        let ws = null;
 
-        // Initialize Chart
+        // Initialize chart
         function initChart() {
             const ctx = document.getElementById('priceChart').getContext('2d');
             priceChart = new Chart(ctx, {
@@ -329,70 +349,62 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { mode: 'index' } },
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } },
                     scales: { y: { grid: { color: '#2B2D33' }, ticks: { color: '#8A8D92' } }, x: { ticks: { color: '#8A8D92' } } }
                 }
             });
         }
 
-        // Connect to Binance WebSocket for real-time BTC price
-        function connectWebSocket() {
-            btcWebSocket = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
-            
-            btcWebSocket.onopen = () => {
-                document.getElementById('liveTime').innerHTML = '✅ Live data connected';
-                document.getElementById('liveTime').style.color = '#0ECB81';
-            };
-            
-            btcWebSocket.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                const price = parseFloat(data.p);
-                const time = new Date(data.T).toLocaleTimeString();
-                
-                // Update current price display
-                currentPrice = price;
-                const change = ((price - lastChange) / lastChange * 100).toFixed(2);
-                document.getElementById('btcPrice').innerHTML = `$${price.toLocaleString()}`;
-                document.getElementById('liveTime').innerHTML = `Last trade: ${time}`;
-                
-                // Add to chart (keep last 50 points)
-                chartData.push(price);
-                if (chartData.length > 50) chartData.shift();
-                
-                // Update chart
-                priceChart.data.labels = chartData.map((_, i) => i);
-                priceChart.data.datasets[0].data = [...chartData];
-                priceChart.update();
-                
-                // Update trade price input
-                document.getElementById('tradePrice').value = price;
-            };
-            
-            btcWebSocket.onerror = (error) => {
-                console.log('WebSocket error:', error);
-                document.getElementById('liveTime').innerHTML = '⚠️ Using demo data';
-                document.getElementById('liveTime').style.color = '#F6465D';
-                useDemoData();
-            };
+        // Add price to chart
+        function addPriceToChart(price) {
+            chartData.push(price);
+            if (chartData.length > 50) chartData.shift();
+            priceChart.data.labels = chartData.map((_, i) => i);
+            priceChart.data.datasets[0].data = [...chartData];
+            priceChart.update();
         }
 
-        // Fallback: fetch price every 5 seconds if WebSocket fails
-        function useDemoData() {
+        // Connect Binance WebSocket
+        function connectWebSocket() {
+            try {
+                ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
+                
+                ws.onopen = () => {
+                    document.getElementById('liveStatus').innerHTML = '✅ Live data connected';
+                    document.getElementById('liveStatus').style.color = '#0ECB81';
+                };
+                
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    const price = parseFloat(data.p);
+                    currentPrice = price;
+                    document.getElementById('btcPrice').innerHTML = `$${price.toLocaleString()}`;
+                    document.getElementById('tradePrice').value = price.toFixed(2);
+                    addPriceToChart(price);
+                };
+                
+                ws.onerror = () => {
+                    document.getElementById('liveStatus').innerHTML = '⚠️ WebSocket error, using REST API';
+                    document.getElementById('liveStatus').style.color = '#F6465D';
+                    useRestAPI();
+                };
+            } catch(e) {
+                useRestAPI();
+            }
+        }
+
+        // Fallback REST API
+        function useRestAPI() {
             setInterval(async () => {
                 try {
-                    const res = await fetch(`${API_URL}/api/market/price/BTCUSDT`);
+                    const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
                     const data = await res.json();
-                    const price = data.price;
-                    const change = ((price - lastChange) / lastChange * 100).toFixed(2);
+                    const price = parseFloat(data.price);
+                    currentPrice = price;
                     document.getElementById('btcPrice').innerHTML = `$${price.toLocaleString()}`;
-                    document.getElementById('tradePrice').value = price;
-                    
-                    chartData.push(price);
-                    if (chartData.length > 50) chartData.shift();
-                    priceChart.data.labels = chartData.map((_, i) => i);
-                    priceChart.data.datasets[0].data = [...chartData];
-                    priceChart.update();
+                    document.getElementById('tradePrice').value = price.toFixed(2);
+                    addPriceToChart(price);
                 } catch(e) { console.log(e); }
             }, 5000);
         }
@@ -406,45 +418,51 @@
                 const changeClass = change >= 0 ? 'up' : 'down';
                 document.getElementById('btcChange').innerHTML = `${change >= 0 ? '+' : ''}${change}%`;
                 document.getElementById('btcChange').className = `pair-change ${changeClass}`;
-                lastChange = parseFloat(data.lastPrice);
             } catch(e) { console.log(e); }
         }
 
+        // Fetch user balances
         async function fetchBalances() {
             try {
-                const res = await fetch(`${API_URL}/api/user/balance`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const res = await fetch(`${API_URL}/api/user/balance`, { 
+                    headers: { 'Authorization': `Bearer ${token}` } 
+                });
                 const data = await res.json();
                 document.getElementById('totalBalance').innerHTML = `$${data.totalUSD?.toFixed(2) || '0.00'}`;
             } catch(e) { console.log(e); }
         }
 
+        // Fetch market data
         async function fetchMarketData() {
             try {
                 const res = await fetch(`${API_URL}/api/market/all`);
                 const data = await res.json();
-                document.getElementById('marketData').innerHTML = data.slice(0,5).map(c => `
-                    <tr onclick="alert('Trade ${c.symbol}')">
-                        <td><strong>${c.symbol}</strong></td>
+                document.getElementById('marketData').innerHTML = data.slice(0,6).map(c => `
+                    <tr>
+                        <td><strong>${c.symbol}</strong> ${c.name}</td>
                         <td>$${c.price?.toLocaleString() || '0'}</td>
                         <td class="${c.change >= 0 ? 'positive' : 'negative'}">${c.change >= 0 ? '+' : ''}${c.change?.toFixed(1) || '0'}%</td>
-                        <td><button style="background:#F0B90B;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;">Trade</button></td>
+                        <td><button class="trade-btn" onclick="alert('Trade ${c.symbol}')">Trade</button></td>
                     </tr>
                 `).join('');
             } catch(e) { console.log(e); }
         }
 
+        // Calculate total
         function updateTotal() {
             const price = parseFloat(document.getElementById('tradePrice').value) || 0;
             const amount = parseFloat(document.getElementById('tradeAmount').value) || 0;
             document.getElementById('tradeTotal').value = (price * amount).toFixed(2) + ' USDT';
         }
 
+        // Place order
         function placeOrder(type) {
             const amount = document.getElementById('tradeAmount').value;
             if (!amount || amount <= 0) { alert('Enter amount'); return; }
             alert(`${type.toUpperCase()} order: ${amount} BTC at $${currentPrice}`);
         }
 
+        // AI Command
         async function sendAICommand() {
             const cmd = document.getElementById('aiCommand').value;
             if (!cmd) return;
@@ -459,21 +477,30 @@
                 const data = await res.json();
                 resp.innerText = data.success ? `✅ ${data.message}` : `❌ ${data.message}`;
                 if (data.success) fetchBalances();
-            } catch(e) { resp.innerText = '❌ Error'; }
+            } catch(e) { resp.innerText = '❌ Connection error'; }
             document.getElementById('aiCommand').value = '';
         }
+
+        // Timeframe switching (mock for now)
+        document.querySelectorAll('.timeframe').forEach(tf => {
+            tf.addEventListener('click', function() {
+                document.querySelectorAll('.timeframe').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
 
         document.getElementById('tradePrice').addEventListener('input', updateTotal);
         document.getElementById('tradeAmount').addEventListener('input', updateTotal);
 
         function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
 
-        // Initialize everything
+        // Initialize
         initChart();
         connectWebSocket();
         fetch24hChange();
         fetchBalances();
         fetchMarketData();
+        updateTotal();
     </script>
 </body>
 </html>
