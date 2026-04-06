@@ -3,111 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In – Eric Venture</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Login - Eric Venture</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        :root {
-            --bg-primary: #0A0B0D;
-            --bg-secondary: #141519;
-            --bg-card: #1C1D22;
-            --text-primary: #FFFFFF;
-            --text-secondary: #8A8D92;
-            --accent: #F0B90B;
-            --red: #F6465D;
-            --border: #2B2D33;
-        }
-        body { background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
-        .main-nav {
-            background: rgba(10,11,13,0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
+        body {
+            background: #0A0B0D;
+            color: white;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .login-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem; }
-        .login-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 1.5rem;
-            padding: 2rem;
+        .card {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 24px;
+            padding: 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
         }
-        h2 { margin-bottom: 0.5rem; }
-        .subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; }
-        .input-group { margin-bottom: 1rem; }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: #8A8D92;
+            margin-bottom: 32px;
+        }
         input {
             width: 100%;
-            padding: 1rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            color: var(--text-primary);
+            padding: 14px;
+            background: #141519;
+            border: 1px solid #2B2D33;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 16px;
         }
-        input:focus { outline: none; border-color: var(--accent); }
-        .checkbox { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; color: var(--text-secondary); }
+        input:focus {
+            outline: none;
+            border-color: #F0B90B;
+        }
         button {
             width: 100%;
-            padding: 1rem;
-            background: var(--accent);
+            padding: 14px;
+            background: #F0B90B;
             color: black;
             border: none;
-            border-radius: 0.75rem;
+            border-radius: 12px;
             font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
+            margin-top: 8px;
         }
-        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(240,185,11,0.3); }
-        .error { color: var(--red); text-align: center; margin-top: 1rem; }
-        .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; color: var(--text-secondary); }
-        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-        .social-login { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-        .social-btn {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            padding: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+        button:hover {
+            background: #FFD700;
+            transform: translateY(-2px);
         }
-        .register-link { text-align: center; color: var(--text-secondary); }
-        .register-link a { color: var(--accent); text-decoration: none; }
-        @media (max-width: 480px) { .login-card { padding: 1.5rem; } }
+        .error {
+            color: #F6465D;
+            margin-top: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .success {
+            color: #0ECB81;
+            margin-top: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .signup-link {
+            text-align: center;
+            margin-top: 24px;
+            color: #8A8D92;
+        }
+        .signup-link a {
+            color: #F0B90B;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="logo">ERIC VENTURE</div>
-        <a href="register.html" style="color: var(--text-primary); text-decoration: none;">Sign Up</a>
-    </nav>
+    <div class="card">
+        <h1>Welcome Back</h1>
+        <div class="subtitle">Log in to your account</div>
 
-    <div class="login-container">
-        <div class="login-card">
-            <h2>Welcome Back</h2>
-            <div class="subtitle">Log in to your account</div>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
 
-            <div class="input-group"><input type="email" id="email" placeholder="Email" value="breakthrougheric981@gmail.com"></div>
-            <div class="input-group"><input type="password" id="password" placeholder="Password" value="Rejoice12"></div>
+        <button onclick="login()">Log In</button>
 
-            <div class="checkbox">
-                <input type="checkbox" id="remember"> Remember me
-                <a href="forgot-password.html" style="margin-left: auto; color: var(--accent); text-decoration: none;">Forgot?</a>
-            </div>
+        <div id="message" class="error"></div>
 
-            <button onclick="login()" id="loginBtn">Log In</button>
-            <div id="error" class="error"></div>
-
-            <div class="divider">or continue with</div>
-            <div class="social-login">
-                <button class="social-btn" onclick="alert('Coming soon')"><i class="fab fa-google"></i> Google</button>
-                <button class="social-btn" onclick="alert('Coming soon')"><i class="fab fa-apple"></i> Apple</button>
-            </div>
-
-            <div class="register-link">Don't have an account? <a href="register.html">Sign up</a></div>
+        <div class="signup-link">
+            Don't have an account? <a href="signup.html">Sign up</a>
         </div>
     </div>
 
@@ -117,16 +110,16 @@
         async function login() {
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            const btn = document.getElementById('loginBtn');
+            const messageDiv = document.getElementById('message');
             
             if (!email || !password) {
-                document.getElementById('error').textContent = 'Enter email and password';
+                messageDiv.textContent = 'All fields are required';
+                messageDiv.className = 'error';
                 return;
             }
             
-            btn.disabled = true;
-            btn.textContent = 'Logging in...';
-            document.getElementById('error').textContent = '';
+            messageDiv.textContent = 'Logging in...';
+            messageDiv.className = 'success';
             
             try {
                 const res = await fetch(`${API_URL}/api/auth/login`, {
@@ -134,19 +127,23 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
+                
                 const data = await res.json();
                 
                 if (data.token) {
                     localStorage.setItem('token', data.token);
-                    window.location.href = 'customer-dashboard.html';
+                    messageDiv.textContent = 'Login successful! Redirecting...';
+                    messageDiv.className = 'success';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
                 } else {
-                    document.getElementById('error').textContent = data.error || 'Login failed';
+                    messageDiv.textContent = data.error || 'Login failed';
+                    messageDiv.className = 'error';
                 }
             } catch (err) {
-                document.getElementById('error').textContent = 'Connection error. Try again.';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Log In';
+                messageDiv.textContent = 'Connection error. Please try again.';
+                messageDiv.className = 'error';
             }
         }
     </script>
