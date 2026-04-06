@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard – Eric Venture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Trading Dashboard – Eric Venture</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
         :root {
             --bg-primary: #0A0B0D;
             --bg-secondary: #141519;
@@ -15,58 +17,252 @@
             --text-secondary: #8A8D92;
             --accent: #F0B90B;
             --green: #0ECB81;
+            --red: #F6465D;
+            --blue: #3b82f6;
             --border: #2B2D33;
         }
-        body { background: var(--bg-primary); color: var(--text-primary); padding: 1rem; }
-        .dashboard { max-width: 1200px; margin: 0 auto; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .balance-card {
-            background: linear-gradient(135deg, #1E1F23, #25262A);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
         }
-        .balance-amount { font-size: 2rem; font-weight: 700; }
-        .quick-actions { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
-        .action-btn {
-            background: var(--bg-card);
+
+        /* Navigation */
+        .navbar {
+            background: rgba(10,11,13,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .logout-btn {
+            background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 0.5rem;
             padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-change {
+            font-size: 0.9rem;
+            color: var(--green);
+        }
+
+        /* Chart and Trading Row */
+        .trading-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Chart Section */
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        .chart-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            margin-bottom: 1rem;
+        }
+        .pair-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .timeframes {
+            display: flex;
             gap: 0.5rem;
+        }
+        .timeframe {
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .timeframe.active {
+            background: var(--accent);
+            color: black;
+        }
+        #priceChart {
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Trading Panel */
+        .trade-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        .trade-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+        }
+        .trade-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
             cursor: pointer;
         }
-        .currency-grid {
+        .trade-tab.active {
+            background: var(--accent);
+            color: black;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+        }
+        .trade-buttons {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-top: 1rem;
         }
-        .currency-card {
+        .buy-btn {
+            background: var(--green);
+            color: black;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .sell-btn {
+            background: var(--red);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Market Table */
+        .market-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1rem;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
         }
-        .ai-section {
+        .market-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .market-table th, .market-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .market-table th { color: var(--text-secondary); font-weight: 500; }
+        .market-table tr:hover { background: var(--bg-secondary); cursor: pointer; }
+        .positive { color: var(--green); }
+        .negative { color: var(--red); }
+
+        /* AI Assistant */
+        .ai-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
         }
-        .ai-input { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+        .ai-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
         .ai-input input {
             flex: 1;
             padding: 0.75rem;
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 0.5rem;
-            color: white;
+            color: var(--text-primary);
         }
         .ai-input button {
             padding: 0.75rem 1.5rem;
@@ -77,90 +273,264 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .ai-response { margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-secondary); border-radius: 0.5rem; }
-        .transactions { background: var(--bg-card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem; }
-        .tx-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
-        .logout-btn { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.5rem 1rem; cursor: pointer; }
-        @media (max-width: 768px) { .currency-grid { grid-template-columns: 1fr; } }
+        .ai-response {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .trading-row {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="top-bar">
+    <nav class="navbar">
+        <div class="nav-container">
             <div class="logo">ERIC VENTURE</div>
-            <div class="logout-btn" onclick="logout()">Logout</div>
-        </div>
-
-        <div class="balance-card">
-            <div style="color: var(--text-secondary);">Total Portfolio</div>
-            <div class="balance-amount" id="totalBalance">$0.00</div>
-        </div>
-
-        <div class="quick-actions">
-            <div class="action-btn" onclick="alert('Deposit demo')"><i class="fas fa-plus"></i> Deposit</div>
-            <div class="action-btn" onclick="alert('Withdraw demo')"><i class="fas fa-minus"></i> Withdraw</div>
-            <div class="action-btn" onclick="window.location='convert.html'"><i class="fas fa-exchange-alt"></i> Convert</div>
-            <div class="action-btn" onclick="window.location='spot.html'"><i class="fas fa-chart-line"></i> Trade</div>
-        </div>
-
-        <div class="currency-grid" id="currencyGrid"></div>
-
-        <div class="ai-section">
-            <h3>AI Assistant</h3>
-            <div class="ai-input">
-                <input type="text" id="aiCommand" placeholder="e.g., deposit 100 USD">
-                <button onclick="sendCommand()">Send</button>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="market-spot.html">Markets</a>
+                <a href="convert.html">Convert</a>
             </div>
-            <div class="ai-response" id="aiResponse">Ready...</div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>Total Balance</div>
+                <div class="stat-value" id="totalBalance">$0.00</div>
+                <div class="stat-change">+2.4% today</div>
+            </div>
+            <div class="stat-card">
+                <div>BTC Balance</div>
+                <div class="stat-value" id="btcBalance">0.0000 BTC</div>
+            </div>
+            <div class="stat-card">
+                <div>ETH Balance</div>
+                <div class="stat-value" id="ethBalance">0.0000 ETH</div>
+            </div>
+            <div class="stat-card">
+                <div>USDT Balance</div>
+                <div class="stat-value" id="usdtBalance">0.00 USDT</div>
+            </div>
         </div>
 
-        <div class="transactions">
-            <h3>Recent Transactions</h3>
-            <div id="txList">Loading...</div>
+        <!-- Trading Row -->
+        <div class="trading-row">
+            <!-- Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <span style="font-size: 1.2rem;">BTC/USDT</span>
+                        <div class="pair-price" id="btcPrice">$0.00</div>
+                    </div>
+                    <div class="timeframes">
+                        <span class="timeframe" data-interval="1">1H</span>
+                        <span class="timeframe active" data-interval="24">1D</span>
+                        <span class="timeframe" data-interval="168">1W</span>
+                        <span class="timeframe" data-interval="720">1M</span>
+                    </div>
+                </div>
+                <canvas id="priceChart"></canvas>
+            </div>
+
+            <!-- Trading Panel -->
+            <div class="trade-card">
+                <div class="trade-tabs">
+                    <span class="trade-tab active">Limit</span>
+                    <span class="trade-tab">Market</span>
+                </div>
+                <div class="input-group">
+                    <label>Price (USDT)</label>
+                    <input type="number" id="tradePrice" placeholder="0.00">
+                </div>
+                <div class="input-group">
+                    <label>Amount (BTC)</label>
+                    <input type="number" id="tradeAmount" placeholder="0.00">
+                </div>
+                <div class="input-group">
+                    <label>Total</label>
+                    <input type="text" id="tradeTotal" readonly placeholder="0.00 USDT">
+                </div>
+                <div class="trade-buttons">
+                    <button class="buy-btn" onclick="placeOrder('buy')">Buy BTC</button>
+                    <button class="sell-btn" onclick="placeOrder('sell')">Sell BTC</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Prices -->
+        <div class="market-card">
+            <h3>Live Market Prices</h3>
+            <table class="market-table" id="marketTable">
+                <thead>
+                    <tr><th>Coin</th><th>Price</th><th>24h Change</th><th>24h Volume</th><th>Action</th></tr>
+                </thead>
+                <tbody id="marketData">
+                    <tr><td colspan="5">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- AI Assistant -->
+        <div class="ai-card">
+            <h3>🤖 AI Assistant</h3>
+            <div class="ai-input">
+                <input type="text" id="aiCommand" placeholder="e.g., deposit 100 USD, show balance">
+                <button onclick="sendAICommand()">Send</button>
+            </div>
+            <div class="ai-response" id="aiResponse">Ready for your command...</div>
         </div>
     </div>
 
     <script>
-       const API_URL = 'https://eric-venture.onrender.com';
+        const API_URL = 'https://eric-venture.onrender.com';
         const token = localStorage.getItem('token');
         if (!token) window.location.href = 'login.html';
 
-        async function fetchData() {
-            try {
-                const balanceRes = await fetch(`${API_URL}/api/user/balance`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const balance = await balanceRes.json();
-                document.getElementById('totalBalance').textContent = `$${balance.totalUSD?.toFixed(2) || '0.00'}`;
-                
-                const grid = document.getElementById('currencyGrid');
-                grid.innerHTML = `
-                    <div class="currency-card"><div>₿ Bitcoin</div><div>${balance.btc?.toFixed(4) || '0'} BTC</div></div>
-                    <div class="currency-card"><div>Ξ Ethereum</div><div>${balance.eth?.toFixed(4) || '0'} ETH</div></div>
-                    <div class="currency-card"><div>₮ Tether</div><div>${balance.usdt?.toFixed(2) || '0'} USDT</div></div>
-                `;
-                
-                const txRes = await fetch(`${API_URL}/api/user/transactions`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const txs = await txRes.json();
-                const txList = document.getElementById('txList');
-                if (txs.length === 0) {
-                    txList.innerHTML = 'No transactions';
-                } else {
-                    txList.innerHTML = txs.slice(0,5).map(tx => `
-                        <div class="tx-item">
-                            <span>${tx.type} ${tx.amount} ${tx.currency}</span>
-                            <span>${new Date(tx.created_at).toLocaleDateString()}</span>
-                        </div>
-                    `).join('');
+        let priceChart;
+        let currentInterval = 24;
+        let currentPrice = 0;
+
+        // Chart data generator
+        function generateChartData(interval) {
+            const points = [];
+            let price = 68000;
+            const steps = interval === 1 ? 24 : interval === 24 ? 30 : interval === 168 ? 7 : 30;
+            
+            for (let i = 0; i < steps; i++) {
+                const change = (Math.random() - 0.5) * 500;
+                price += change;
+                points.push(price);
+            }
+            return points;
+        }
+
+        // Initialize chart
+        function initChart() {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            const data = generateChartData(currentInterval);
+            priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, i) => i + 1),
+                    datasets: [{
+                        label: 'BTC/USDT',
+                        data: data,
+                        borderColor: '#F0B90B',
+                        backgroundColor: 'rgba(240,185,11,0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { mode: 'index' } },
+                    scales: { y: { grid: { color: '#2B2D33' }, ticks: { color: '#8A8D92' } }, x: { grid: { display: false }, ticks: { color: '#8A8D92' } } }
                 }
+            });
+        }
+
+        // Update chart
+        function updateChart() {
+            const newData = generateChartData(currentInterval);
+            priceChart.data.datasets[0].data = newData;
+            priceChart.update();
+        }
+
+        // Fetch real BTC price
+        async function fetchBTCPrice() {
+            try {
+                const res = await fetch(`${API_URL}/api/market/price/BTCUSDT`);
+                const data = await res.json();
+                currentPrice = data.price;
+                document.getElementById('btcPrice').textContent = `$${currentPrice.toLocaleString()}`;
+                document.getElementById('tradePrice').value = currentPrice;
+                return data.price;
             } catch (err) {
-                console.error('Fetch error:', err);
+                console.log('Price fetch error');
+                return 68142;
             }
         }
 
-        async function sendCommand() {
+        // Fetch user balances
+        async function fetchBalances() {
+            try {
+                const res = await fetch(`${API_URL}/api/user/balance`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                document.getElementById('totalBalance').textContent = `$${data.totalUSD?.toFixed(2) || '0.00'}`;
+            } catch (err) { console.error(err); }
+        }
+
+        // Fetch market data
+        async function fetchMarketData() {
+            try {
+                const res = await fetch(`${API_URL}/api/market/all`);
+                const data = await res.json();
+                const tbody = document.getElementById('marketData');
+                tbody.innerHTML = data.slice(0, 10).map(coin => `
+                    <tr onclick="selectPair('${coin.symbol}')">
+                        <td><strong>${coin.symbol}</strong> ${coin.name}</td>
+                        <td>$${coin.price.toLocaleString()}</td>
+                        <td class="${coin.change >= 0 ? 'positive' : 'negative'}">${coin.change >= 0 ? '+' : ''}${coin.change}%</td>
+                        <td>$${(coin.volume / 1e9).toFixed(1)}B</td>
+                        <td><button style="background:#F0B90B; border:none; padding:4px 12px; border-radius:4px; cursor:pointer;">Trade</button></td>
+                    `
+                ).join('');
+            } catch (err) { console.error(err); }
+        }
+
+        // Update total calculation
+        document.getElementById('tradePrice').addEventListener('input', updateTotal);
+        document.getElementById('tradeAmount').addEventListener('input', updateTotal);
+
+        function updateTotal() {
+            const price = parseFloat(document.getElementById('tradePrice').value) || 0;
+            const amount = parseFloat(document.getElementById('tradeAmount').value) || 0;
+            document.getElementById('tradeTotal').value = (price * amount).toFixed(2) + ' USDT';
+        }
+
+        // Place order
+        async function placeOrder(type) {
+            const price = document.getElementById('tradePrice').value;
+            const amount = document.getElementById('tradeAmount').value;
+            if (!amount || amount <= 0) { alert('Enter amount'); return; }
+            alert(`${type.toUpperCase()} order placed: ${amount} BTC at $${price}`);
+        }
+
+        // Select pair from table
+        function selectPair(symbol) {
+            document.getElementById('btcPrice').parentElement.querySelector('span').textContent = `${symbol}/USDT`;
+            fetchBTCPrice();
+        }
+
+        // AI Command
+        async function sendAICommand() {
             const command = document.getElementById('aiCommand').value;
             if (!command) return;
             const responseDiv = document.getElementById('aiResponse');
@@ -168,27 +538,40 @@
             try {
                 const res = await fetch(`${API_URL}/api/user/command`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                     body: JSON.stringify({ command })
                 });
                 const data = await res.json();
                 responseDiv.textContent = data.success ? `✅ ${data.message}` : `❌ ${data.message}`;
-                if (data.success) fetchData();
+                if (data.success) fetchBalances();
             } catch (err) {
                 responseDiv.textContent = '❌ Connection error';
             }
             document.getElementById('aiCommand').value = '';
         }
 
-        function logout() {
-            localStorage.removeItem('token');
-            window.location.href = 'login.html';
-        }
+        // Timeframe switching
+        document.querySelectorAll('.timeframe').forEach(tf => {
+            tf.addEventListener('click', function() {
+                document.querySelectorAll('.timeframe').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentInterval = parseInt(this.dataset.interval);
+                updateChart();
+            });
+        });
 
-        fetchData();
+        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+
+        // Initial load
+        async function init() {
+            await fetchBTCPrice();
+            await fetchBalances();
+            await fetchMarketData();
+            initChart();
+            setInterval(fetchBTCPrice, 30000);
+            setInterval(fetchMarketData, 60000);
+        }
+        init();
     </script>
 </body>
 </html>
