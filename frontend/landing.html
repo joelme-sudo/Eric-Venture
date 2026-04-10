@@ -3,187 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Eric Venture – Crypto Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Eric Venture – Crypto Trading Platform</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
-        :root {
-            --bg-primary: #0A0B0D;
-            --bg-secondary: #141519;
-            --bg-card: #1C1D22;
-            --text-primary: #FFFFFF;
-            --text-secondary: #8A8D92;
-            --accent: #F0B90B;
-            --border: #2B2D33;
-        }
-        body { background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; }
-        .main-nav {
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: #0A0B0D; color: white; overflow-x: hidden; }
+        
+        /* 120fps Optimized - Use transform instead of position changes */
+        .navbar {
             background: rgba(10,11,13,0.95);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
             position: fixed;
             top: 0;
             width: 100%;
+            padding: 12px 20px;
             z-index: 1000;
-            padding: 1rem 2rem;
+            border-bottom: 1px solid #2B2D33;
+            transform: translateZ(0);
+            will-change: transform;
         }
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #F0B90B, #FFD700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: var(--accent); }
-        .nav-btn {
-            padding: 0.5rem 1.2rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .nav-btn.primary {
-            background: var(--accent);
-            color: black;
-        }
-        .hero {
-            padding: 8rem 5% 4rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 90vh;
-        }
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            background: linear-gradient(135deg, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
-        .hero p { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem; }
-        .hero-stats {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        .stat-number { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
-        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
-        .btn-primary {
-            background: var(--accent);
-            color: black;
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .btn-secondary {
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .hero-image img {
-            width: 100%;
-            border-radius: 1rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-        .stats-bar {
-            background: var(--bg-secondary);
-            padding: 3rem 5%;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-        .stats-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            text-align: center;
-        }
-        .features {
-            padding: 5rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: center;
-        }
-        .feature-icon { font-size: 2.5rem; color: var(--accent); margin-bottom: 1rem; }
-        .footer {
-            background: var(--bg-secondary);
-            padding: 3rem 5%;
-            border-top: 1px solid var(--border);
-        }
-        .footer-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-        .footer-col h4 { color: var(--accent); margin-bottom: 1rem; }
-        .footer-col a {
-            display: block;
-            color: var(--text-secondary);
-            text-decoration: none;
-            margin-bottom: 0.5rem;
-        }
-        .copyright { text-align: center; color: var(--text-secondary); margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { display: flex; gap: 20px; flex-wrap: wrap; }
+        .nav-links a { color: #8A8D92; text-decoration: none; font-size: 0.85rem; transition: color 0.2s ease; }
+        .nav-links a:hover { color: #F0B90B; }
+        .nav-btn { background: #F0B90B; color: black; padding: 6px 16px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.85rem; }
+        
+        /* Hero Section */
+        .hero { padding: 100px 20px 60px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2; background: linear-gradient(135deg, #fff, #F0B90B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: #8A8D92; margin: 20px 0; line-height: 1.6; }
+        .hero-stats { display: flex; gap: 30px; margin: 30px 0; flex-wrap: wrap; }
+        .stat-number { font-size: 1.8rem; font-weight: 700; color: #F0B90B; }
+        .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+        .btn-primary { background: #F0B90B; color: black; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: transform 0.2s ease; display: inline-block; }
+        .btn-primary:hover { transform: scale(1.02); }
+        .btn-secondary { border: 1px solid #2B2D33; color: white; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 600; }
+        .hero-image img { width: 100%; border-radius: 20px; }
+        
+        /* Stats Bar */
+        .stats-bar { background: #141519; padding: 40px 20px; border-top: 1px solid #2B2D33; border-bottom: 1px solid #2B2D33; }
+        .stats-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: #F0B90B; }
+        
+        /* Features */
+        .features { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 40px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .feature-card { background: #1C1D22; border: 1px solid #2B2D33; border-radius: 20px; padding: 30px 20px; text-align: center; transition: transform 0.2s ease; }
+        .feature-card:hover { transform: translateY(-5px); border-color: #F0B90B; }
+        .feature-icon { font-size: 2.5rem; color: #F0B90B; margin-bottom: 15px; }
+        
+        /* CTA */
+        .cta { background: linear-gradient(135deg, #1C1D22, #141519); padding: 60px 20px; text-align: center; border-top: 1px solid #2B2D33; border-bottom: 1px solid #2B2D33; }
+        .cta h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 15px; }
+        .cta-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+        
+        /* Footer */
+        .footer { background: #141519; padding: 40px 20px; text-align: center; color: #8A8D92; font-size: 0.8rem; }
+        
+        /* Mobile */
         @media (max-width: 768px) {
-            .hero { grid-template-columns: 1fr; text-align: center; }
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 80px; }
             .hero-stats { justify-content: center; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .footer-grid { grid-template-columns: 1fr; }
+            .hero-buttons { justify-content: center; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .nav-links { display: none; }
+            .features-grid { gap: 15px; }
         }
     </style>
 </head>
 <body>
-    <nav class="main-nav">
+    <nav class="navbar">
         <div class="nav-container">
             <div class="logo">ERIC VENTURE</div>
             <div class="nav-links">
-                <a href="market-spot.html">Markets</a>
-                <a href="convert.html">Convert</a>
-                <a href="login.html" class="nav-btn">Log In</a>
-                <a href="register.html" class="nav-btn primary">Sign Up</a>
+                <a href="#">Home</a>
+                <a href="#">Features</a>
+                <a href="#">Markets</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html" class="nav-btn">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -199,69 +97,43 @@
             </div>
             <div class="hero-buttons">
                 <a href="signup.html" class="btn-primary">Get Started</a>
-                <a href="market-spot.html" class="btn-secondary">View Markets</a>
+                <a href="#" class="btn-secondary">View Markets</a>
             </div>
         </div>
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80" alt="Crypto Dashboard">
+            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80" alt="Crypto Dashboard">
         </div>
     </section>
 
     <section class="stats-bar">
         <div class="stats-grid">
-            <div><span class="stat-number">$2.45T</span><br>Market Cap</div>
-            <div><span class="stat-number">1,247</span><br>Trading Pairs</div>
-            <div><span class="stat-number">40+</span><br>Countries</div>
-            <div><span class="stat-number">0</span><br>Security Incidents</div>
+            <div><span class="stat-value">$2.45T</span><br>Market Cap</div>
+            <div><span class="stat-value">1,247</span><br>Trading Pairs</div>
+            <div><span class="stat-value">40+</span><br>Countries</div>
+            <div><span class="stat-value">0</span><br>Incidents</div>
         </div>
     </section>
 
     <section class="features">
         <h2 class="section-title">Why Choose Eric Venture?</h2>
         <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Lightning Fast</h3>
-                <p>100k+ transactions per second with zero downtime</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3>Bank-Grade Security</h3>
-                <p>Multi-signature wallets, cold storage for 98% of funds</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>AI-Powered</h3>
-                <p>Smart trading bots and predictive analytics</p>
-            </div>
+            <div class="feature-card"><div class="feature-icon">⚡</div><h3>Lightning Fast</h3><p>100k+ transactions per second</p></div>
+            <div class="feature-card"><div class="feature-icon">🔒</div><h3>Bank-Grade Security</h3><p>98% cold storage</p></div>
+            <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI-Powered</h3><p>Smart trading bots</p></div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to start trading?</h2>
+        <p>Join 37M+ users worldwide</p>
+        <div class="cta-buttons">
+            <a href="signup.html" class="btn-primary">Sign Up Now</a>
+            <a href="#" class="btn-secondary">Try Demo</a>
         </div>
     </section>
 
     <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>Product</h4>
-                <a href="spot.html">Spot Trading</a>
-                <a href="futures.html">Futures</a>
-                <a href="convert.html">Convert</a>
-            </div>
-            <div class="footer-col">
-                <h4>Company</h4>
-                <a href="about.html">About</a>
-                <a href="careers.html">Careers</a>
-            </div>
-            <div class="footer-col">
-                <h4>Support</h4>
-                <a href="support.html">Help Center</a>
-                <a href="faq.html">FAQ</a>
-            </div>
-            <div class="footer-col">
-                <h4>Legal</h4>
-                <a href="terms.html">Terms</a>
-                <a href="privacy.html">Privacy</a>
-            </div>
-        </div>
-        <div class="copyright">© 2026 Eric Venture. All rights reserved.</div>
+        <p>© 2026 Eric Venture. All rights reserved.</p>
     </footer>
 </body>
 </html>
