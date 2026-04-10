@@ -39,7 +39,7 @@
             z-index: 0;
         }
         
-        /* Animated gradient orb */
+        /* Animated gradient orbs */
         .orb {
             position: fixed;
             top: -50%;
@@ -156,7 +156,7 @@
             filter: brightness(1.05);
         }
         
-        /* Hero Section - Premium 2 Column */
+        /* Hero Section */
         .hero {
             display: flex;
             align-items: center;
@@ -237,18 +237,136 @@
             border-color: #F0B90B;
             color: #F0B90B;
         }
-        .hero-image {
+        
+        /* Premium Trading Slide/Carousel */
+        .hero-slider {
             flex: 1;
-            min-width: 300px;
+            min-width: 350px;
+            position: relative;
         }
-        .hero-image img {
-            width: 100%;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border: 1px solid rgba(59,130,246,0.2);
+        .slide-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            background: rgba(28,29,34,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59,130,246,0.15);
+            padding: 20px;
+        }
+        .slide {
+            display: none;
+            animation: fadeEffect 0.5s ease-in-out;
+        }
+        .slide.active {
+            display: block;
+        }
+        @keyframes fadeEffect {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .slide-pair {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #F0B90B;
+        }
+        .slide-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #F0B90B, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .slide-change {
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .slide-change.up { background: rgba(14,203,129,0.15); color: #0ECB81; }
+        .slide-change.down { background: rgba(246,70,93,0.15); color: #F6465D; }
+        .slide-chart {
+            height: 120px;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(180deg, #F0B90B, #3B82F6);
+            border-radius: 4px;
+            transition: height 0.5s ease;
+        }
+        .slide-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(59,130,246,0.1);
+        }
+        .slide-stat {
+            text-align: center;
+        }
+        .slide-stat-label {
+            font-size: 0.7rem;
+            color: #8A8D92;
+        }
+        .slide-stat-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            background: #2B2D33;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .slider-dot.active {
+            background: #F0B90B;
+            width: 24px;
+            border-radius: 10px;
+        }
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(43,45,51,0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        .slider-nav:hover {
+            background: #F0B90B;
+            color: black;
+        }
+        .slider-prev {
+            left: 10px;
+        }
+        .slider-next {
+            right: 10px;
         }
         
-        /* Stats Bar - Premium Glass */
+        /* Stats Bar */
         .stats-section {
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
@@ -271,12 +389,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .stat-item .label {
-            color: #8A8D92;
-            margin-top: 8px;
-        }
         
-        /* Features - Premium 3 Column */
+        /* Features */
         .features {
             margin-bottom: 80px;
         }
@@ -325,16 +439,8 @@
             font-size: 2rem;
             color: #F0B90B;
         }
-        .feature-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 12px;
-        }
-        .feature-card p {
-            color: #8A8D92;
-            line-height: 1.6;
-        }
         
-        /* AI Demo - Premium Interactive */
+        /* AI Demo */
         .demo-section {
             margin-bottom: 80px;
         }
@@ -347,35 +453,11 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        .demo-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .demo-icon {
-            width: 56px;
-            height: 56px;
-            background: rgba(240,185,11,0.15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: #F0B90B;
-        }
-        .demo-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-        .demo-subtitle {
-            color: #8A8D92;
-        }
         .demo-messages {
             background: rgba(20,21,25,0.5);
             border-radius: 20px;
             padding: 20px;
-            height: 220px;
+            height: 200px;
             overflow-y: auto;
             margin-bottom: 20px;
         }
@@ -384,7 +466,6 @@
             padding: 10px 16px;
             border-radius: 16px;
             max-width: 85%;
-            font-size: 0.9rem;
         }
         .demo-message.user {
             background: rgba(59,130,246,0.15);
@@ -407,7 +488,6 @@
             border: 1px solid rgba(59,130,246,0.2);
             border-radius: 40px;
             color: white;
-            font-size: 0.9rem;
         }
         .demo-input button {
             padding: 14px 28px;
@@ -417,14 +497,9 @@
             color: black;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .demo-input button:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
         }
         
-        /* CTA Section */
+        /* CTA */
         .cta-section {
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
@@ -434,20 +509,6 @@
             text-align: center;
             margin-bottom: 60px;
         }
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-        }
-        .cta-section p {
-            color: #8A8D92;
-            margin-bottom: 32px;
-        }
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
         
         /* Footer */
         .footer {
@@ -456,37 +517,15 @@
             border-top: 1px solid rgba(59,130,246,0.1);
             color: #8A8D92;
         }
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-        .footer-links a {
-            color: #8A8D92;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s ease;
-        }
-        .footer-links a:hover {
-            color: #F0B90B;
-        }
         
-        /* Mobile */
         @media (max-width: 768px) {
-            .container { padding: 16px; }
             .hero { flex-direction: column; text-align: center; }
             .hero h1 { font-size: 2.2rem; }
             .hero-stats { justify-content: center; }
-            .hero-buttons { justify-content: center; }
             .navbar { flex-direction: column; text-align: center; }
             .nav-links { flex-wrap: wrap; justify-content: center; }
-            .stats-grid { flex-direction: column; gap: 20px; }
             .features-grid { flex-direction: column; }
-            .cta-section { padding: 40px 20px; }
-            .cta-section h2 { font-size: 1.8rem; }
-            .demo-container { padding: 20px; }
+            .slider-nav { display: none; }
         }
     </style>
 </head>
@@ -525,8 +564,119 @@
                     <a href="#" class="btn-secondary">View Markets</a>
                 </div>
             </div>
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80" alt="Trading Dashboard">
+            
+            <!-- Premium Trading Slide -->
+            <div class="hero-slider">
+                <div class="slide-container">
+                    <div class="slider-nav slider-prev" onclick="prevSlide()">‹</div>
+                    <div class="slider-nav slider-next" onclick="nextSlide()">›</div>
+                    
+                    <div class="slide active" id="slide1">
+                        <div class="slide-header">
+                            <span class="slide-pair">BTC/USDT</span>
+                            <span class="slide-price" id="btcSlidePrice">$68,142</span>
+                            <span class="slide-change up" id="btcSlideChange">+2.4%</span>
+                        </div>
+                        <div class="slide-chart" id="btcChart">
+                            <div class="chart-bar" style="height: 60px;"></div>
+                            <div class="chart-bar" style="height: 80px;"></div>
+                            <div class="chart-bar" style="height: 45px;"></div>
+                            <div class="chart-bar" style="height: 95px;"></div>
+                            <div class="chart-bar" style="height: 70px;"></div>
+                            <div class="chart-bar" style="height: 110px;"></div>
+                            <div class="chart-bar" style="height: 85px;"></div>
+                            <div class="chart-bar" style="height: 65px;"></div>
+                            <div class="chart-bar" style="height: 100px;"></div>
+                            <div class="chart-bar" style="height: 55px;"></div>
+                        </div>
+                        <div class="slide-stats">
+                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value">$69,420</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value">$67,890</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Vol</div><div class="slide-stat-value">$32.4B</div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slide" id="slide2">
+                        <div class="slide-header">
+                            <span class="slide-pair">ETH/USDT</span>
+                            <span class="slide-price" id="ethSlidePrice">$3,502</span>
+                            <span class="slide-change up" id="ethSlideChange">+1.2%</span>
+                        </div>
+                        <div class="slide-chart" id="ethChart">
+                            <div class="chart-bar" style="height: 50px;"></div>
+                            <div class="chart-bar" style="height: 70px;"></div>
+                            <div class="chart-bar" style="height: 90px;"></div>
+                            <div class="chart-bar" style="height: 65px;"></div>
+                            <div class="chart-bar" style="height: 85px;"></div>
+                            <div class="chart-bar" style="height: 105px;"></div>
+                            <div class="chart-bar" style="height: 75px;"></div>
+                            <div class="chart-bar" style="height: 95px;"></div>
+                            <div class="chart-bar" style="height: 60px;"></div>
+                            <div class="chart-bar" style="height: 80px;"></div>
+                        </div>
+                        <div class="slide-stats">
+                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value">$3,550</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value">$3,450</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Vol</div><div class="slide-stat-value">$18.7B</div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slide" id="slide3">
+                        <div class="slide-header">
+                            <span class="slide-pair">SOL/USDT</span>
+                            <span class="slide-price" id="solSlidePrice">$145</span>
+                            <span class="slide-change up" id="solSlideChange">+5.7%</span>
+                        </div>
+                        <div class="slide-chart" id="solChart">
+                            <div class="chart-bar" style="height: 70px;"></div>
+                            <div class="chart-bar" style="height: 55px;"></div>
+                            <div class="chart-bar" style="height: 110px;"></div>
+                            <div class="chart-bar" style="height: 85px;"></div>
+                            <div class="chart-bar" style="height: 95px;"></div>
+                            <div class="chart-bar" style="height: 65px;"></div>
+                            <div class="chart-bar" style="height: 120px;"></div>
+                            <div class="chart-bar" style="height: 90px;"></div>
+                            <div class="chart-bar" style="height: 75px;"></div>
+                            <div class="chart-bar" style="height: 100px;"></div>
+                        </div>
+                        <div class="slide-stats">
+                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value">$148</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value">$138</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Vol</div><div class="slide-stat-value">$4.2B</div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slide" id="slide4">
+                        <div class="slide-header">
+                            <span class="slide-pair">BNB/USDT</span>
+                            <span class="slide-price" id="bnbSlidePrice">$578</span>
+                            <span class="slide-change down" id="bnbSlideChange">-0.3%</span>
+                        </div>
+                        <div class="slide-chart" id="bnbChart">
+                            <div class="chart-bar" style="height: 80px;"></div>
+                            <div class="chart-bar" style="height: 75px;"></div>
+                            <div class="chart-bar" style="height: 60px;"></div>
+                            <div class="chart-bar" style="height: 70px;"></div>
+                            <div class="chart-bar" style="height: 65px;"></div>
+                            <div class="chart-bar" style="height: 55px;"></div>
+                            <div class="chart-bar" style="height: 50px;"></div>
+                            <div class="chart-bar" style="height: 60px;"></div>
+                            <div class="chart-bar" style="height: 45px;"></div>
+                            <div class="chart-bar" style="height: 55px;"></div>
+                        </div>
+                        <div class="slide-stats">
+                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value">$582</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value">$575</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Vol</div><div class="slide-stat-value">$8.9B</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <div class="slider-dot active" onclick="goToSlide(0)"></div>
+                    <div class="slider-dot" onclick="goToSlide(1)"></div>
+                    <div class="slider-dot" onclick="goToSlide(2)"></div>
+                    <div class="slider-dot" onclick="goToSlide(3)"></div>
+                </div>
             </div>
         </div>
 
@@ -545,64 +695,25 @@
             <h2 class="section-title">Why Choose Eric Venture?</h2>
             <p class="section-subtitle">The most advanced crypto trading platform</p>
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Lightning Fast</h3>
-                    <p>100k+ transactions per second with zero downtime</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Bank-Grade Security</h3>
-                    <p>Multi-signature wallets, 98% cold storage</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>AI-Powered Trading</h3>
-                    <p>Smart trading bots and predictive analytics</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💳</div>
-                    <h3>Instant Withdrawals</h3>
-                    <p>Direct bank transfers in 1-2 days</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Mobile First</h3>
-                    <p>Trade anywhere, anytime</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>Global Access</h3>
-                    <p>Support for 40+ countries</p>
-                </div>
+                <div class="feature-card"><div class="feature-icon">⚡</div><h3>Lightning Fast</h3><p>100k+ transactions per second</p></div>
+                <div class="feature-card"><div class="feature-icon">🔒</div><h3>Bank-Grade Security</h3><p>98% cold storage</p></div>
+                <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI-Powered</h3><p>Smart trading bots</p></div>
+                <div class="feature-card"><div class="feature-icon">💳</div><h3>Instant Withdrawals</h3><p>Bank transfers in 1-2 days</p></div>
+                <div class="feature-card"><div class="feature-icon">📱</div><h3>Mobile First</h3><p>Trade anywhere</p></div>
+                <div class="feature-card"><div class="feature-icon">🌍</div><h3>Global Access</h3><p>40+ countries</p></div>
             </div>
         </div>
 
         <!-- AI Demo -->
         <div class="demo-section">
             <div class="demo-container">
-                <div class="demo-header">
-                    <div class="demo-icon"><i class="fas fa-robot"></i></div>
-                    <div>
-                        <div class="demo-title">Try Our AI Assistant</div>
-                        <div class="demo-subtitle">No login required – test it now</div>
-                    </div>
-                </div>
                 <div class="demo-messages" id="demoMessages">
-                    <div class="demo-message ai">
-                        <i class="fas fa-robot"></i> Hello! Try typing:
-                        <br>• "price of btc"
-                        <br>• "deposit 100 usd"
-                        <br>• "convert 0.01 btc to eth"
-                    </div>
+                    <div class="demo-message ai"><i class="fas fa-robot"></i> Try: "price of btc", "deposit 100 usd"</div>
                 </div>
                 <div class="demo-input">
                     <input type="text" id="demoCommand" placeholder="Type a command..." value="price of btc">
                     <button onclick="sendDemoCommand()">Send</button>
                 </div>
-                <p style="color:#8A8D92; font-size:0.7rem; margin-top:16px; text-align:center;">
-                    <i class="fas fa-bolt" style="color:#F0B90B;"></i> Powered by real-time market data
-                </p>
             </div>
         </div>
 
@@ -619,12 +730,7 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-links">
-                <a href="#">About</a>
-                <a href="#">Careers</a>
-                <a href="#">Blog</a>
-                <a href="#">Support</a>
-                <a href="#">Terms</a>
-                <a href="#">Privacy</a>
+                <a href="#">About</a> <a href="#">Careers</a> <a href="#">Blog</a> <a href="#">Support</a> <a href="#">Terms</a> <a href="#">Privacy</a>
             </div>
             <p>© 2026 Eric Venture. All rights reserved.</p>
         </footer>
@@ -632,16 +738,44 @@
 
     <script>
         const API_URL = 'https://eric-venture.onrender.com';
-
+        
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+        
+        function nextSlide() {
+            let newIndex = currentSlide + 1;
+            if (newIndex >= slides.length) newIndex = 0;
+            showSlide(newIndex);
+        }
+        
+        function prevSlide() {
+            let newIndex = currentSlide - 1;
+            if (newIndex < 0) newIndex = slides.length - 1;
+            showSlide(newIndex);
+        }
+        
+        function goToSlide(index) {
+            showSlide(index);
+        }
+        
         async function sendDemoCommand() {
             const command = document.getElementById('demoCommand').value;
             if (!command) return;
-            
             const messagesDiv = document.getElementById('demoMessages');
-            messagesDiv.innerHTML += `<div class="demo-message user"><i class="fas fa-user"></i> ${command}</div>`;
-            messagesDiv.innerHTML += `<div class="demo-message ai" id="loadingMsg"><i class="fas fa-spinner fa-spin"></i> Processing...</div>`;
+            messagesDiv.innerHTML += `<div class="demo-message user">${command}</div>`;
+            messagesDiv.innerHTML += `<div class="demo-message ai" id="loadingMsg">Processing...</div>`;
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            
             try {
                 const res = await fetch(`${API_URL}/api/ai/demo`, {
                     method: 'POST',
@@ -650,18 +784,64 @@
                 });
                 const data = await res.json();
                 document.getElementById('loadingMsg').remove();
-                messagesDiv.innerHTML += `<div class="demo-message ai"><i class="fas fa-robot"></i> ${data.message || 'Command processed'}</div>`;
+                messagesDiv.innerHTML += `<div class="demo-message ai">${data.message || 'Command processed'}</div>`;
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             } catch (err) {
                 document.getElementById('loadingMsg').remove();
-                messagesDiv.innerHTML += `<div class="demo-message ai"><i class="fas fa-exclamation-triangle"></i> Connection error. Please try again.</div>`;
+                messagesDiv.innerHTML += `<div class="demo-message ai">Connection error</div>`;
             }
             document.getElementById('demoCommand').value = '';
         }
         
-        document.getElementById('demoCommand').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') sendDemoCommand();
-        });
+        // Auto rotate slides every 5 seconds
+        setInterval(nextSlide, 5000);
+        
+        // Fetch live prices for slides
+        async function fetchPrices() {
+            try {
+                const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+                const data = await res.json();
+                
+                const btc = data.find(t => t.symbol === 'BTCUSDT');
+                if (btc) {
+                    document.getElementById('btcSlidePrice').innerHTML = `$${parseFloat(btc.lastPrice).toLocaleString()}`;
+                    const btcChange = parseFloat(btc.priceChangePercent).toFixed(2);
+                    const btcElem = document.getElementById('btcSlideChange');
+                    btcElem.innerHTML = `${btcChange >= 0 ? '+' : ''}${btcChange}%`;
+                    btcElem.className = `slide-change ${btcChange >= 0 ? 'up' : 'down'}`;
+                }
+                
+                const eth = data.find(t => t.symbol === 'ETHUSDT');
+                if (eth) {
+                    document.getElementById('ethSlidePrice').innerHTML = `$${parseFloat(eth.lastPrice).toLocaleString()}`;
+                    const ethChange = parseFloat(eth.priceChangePercent).toFixed(2);
+                    const ethElem = document.getElementById('ethSlideChange');
+                    ethElem.innerHTML = `${ethChange >= 0 ? '+' : ''}${ethChange}%`;
+                    ethElem.className = `slide-change ${ethChange >= 0 ? 'up' : 'down'}`;
+                }
+                
+                const sol = data.find(t => t.symbol === 'SOLUSDT');
+                if (sol) {
+                    document.getElementById('solSlidePrice').innerHTML = `$${parseFloat(sol.lastPrice).toLocaleString()}`;
+                    const solChange = parseFloat(sol.priceChangePercent).toFixed(2);
+                    const solElem = document.getElementById('solSlideChange');
+                    solElem.innerHTML = `${solChange >= 0 ? '+' : ''}${solChange}%`;
+                    solElem.className = `slide-change ${solChange >= 0 ? 'up' : 'down'}`;
+                }
+                
+                const bnb = data.find(t => t.symbol === 'BNBUSDT');
+                if (bnb) {
+                    document.getElementById('bnbSlidePrice').innerHTML = `$${parseFloat(bnb.lastPrice).toLocaleString()}`;
+                    const bnbChange = parseFloat(bnb.priceChangePercent).toFixed(2);
+                    const bnbElem = document.getElementById('bnbSlideChange');
+                    bnbElem.innerHTML = `${bnbChange >= 0 ? '+' : ''}${bnbChange}%`;
+                    bnbElem.className = `slide-change ${bnbChange >= 0 ? 'up' : 'down'}`;
+                }
+            } catch(e) { console.log(e); }
+        }
+        
+        fetchPrices();
+        setInterval(fetchPrices, 10000);
     </script>
 </body>
 </html>
