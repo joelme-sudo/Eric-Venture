@@ -23,7 +23,6 @@
             overflow-x: hidden;
         }
         
-        /* Premium Grid Background */
         body::before {
             content: '';
             position: fixed;
@@ -31,15 +30,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
             background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
         }
         
-        /* Animated orbs - scaled for mobile */
         .orb {
             position: fixed;
             top: -30%;
@@ -84,7 +80,7 @@
             z-index: 1;
         }
         
-        /* Navigation - Mobile Optimized */
+        /* Navigation */
         .navbar {
             background: rgba(28,29,34,0.85);
             backdrop-filter: blur(20px);
@@ -117,9 +113,7 @@
             font-size: 0.8rem;
             transition: all 0.2s ease;
         }
-        .nav-links a:hover {
-            color: #F0B90B;
-        }
+        .nav-links a:hover { color: #F0B90B; }
         .nav-buttons {
             display: flex;
             gap: 8px;
@@ -142,7 +136,7 @@
             font-weight: 600;
         }
         
-        /* Hero Section - Mobile First */
+        /* Hero */
         .hero {
             display: flex;
             flex-direction: column;
@@ -211,7 +205,7 @@
             color: white;
         }
         
-        /* Trading Slide - Mobile Optimized */
+        /* Trading Slide */
         .hero-slider {
             width: 100%;
             position: relative;
@@ -228,9 +222,7 @@
             display: none;
             animation: fadeEffect 0.4s ease;
         }
-        .slide.active {
-            display: block;
-        }
+        .slide.active { display: block; }
         @keyframes fadeEffect {
             from { opacity: 0; transform: translateX(10px); }
             to { opacity: 1; transform: translateX(0); }
@@ -282,18 +274,9 @@
             padding-top: 12px;
             border-top: 1px solid rgba(59,130,246,0.1);
         }
-        .slide-stat {
-            text-align: center;
-        }
-        .slide-stat-label {
-            font-size: 0.65rem;
-            color: #8A8D92;
-        }
-        .slide-stat-value {
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 4px;
-        }
+        .slide-stat { text-align: center; }
+        .slide-stat-label { font-size: 0.65rem; color: #8A8D92; }
+        .slide-stat-value { font-size: 0.8rem; font-weight: 600; margin-top: 4px; }
         .slider-controls {
             display: flex;
             justify-content: center;
@@ -331,7 +314,7 @@
         .slider-prev { left: 8px; }
         .slider-next { right: 8px; }
         
-        /* Stats Bar - Mobile */
+        /* Stats Bar */
         .stats-section {
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
@@ -353,13 +336,30 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .stat-item .label {
-            font-size: 0.7rem;
-            color: #8A8D92;
-            margin-top: 4px;
-        }
+        .stat-item .label { font-size: 0.7rem; color: #8A8D92; margin-top: 4px; }
         
-        /* Features - Mobile Grid */
+        /* Security Badges */
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+        .badge {
+            background: rgba(28,29,34,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 40px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+        .badge i { color: #0ECB81; }
+        
+        /* Features */
         .features {
             margin-bottom: 60px;
         }
@@ -400,20 +400,102 @@
             font-size: 1.5rem;
             color: #F0B90B;
         }
-        .feature-card h3 {
-            font-size: 1rem;
-            margin-bottom: 6px;
-        }
-        .feature-card p {
-            color: #8A8D92;
-            font-size: 0.7rem;
-            line-height: 1.4;
-        }
+        .feature-card h3 { font-size: 1rem; margin-bottom: 6px; }
+        .feature-card p { color: #8A8D92; font-size: 0.7rem; line-height: 1.4; }
         
-        /* AI Demo - Mobile */
-        .demo-section {
+        /* Pricing Section */
+        .pricing {
             margin-bottom: 60px;
         }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        .pricing-card {
+            background: rgba(28,29,34,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+        .pricing-card.popular {
+            border-color: #F0B90B;
+            position: relative;
+        }
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: #F0B90B;
+            color: black;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .pricing-name { font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; }
+        .pricing-price { font-size: 2rem; font-weight: 800; color: #F0B90B; margin-bottom: 16px; }
+        .pricing-features { list-style: none; margin-bottom: 24px; }
+        .pricing-features li { padding: 6px 0; color: #8A8D92; font-size: 0.8rem; }
+        .pricing-features i { color: #0ECB81; margin-right: 8px; }
+        .pricing-btn {
+            background: rgba(43,45,51,0.8);
+            border: 1px solid rgba(59,130,246,0.3);
+            border-radius: 30px;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+        .pricing-btn:hover { background: #F0B90B; color: black; border-color: #F0B90B; }
+        
+        /* Testimonials */
+        .testimonials {
+            margin-bottom: 60px;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .testimonial-card {
+            background: rgba(28,29,34,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 20px;
+            padding: 24px;
+        }
+        .testimonial-text {
+            color: #8A8D92;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #F0B90B, #3B82F6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        .author-name { font-weight: 600; font-size: 0.9rem; }
+        .author-title { font-size: 0.7rem; color: #8A8D92; }
+        .stars { color: #F0B90B; margin-top: 8px; font-size: 0.8rem; }
+        
+        /* AI Demo */
+        .demo-section { margin-bottom: 60px; }
         .demo-container {
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
@@ -469,7 +551,43 @@
             font-size: 0.85rem;
         }
         
-        /* CTA - Mobile */
+        /* Newsletter */
+        .newsletter {
+            background: rgba(28,29,34,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .newsletter h3 { font-size: 1.3rem; margin-bottom: 8px; }
+        .newsletter p { color: #8A8D92; margin-bottom: 20px; font-size: 0.85rem; }
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(20,21,25,0.5);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 40px;
+            color: white;
+        }
+        .newsletter-form button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #F0B90B, #3B82F6);
+            border: none;
+            border-radius: 40px;
+            color: black;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* CTA */
         .cta-section {
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
@@ -479,15 +597,8 @@
             text-align: center;
             margin-bottom: 40px;
         }
-        .cta-section h2 {
-            font-size: 1.6rem;
-            margin-bottom: 12px;
-        }
-        .cta-section p {
-            color: #8A8D92;
-            margin-bottom: 24px;
-            font-size: 0.9rem;
-        }
+        .cta-section h2 { font-size: 1.6rem; margin-bottom: 12px; }
+        .cta-section p { color: #8A8D92; margin-bottom: 24px; font-size: 0.9rem; }
         .cta-buttons {
             display: flex;
             gap: 12px;
@@ -495,7 +606,7 @@
             flex-wrap: wrap;
         }
         
-        /* Footer - Mobile */
+        /* Footer */
         .footer {
             text-align: center;
             padding: 30px 16px 20px;
@@ -514,43 +625,21 @@
             text-decoration: none;
             font-size: 0.75rem;
         }
-        .footer p {
-            font-size: 0.7rem;
-        }
+        .footer p { font-size: 0.7rem; }
         
-        /* Tablet and Desktop adjustments */
         @media (min-width: 768px) {
-            .hero {
-                flex-direction: row;
-                text-align: left;
-            }
-            .hero-content {
-                text-align: left;
-            }
-            .hero-stats {
-                justify-content: flex-start;
-            }
-            .hero-buttons {
-                justify-content: flex-start;
-            }
-            .hero h1 {
-                font-size: 3rem;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .features-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .hero { flex-direction: row; text-align: left; }
+            .hero-content { text-align: left; }
+            .hero-stats { justify-content: flex-start; }
+            .hero-buttons { justify-content: flex-start; }
+            .hero h1 { font-size: 3rem; }
+            .stats-grid { grid-template-columns: repeat(4, 1fr); }
+            .features-grid { grid-template-columns: repeat(3, 1fr); }
         }
         
         @media (min-width: 1024px) {
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-            .container {
-                padding: 24px;
-            }
+            .hero h1 { font-size: 3.5rem; }
+            .container { padding: 24px; }
         }
     </style>
 </head>
@@ -563,10 +652,7 @@
         <div class="navbar">
             <div class="logo">ERIC VENTURE</div>
             <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#">Markets</a>
-                <a href="#">Trade</a>
-                <a href="#">Earn</a>
+                <a href="#">Home</a> <a href="#">Markets</a> <a href="#">Trade</a> <a href="#">Earn</a>
             </div>
             <div class="nav-buttons">
                 <a href="login.html" class="btn-login">Log In</a>
@@ -574,11 +660,11 @@
             </div>
         </div>
 
-        <!-- Hero Section -->
+        <!-- Hero -->
         <div class="hero">
             <div class="hero-content">
                 <h1>Trade <span>Like a Pro</span></h1>
-                <p>AI-powered trading, instant conversions, and bank withdrawals. 0% fees on spot trading.</p>
+                <p>AI-powered trading, instant conversions, and bank withdrawals. 0% fees on spot trading. Join millions of traders worldwide.</p>
                 <div class="hero-stats">
                     <div><div class="stat-number">37M+</div><div class="stat-label">Users</div></div>
                     <div><div class="stat-number">60+</div><div class="stat-label">Chains</div></div>
@@ -661,7 +747,7 @@
             </div>
         </div>
 
-        <!-- Stats Section -->
+        <!-- Stats -->
         <div class="stats-section">
             <div class="stats-grid">
                 <div class="stat-item"><div class="number">$2.45T</div><div class="label">Market Cap</div></div>
@@ -669,6 +755,14 @@
                 <div class="stat-item"><div class="number">40+</div><div class="label">Countries</div></div>
                 <div class="stat-item"><div class="number">0</div><div class="label">Incidents</div></div>
             </div>
+        </div>
+
+        <!-- Security Badges -->
+        <div class="security-badges">
+            <div class="badge"><i class="fas fa-shield-alt"></i> 256-bit Encryption</div>
+            <div class="badge"><i class="fas fa-lock"></i> Multi-signature Wallets</div>
+            <div class="badge"><i class="fas fa-database"></i> 98% Cold Storage</div>
+            <div class="badge"><i class="fas fa-check-circle"></i> PCI Certified</div>
         </div>
 
         <!-- Features -->
@@ -685,6 +779,77 @@
             </div>
         </div>
 
+        <!-- Pricing -->
+        <div class="pricing">
+            <h2 class="section-title">Simple Pricing</h2>
+            <p class="section-subtitle">No hidden fees, pay only for what you use</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-name">Starter</div>
+                    <div class="pricing-price">Free</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Up to $1,000 volume</li>
+                        <li><i class="fas fa-check"></i> Basic AI commands</li>
+                        <li><i class="fas fa-check"></i> Email support</li>
+                    </ul>
+                    <a href="signup.html" class="pricing-btn">Get Started</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">POPULAR</div>
+                    <div class="pricing-name">Pro</div>
+                    <div class="pricing-price">0.1% fee</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Unlimited volume</li>
+                        <li><i class="fas fa-check"></i> Advanced AI</li>
+                        <li><i class="fas fa-check"></i> 24/7 live support</li>
+                    </ul>
+                    <a href="signup.html" class="pricing-btn">Go Pro</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-name">Enterprise</div>
+                    <div class="pricing-price">Custom</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Dedicated manager</li>
+                        <li><i class="fas fa-check"></i> API access</li>
+                        <li><i class="fas fa-check"></i> SLA guarantee</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">Contact Us</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="testimonials">
+            <h2 class="section-title">Trusted by Millions</h2>
+            <p class="section-subtitle">What our users say about us</p>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">"Best trading platform I've ever used. The AI assistant is a game changer!"</div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div><div class="author-name">John Doe</div><div class="author-title">Crypto Trader</div></div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">"Instant withdrawals and great support. Highly recommended!"</div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SK</div>
+                        <div><div class="author-name">Sarah Kim</div><div class="author-title">Investor</div></div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">"The fees are very competitive and the platform is super fast."</div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MO</div>
+                        <div><div class="author-name">Michael O.</div><div class="author-title">Business Owner</div></div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                </div>
+            </div>
+        </div>
+
         <!-- AI Demo -->
         <div class="demo-section">
             <div class="demo-container">
@@ -695,6 +860,16 @@
                     <input type="text" id="demoCommand" placeholder="Type a command..." value="price of btc">
                     <button onclick="sendDemoCommand()">Send</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="newsletter">
+            <h3>Stay Updated</h3>
+            <p>Get the latest crypto news and platform updates</p>
+            <div class="newsletter-form">
+                <input type="email" placeholder="Enter your email">
+                <button>Subscribe</button>
             </div>
         </div>
 
@@ -762,10 +937,7 @@
                 const btc = data.find(t => t.symbol === 'BTCUSDT');
                 if (btc) {
                     document.getElementById('btcSlidePrice').innerHTML = `$${parseFloat(btc.lastPrice).toLocaleString()}`;
-                    const btcChange = parseFloat(btc.priceChangePercent).toFixed(2);
-                    const btcElem = document.getElementById('btcSlideChange');
-                    btcElem.innerHTML = `${btcChange >= 0 ? '+' : ''}${btcChange}%`;
-                    btcElem.className = `slide-change ${btcChange >= 0 ? 'up' : 'down'}`;
+                    document.getElementById('btcSlideChange').innerHTML = `${parseFloat(btc.priceChangePercent).toFixed(2)}%`;
                     document.getElementById('btcHigh').innerHTML = `$${parseFloat(btc.highPrice).toLocaleString()}`;
                     document.getElementById('btcLow').innerHTML = `$${parseFloat(btc.lowPrice).toLocaleString()}`;
                     document.getElementById('btcVol').innerHTML = `$${(parseFloat(btc.quoteVolume) / 1e9).toFixed(1)}B`;
@@ -774,10 +946,7 @@
                 const eth = data.find(t => t.symbol === 'ETHUSDT');
                 if (eth) {
                     document.getElementById('ethSlidePrice').innerHTML = `$${parseFloat(eth.lastPrice).toLocaleString()}`;
-                    const ethChange = parseFloat(eth.priceChangePercent).toFixed(2);
-                    const ethElem = document.getElementById('ethSlideChange');
-                    ethElem.innerHTML = `${ethChange >= 0 ? '+' : ''}${ethChange}%`;
-                    ethElem.className = `slide-change ${ethChange >= 0 ? 'up' : 'down'}`;
+                    document.getElementById('ethSlideChange').innerHTML = `${parseFloat(eth.priceChangePercent).toFixed(2)}%`;
                     document.getElementById('ethHigh').innerHTML = `$${parseFloat(eth.highPrice).toLocaleString()}`;
                     document.getElementById('ethLow').innerHTML = `$${parseFloat(eth.lowPrice).toLocaleString()}`;
                     document.getElementById('ethVol').innerHTML = `$${(parseFloat(eth.quoteVolume) / 1e9).toFixed(1)}B`;
@@ -786,10 +955,7 @@
                 const sol = data.find(t => t.symbol === 'SOLUSDT');
                 if (sol) {
                     document.getElementById('solSlidePrice').innerHTML = `$${parseFloat(sol.lastPrice).toLocaleString()}`;
-                    const solChange = parseFloat(sol.priceChangePercent).toFixed(2);
-                    const solElem = document.getElementById('solSlideChange');
-                    solElem.innerHTML = `${solChange >= 0 ? '+' : ''}${solChange}%`;
-                    solElem.className = `slide-change ${solChange >= 0 ? 'up' : 'down'}`;
+                    document.getElementById('solSlideChange').innerHTML = `${parseFloat(sol.priceChangePercent).toFixed(2)}%`;
                     document.getElementById('solHigh').innerHTML = `$${parseFloat(sol.highPrice).toLocaleString()}`;
                     document.getElementById('solLow').innerHTML = `$${parseFloat(sol.lowPrice).toLocaleString()}`;
                     document.getElementById('solVol').innerHTML = `$${(parseFloat(sol.quoteVolume) / 1e9).toFixed(1)}B`;
@@ -798,10 +964,7 @@
                 const bnb = data.find(t => t.symbol === 'BNBUSDT');
                 if (bnb) {
                     document.getElementById('bnbSlidePrice').innerHTML = `$${parseFloat(bnb.lastPrice).toLocaleString()}`;
-                    const bnbChange = parseFloat(bnb.priceChangePercent).toFixed(2);
-                    const bnbElem = document.getElementById('bnbSlideChange');
-                    bnbElem.innerHTML = `${bnbChange >= 0 ? '+' : ''}${bnbChange}%`;
-                    bnbElem.className = `slide-change ${bnbChange >= 0 ? 'up' : 'down'}`;
+                    document.getElementById('bnbSlideChange').innerHTML = `${parseFloat(bnb.priceChangePercent).toFixed(2)}%`;
                     document.getElementById('bnbHigh').innerHTML = `$${parseFloat(bnb.highPrice).toLocaleString()}`;
                     document.getElementById('bnbLow').innerHTML = `$${parseFloat(bnb.lowPrice).toLocaleString()}`;
                     document.getElementById('bnbVol').innerHTML = `$${(parseFloat(bnb.quoteVolume) / 1e9).toFixed(1)}B`;
