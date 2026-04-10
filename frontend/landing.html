@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Eric Venture – Trade Like a Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -34,19 +34,19 @@
             background-image: 
                 linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
+            background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
         }
         
-        /* Animated gradient orbs */
+        /* Animated orbs - scaled for mobile */
         .orb {
             position: fixed;
-            top: -50%;
-            right: -20%;
-            width: 80%;
-            height: 80%;
-            background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+            top: -30%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
@@ -55,11 +55,11 @@
         
         .orb2 {
             position: fixed;
-            bottom: -30%;
-            left: -10%;
-            width: 60%;
-            height: 60%;
-            background: radial-gradient(circle, rgba(240,185,11,0.1) 0%, transparent 70%);
+            bottom: -20%;
+            left: -30%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(240,185,11,0.08) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
@@ -79,100 +79,84 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 16px;
             position: relative;
             z-index: 1;
         }
         
-        /* Navigation - Premium Glassmorphic */
+        /* Navigation - Mobile Optimized */
         .navbar {
-            background: rgba(28,29,34,0.75);
+            background: rgba(28,29,34,0.85);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(59,130,246,0.15);
             border-radius: 20px;
-            padding: 12px 24px;
-            margin-bottom: 60px;
+            padding: 12px 20px;
+            margin-bottom: 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 12px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             background: linear-gradient(135deg, #F0B90B, #3B82F6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
         }
         .nav-links {
             display: flex;
-            gap: 28px;
+            gap: 16px;
         }
         .nav-links a {
             color: #8A8D92;
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             transition: all 0.2s ease;
-            padding: 4px 0;
         }
         .nav-links a:hover {
             color: #F0B90B;
-            border-bottom: 2px solid #F0B90B;
         }
         .nav-buttons {
             display: flex;
-            gap: 12px;
+            gap: 8px;
+        }
+        .btn-login, .btn-signup {
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            font-weight: 500;
         }
         .btn-login {
             background: rgba(43,45,51,0.8);
             border: 1px solid rgba(59,130,246,0.3);
-            border-radius: 12px;
-            padding: 8px 24px;
             color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        .btn-login:hover {
-            border-color: #F0B90B;
-            color: #F0B90B;
         }
         .btn-signup {
             background: linear-gradient(135deg, #F0B90B, #3B82F6);
-            border: none;
-            border-radius: 12px;
-            padding: 8px 24px;
             color: black;
-            text-decoration: none;
             font-weight: 600;
-            transition: all 0.2s ease;
-        }
-        .btn-signup:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
         }
         
-        /* Hero Section */
+        /* Hero Section - Mobile First */
         .hero {
             display: flex;
-            align-items: center;
-            gap: 60px;
-            margin-bottom: 80px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 60px;
         }
         .hero-content {
-            flex: 1;
-            min-width: 300px;
+            text-align: center;
         }
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 24px;
+            line-height: 1.3;
+            margin-bottom: 16px;
         }
         .hero h1 span {
             background: linear-gradient(135deg, #F0B90B, #3B82F6);
@@ -181,155 +165,144 @@
         }
         .hero p {
             color: #8A8D92;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             line-height: 1.6;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
         .hero-stats {
             display: flex;
-            gap: 40px;
-            margin-bottom: 32px;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 28px;
             flex-wrap: wrap;
         }
         .stat-number {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 700;
             background: linear-gradient(135deg, #F0B90B, #3B82F6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .stat-label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #8A8D92;
             margin-top: 4px;
         }
         .hero-buttons {
             display: flex;
-            gap: 16px;
+            justify-content: center;
+            gap: 12px;
             flex-wrap: wrap;
+        }
+        .btn-primary, .btn-secondary {
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
         }
         .btn-primary {
             background: linear-gradient(135deg, #F0B90B, #3B82F6);
-            border: none;
-            border-radius: 40px;
-            padding: 14px 32px;
             color: black;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            display: inline-block;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
         }
         .btn-secondary {
             background: rgba(43,45,51,0.8);
             border: 1px solid rgba(59,130,246,0.3);
-            border-radius: 40px;
-            padding: 14px 32px;
             color: white;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-        .btn-secondary:hover {
-            border-color: #F0B90B;
-            color: #F0B90B;
         }
         
-        /* Premium Trading Slide/Carousel */
+        /* Trading Slide - Mobile Optimized */
         .hero-slider {
-            flex: 1;
-            min-width: 350px;
+            width: 100%;
             position: relative;
         }
         .slide-container {
-            position: relative;
-            overflow: hidden;
-            border-radius: 28px;
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 24px;
             padding: 20px;
+            position: relative;
         }
         .slide {
             display: none;
-            animation: fadeEffect 0.5s ease-in-out;
+            animation: fadeEffect 0.4s ease;
         }
         .slide.active {
             display: block;
         }
         @keyframes fadeEffect {
-            from { opacity: 0; transform: translateX(20px); }
+            from { opacity: 0; transform: translateX(10px); }
             to { opacity: 1; transform: translateX(0); }
         }
         .slide-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
         }
         .slide-pair {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #F0B90B;
         }
         .slide-price {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 700;
             background: linear-gradient(135deg, #F0B90B, #3B82F6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .slide-change {
-            font-size: 0.9rem;
-            padding: 4px 10px;
+            font-size: 0.8rem;
+            padding: 3px 10px;
             border-radius: 20px;
         }
         .slide-change.up { background: rgba(14,203,129,0.15); color: #0ECB81; }
         .slide-change.down { background: rgba(246,70,93,0.15); color: #F6465D; }
         .slide-chart {
-            height: 120px;
-            margin: 20px 0;
+            height: 100px;
+            margin: 16px 0;
             display: flex;
             align-items: flex-end;
-            gap: 8px;
+            gap: 6px;
         }
         .chart-bar {
             flex: 1;
             background: linear-gradient(180deg, #F0B90B, #3B82F6);
             border-radius: 4px;
-            transition: height 0.5s ease;
+            min-width: 20px;
         }
         .slide-stats {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
-            padding-top: 16px;
+            margin-top: 16px;
+            padding-top: 12px;
             border-top: 1px solid rgba(59,130,246,0.1);
         }
         .slide-stat {
             text-align: center;
         }
         .slide-stat-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #8A8D92;
         }
         .slide-stat-value {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 600;
             margin-top: 4px;
         }
         .slider-controls {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 16px;
         }
         .slider-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: #2B2D33;
             border-radius: 50%;
             cursor: pointer;
@@ -337,140 +310,135 @@
         }
         .slider-dot.active {
             background: #F0B90B;
-            width: 24px;
+            width: 20px;
             border-radius: 10px;
         }
         .slider-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             background: rgba(43,45,51,0.8);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
             z-index: 10;
+            font-size: 1.2rem;
         }
-        .slider-nav:hover {
-            background: #F0B90B;
-            color: black;
-        }
-        .slider-prev {
-            left: 10px;
-        }
-        .slider-next {
-            right: 10px;
-        }
+        .slider-prev { left: 8px; }
+        .slider-next { right: 8px; }
         
-        /* Stats Bar */
+        /* Stats Bar - Mobile */
         .stats-section {
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(59,130,246,0.15);
-            border-radius: 24px;
-            padding: 40px 20px;
-            margin-bottom: 80px;
+            border-radius: 20px;
+            padding: 24px 16px;
+            margin-bottom: 60px;
         }
         .stats-grid {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
             text-align: center;
         }
         .stat-item .number {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             font-weight: 800;
             background: linear-gradient(135deg, #F0B90B, #3B82F6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .stat-item .label {
+            font-size: 0.7rem;
+            color: #8A8D92;
+            margin-top: 4px;
+        }
         
-        /* Features */
+        /* Features - Mobile Grid */
         .features {
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .section-subtitle {
             text-align: center;
             color: #8A8D92;
-            margin-bottom: 50px;
-            font-size: 1.1rem;
+            margin-bottom: 32px;
+            font-size: 0.9rem;
         }
         .features-grid {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
         .feature-card {
-            flex: 1;
-            min-width: 280px;
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(59,130,246,0.15);
-            border-radius: 24px;
-            padding: 32px 24px;
+            border-radius: 16px;
+            padding: 20px 12px;
             text-align: center;
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            border-color: #F0B90B;
-            transform: translateY(-5px);
         }
         .feature-icon {
-            width: 70px;
-            height: 70px;
+            width: 50px;
+            height: 50px;
             background: rgba(240,185,11,0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 2rem;
+            margin: 0 auto 12px;
+            font-size: 1.5rem;
             color: #F0B90B;
         }
+        .feature-card h3 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .feature-card p {
+            color: #8A8D92;
+            font-size: 0.7rem;
+            line-height: 1.4;
+        }
         
-        /* AI Demo */
+        /* AI Demo - Mobile */
         .demo-section {
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
         .demo-container {
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(59,130,246,0.15);
-            border-radius: 28px;
-            padding: 32px;
-            max-width: 800px;
-            margin: 0 auto;
+            border-radius: 24px;
+            padding: 20px;
         }
         .demo-messages {
             background: rgba(20,21,25,0.5);
-            border-radius: 20px;
-            padding: 20px;
-            height: 200px;
+            border-radius: 16px;
+            padding: 16px;
+            height: 180px;
             overflow-y: auto;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            font-size: 0.8rem;
         }
         .demo-message {
-            margin-bottom: 12px;
-            padding: 10px 16px;
-            border-radius: 16px;
-            max-width: 85%;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 14px;
+            max-width: 90%;
         }
         .demo-message.user {
             background: rgba(59,130,246,0.15);
             margin-left: auto;
-            color: white;
         }
         .demo-message.ai {
             background: rgba(240,185,11,0.1);
@@ -479,53 +447,110 @@
         }
         .demo-input {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
         .demo-input input {
             flex: 1;
-            padding: 14px 18px;
+            padding: 12px 16px;
             background: rgba(20,21,25,0.5);
             border: 1px solid rgba(59,130,246,0.2);
             border-radius: 40px;
             color: white;
+            font-size: 0.85rem;
         }
         .demo-input button {
-            padding: 14px 28px;
+            padding: 12px 20px;
             background: linear-gradient(135deg, #F0B90B, #3B82F6);
             border: none;
             border-radius: 40px;
             color: black;
             font-weight: 600;
             cursor: pointer;
+            font-size: 0.85rem;
         }
         
-        /* CTA */
+        /* CTA - Mobile */
         .cta-section {
             background: rgba(28,29,34,0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(59,130,246,0.15);
-            border-radius: 28px;
-            padding: 60px 40px;
+            border-radius: 24px;
+            padding: 32px 20px;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
+        }
+        .cta-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+        }
+        .cta-section p {
+            color: #8A8D92;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         
-        /* Footer */
+        /* Footer - Mobile */
         .footer {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 16px 20px;
             border-top: 1px solid rgba(59,130,246,0.1);
             color: #8A8D92;
         }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .footer-links a {
+            color: #8A8D92;
+            text-decoration: none;
+            font-size: 0.75rem;
+        }
+        .footer p {
+            font-size: 0.7rem;
+        }
         
-        @media (max-width: 768px) {
-            .hero { flex-direction: column; text-align: center; }
-            .hero h1 { font-size: 2.2rem; }
-            .hero-stats { justify-content: center; }
-            .navbar { flex-direction: column; text-align: center; }
-            .nav-links { flex-wrap: wrap; justify-content: center; }
-            .features-grid { flex-direction: column; }
-            .slider-nav { display: none; }
+        /* Tablet and Desktop adjustments */
+        @media (min-width: 768px) {
+            .hero {
+                flex-direction: row;
+                text-align: left;
+            }
+            .hero-content {
+                text-align: left;
+            }
+            .hero-stats {
+                justify-content: flex-start;
+            }
+            .hero-buttons {
+                justify-content: flex-start;
+            }
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            .container {
+                padding: 24px;
+            }
         }
     </style>
 </head>
@@ -553,19 +578,19 @@
         <div class="hero">
             <div class="hero-content">
                 <h1>Trade <span>Like a Pro</span></h1>
-                <p>AI-powered trading, instant conversions, and bank withdrawals. 0% fees on spot trading. Join millions of traders worldwide.</p>
+                <p>AI-powered trading, instant conversions, and bank withdrawals. 0% fees on spot trading.</p>
                 <div class="hero-stats">
-                    <div><div class="stat-number">37M+</div><div class="stat-label">Global Users</div></div>
-                    <div><div class="stat-number">60+</div><div class="stat-label">Blockchains</div></div>
-                    <div><div class="stat-number">$7.6B</div><div class="stat-label">24h Volume</div></div>
+                    <div><div class="stat-number">37M+</div><div class="stat-label">Users</div></div>
+                    <div><div class="stat-number">60+</div><div class="stat-label">Chains</div></div>
+                    <div><div class="stat-number">$7.6B</div><div class="stat-label">Volume</div></div>
                 </div>
                 <div class="hero-buttons">
                     <a href="signup.html" class="btn-primary">Start Trading</a>
-                    <a href="#" class="btn-secondary">View Markets</a>
+                    <a href="#" class="btn-secondary">Markets</a>
                 </div>
             </div>
             
-            <!-- Premium Trading Slide -->
+            <!-- Trading Slide -->
             <div class="hero-slider">
                 <div class="slide-container">
                     <div class="slider-nav slider-prev" onclick="prevSlide()">‹</div>
@@ -577,22 +602,11 @@
                             <span class="slide-price" id="btcSlidePrice">$68,142</span>
                             <span class="slide-change up" id="btcSlideChange">+2.4%</span>
                         </div>
-                        <div class="slide-chart" id="btcChart">
-                            <div class="chart-bar" style="height: 60px;"></div>
-                            <div class="chart-bar" style="height: 80px;"></div>
-                            <div class="chart-bar" style="height: 45px;"></div>
-                            <div class="chart-bar" style="height: 95px;"></div>
-                            <div class="chart-bar" style="height: 70px;"></div>
-                            <div class="chart-bar" style="height: 110px;"></div>
-                            <div class="chart-bar" style="height: 85px;"></div>
-                            <div class="chart-bar" style="height: 65px;"></div>
-                            <div class="chart-bar" style="height: 100px;"></div>
-                            <div class="chart-bar" style="height: 55px;"></div>
-                        </div>
+                        <div class="slide-chart" id="btcChart"></div>
                         <div class="slide-stats">
-                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value">$69,420</div></div>
-                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value">$67,890</div></div>
-                            <div class="slide-stat"><div class="slide-stat-label">24h Vol</div><div class="slide-stat-value">$32.4B</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value" id="btcHigh">$69,420</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value" id="btcLow">$67,890</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">Volume</div><div class="slide-stat-value" id="btcVol">$32.4B</div></div>
                         </div>
                     </div>
                     
@@ -602,22 +616,11 @@
                             <span class="slide-price" id="ethSlidePrice">$3,502</span>
                             <span class="slide-change up" id="ethSlideChange">+1.2%</span>
                         </div>
-                        <div class="slide-chart" id="ethChart">
-                            <div class="chart-bar" style="height: 50px;"></div>
-                            <div class="chart-bar" style="height: 70px;"></div>
-                            <div class="chart-bar" style="height: 90px;"></div>
-                            <div class="chart-bar" style="height: 65px;"></div>
-                            <div class="chart-bar" style="height: 85px;"></div>
-                            <div class="chart-bar" style="height: 105px;"></div>
-                            <div class="chart-bar" style="height: 75px;"></div>
-                            <div class="chart-bar" style="height: 95px;"></div>
-                            <div class="chart-bar" style="height: 60px;"></div>
-                            <div class="chart-bar" style="height: 80px;"></div>
-                        </div>
+                        <div class="slide-chart" id="ethChart"></div>
                         <div class="slide-stats">
-                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value">$3,550</div></div>
-                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value">$3,450</div></div>
-                            <div class="slide-stat"><div class="slide-stat-label">24h Vol</div><div class="slide-stat-value">$18.7B</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value" id="ethHigh">$3,550</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value" id="ethLow">$3,450</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">Volume</div><div class="slide-stat-value" id="ethVol">$18.7B</div></div>
                         </div>
                     </div>
                     
@@ -627,22 +630,11 @@
                             <span class="slide-price" id="solSlidePrice">$145</span>
                             <span class="slide-change up" id="solSlideChange">+5.7%</span>
                         </div>
-                        <div class="slide-chart" id="solChart">
-                            <div class="chart-bar" style="height: 70px;"></div>
-                            <div class="chart-bar" style="height: 55px;"></div>
-                            <div class="chart-bar" style="height: 110px;"></div>
-                            <div class="chart-bar" style="height: 85px;"></div>
-                            <div class="chart-bar" style="height: 95px;"></div>
-                            <div class="chart-bar" style="height: 65px;"></div>
-                            <div class="chart-bar" style="height: 120px;"></div>
-                            <div class="chart-bar" style="height: 90px;"></div>
-                            <div class="chart-bar" style="height: 75px;"></div>
-                            <div class="chart-bar" style="height: 100px;"></div>
-                        </div>
+                        <div class="slide-chart" id="solChart"></div>
                         <div class="slide-stats">
-                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value">$148</div></div>
-                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value">$138</div></div>
-                            <div class="slide-stat"><div class="slide-stat-label">24h Vol</div><div class="slide-stat-value">$4.2B</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value" id="solHigh">$148</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value" id="solLow">$138</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">Volume</div><div class="slide-stat-value" id="solVol">$4.2B</div></div>
                         </div>
                     </div>
                     
@@ -652,22 +644,11 @@
                             <span class="slide-price" id="bnbSlidePrice">$578</span>
                             <span class="slide-change down" id="bnbSlideChange">-0.3%</span>
                         </div>
-                        <div class="slide-chart" id="bnbChart">
-                            <div class="chart-bar" style="height: 80px;"></div>
-                            <div class="chart-bar" style="height: 75px;"></div>
-                            <div class="chart-bar" style="height: 60px;"></div>
-                            <div class="chart-bar" style="height: 70px;"></div>
-                            <div class="chart-bar" style="height: 65px;"></div>
-                            <div class="chart-bar" style="height: 55px;"></div>
-                            <div class="chart-bar" style="height: 50px;"></div>
-                            <div class="chart-bar" style="height: 60px;"></div>
-                            <div class="chart-bar" style="height: 45px;"></div>
-                            <div class="chart-bar" style="height: 55px;"></div>
-                        </div>
+                        <div class="slide-chart" id="bnbChart"></div>
                         <div class="slide-stats">
-                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value">$582</div></div>
-                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value">$575</div></div>
-                            <div class="slide-stat"><div class="slide-stat-label">24h Vol</div><div class="slide-stat-value">$8.9B</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h High</div><div class="slide-stat-value" id="bnbHigh">$582</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">24h Low</div><div class="slide-stat-value" id="bnbLow">$575</div></div>
+                            <div class="slide-stat"><div class="slide-stat-label">Volume</div><div class="slide-stat-value" id="bnbVol">$8.9B</div></div>
                         </div>
                     </div>
                 </div>
@@ -686,19 +667,19 @@
                 <div class="stat-item"><div class="number">$2.45T</div><div class="label">Market Cap</div></div>
                 <div class="stat-item"><div class="number">1,247</div><div class="label">Trading Pairs</div></div>
                 <div class="stat-item"><div class="number">40+</div><div class="label">Countries</div></div>
-                <div class="stat-item"><div class="number">0</div><div class="label">Security Incidents</div></div>
+                <div class="stat-item"><div class="number">0</div><div class="label">Incidents</div></div>
             </div>
         </div>
 
         <!-- Features -->
         <div class="features">
-            <h2 class="section-title">Why Choose Eric Venture?</h2>
-            <p class="section-subtitle">The most advanced crypto trading platform</p>
+            <h2 class="section-title">Why Choose Us?</h2>
+            <p class="section-subtitle">The most advanced crypto platform</p>
             <div class="features-grid">
-                <div class="feature-card"><div class="feature-icon">⚡</div><h3>Lightning Fast</h3><p>100k+ transactions per second</p></div>
+                <div class="feature-card"><div class="feature-icon">⚡</div><h3>Lightning Fast</h3><p>100k+ tx/sec</p></div>
                 <div class="feature-card"><div class="feature-icon">🔒</div><h3>Bank-Grade Security</h3><p>98% cold storage</p></div>
                 <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI-Powered</h3><p>Smart trading bots</p></div>
-                <div class="feature-card"><div class="feature-icon">💳</div><h3>Instant Withdrawals</h3><p>Bank transfers in 1-2 days</p></div>
+                <div class="feature-card"><div class="feature-icon">💳</div><h3>Instant Withdrawals</h3><p>1-2 days</p></div>
                 <div class="feature-card"><div class="feature-icon">📱</div><h3>Mobile First</h3><p>Trade anywhere</p></div>
                 <div class="feature-card"><div class="feature-icon">🌍</div><h3>Global Access</h3><p>40+ countries</p></div>
             </div>
@@ -719,10 +700,10 @@
 
         <!-- CTA -->
         <div class="cta-section">
-            <h2>Ready to start trading?</h2>
-            <p>Join 37 million users already trading with Eric Venture</p>
+            <h2>Ready to start?</h2>
+            <p>Join 37 million users worldwide</p>
             <div class="cta-buttons">
-                <a href="signup.html" class="btn-primary">Create Free Account</a>
+                <a href="signup.html" class="btn-primary">Sign Up Free</a>
                 <a href="#" class="btn-secondary">Learn More</a>
             </div>
         </div>
@@ -743,30 +724,89 @@
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.slider-dot');
         
+        function generateChartBars(containerId, trend = 'up') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            const heights = trend === 'up' ? [60,80,45,95,70,110,85,65,100,55] : [80,75,60,70,65,55,50,60,45,55];
+            heights.forEach(h => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = h + 'px';
+                container.appendChild(bar);
+            });
+        }
+        
+        generateChartBars('btcChart', 'up');
+        generateChartBars('ethChart', 'up');
+        generateChartBars('solChart', 'up');
+        generateChartBars('bnbChart', 'down');
+        
         function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+            slides.forEach((s, i) => s.classList.toggle('active', i === index));
+            dots.forEach((d, i) => d.classList.toggle('active', i === index));
             currentSlide = index;
         }
         
-        function nextSlide() {
-            let newIndex = currentSlide + 1;
-            if (newIndex >= slides.length) newIndex = 0;
-            showSlide(newIndex);
-        }
+        function nextSlide() { showSlide((currentSlide + 1) % slides.length); }
+        function prevSlide() { showSlide((currentSlide - 1 + slides.length) % slides.length); }
+        function goToSlide(index) { showSlide(index); }
         
-        function prevSlide() {
-            let newIndex = currentSlide - 1;
-            if (newIndex < 0) newIndex = slides.length - 1;
-            showSlide(newIndex);
-        }
+        setInterval(nextSlide, 5000);
         
-        function goToSlide(index) {
-            showSlide(index);
+        async function fetchPrices() {
+            try {
+                const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+                const data = await res.json();
+                
+                const btc = data.find(t => t.symbol === 'BTCUSDT');
+                if (btc) {
+                    document.getElementById('btcSlidePrice').innerHTML = `$${parseFloat(btc.lastPrice).toLocaleString()}`;
+                    const btcChange = parseFloat(btc.priceChangePercent).toFixed(2);
+                    const btcElem = document.getElementById('btcSlideChange');
+                    btcElem.innerHTML = `${btcChange >= 0 ? '+' : ''}${btcChange}%`;
+                    btcElem.className = `slide-change ${btcChange >= 0 ? 'up' : 'down'}`;
+                    document.getElementById('btcHigh').innerHTML = `$${parseFloat(btc.highPrice).toLocaleString()}`;
+                    document.getElementById('btcLow').innerHTML = `$${parseFloat(btc.lowPrice).toLocaleString()}`;
+                    document.getElementById('btcVol').innerHTML = `$${(parseFloat(btc.quoteVolume) / 1e9).toFixed(1)}B`;
+                }
+                
+                const eth = data.find(t => t.symbol === 'ETHUSDT');
+                if (eth) {
+                    document.getElementById('ethSlidePrice').innerHTML = `$${parseFloat(eth.lastPrice).toLocaleString()}`;
+                    const ethChange = parseFloat(eth.priceChangePercent).toFixed(2);
+                    const ethElem = document.getElementById('ethSlideChange');
+                    ethElem.innerHTML = `${ethChange >= 0 ? '+' : ''}${ethChange}%`;
+                    ethElem.className = `slide-change ${ethChange >= 0 ? 'up' : 'down'}`;
+                    document.getElementById('ethHigh').innerHTML = `$${parseFloat(eth.highPrice).toLocaleString()}`;
+                    document.getElementById('ethLow').innerHTML = `$${parseFloat(eth.lowPrice).toLocaleString()}`;
+                    document.getElementById('ethVol').innerHTML = `$${(parseFloat(eth.quoteVolume) / 1e9).toFixed(1)}B`;
+                }
+                
+                const sol = data.find(t => t.symbol === 'SOLUSDT');
+                if (sol) {
+                    document.getElementById('solSlidePrice').innerHTML = `$${parseFloat(sol.lastPrice).toLocaleString()}`;
+                    const solChange = parseFloat(sol.priceChangePercent).toFixed(2);
+                    const solElem = document.getElementById('solSlideChange');
+                    solElem.innerHTML = `${solChange >= 0 ? '+' : ''}${solChange}%`;
+                    solElem.className = `slide-change ${solChange >= 0 ? 'up' : 'down'}`;
+                    document.getElementById('solHigh').innerHTML = `$${parseFloat(sol.highPrice).toLocaleString()}`;
+                    document.getElementById('solLow').innerHTML = `$${parseFloat(sol.lowPrice).toLocaleString()}`;
+                    document.getElementById('solVol').innerHTML = `$${(parseFloat(sol.quoteVolume) / 1e9).toFixed(1)}B`;
+                }
+                
+                const bnb = data.find(t => t.symbol === 'BNBUSDT');
+                if (bnb) {
+                    document.getElementById('bnbSlidePrice').innerHTML = `$${parseFloat(bnb.lastPrice).toLocaleString()}`;
+                    const bnbChange = parseFloat(bnb.priceChangePercent).toFixed(2);
+                    const bnbElem = document.getElementById('bnbSlideChange');
+                    bnbElem.innerHTML = `${bnbChange >= 0 ? '+' : ''}${bnbChange}%`;
+                    bnbElem.className = `slide-change ${bnbChange >= 0 ? 'up' : 'down'}`;
+                    document.getElementById('bnbHigh').innerHTML = `$${parseFloat(bnb.highPrice).toLocaleString()}`;
+                    document.getElementById('bnbLow').innerHTML = `$${parseFloat(bnb.lowPrice).toLocaleString()}`;
+                    document.getElementById('bnbVol').innerHTML = `$${(parseFloat(bnb.quoteVolume) / 1e9).toFixed(1)}B`;
+                }
+            } catch(e) { console.log(e); }
         }
         
         async function sendDemoCommand() {
@@ -793,55 +833,8 @@
             document.getElementById('demoCommand').value = '';
         }
         
-        // Auto rotate slides every 5 seconds
-        setInterval(nextSlide, 5000);
-        
-        // Fetch live prices for slides
-        async function fetchPrices() {
-            try {
-                const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
-                const data = await res.json();
-                
-                const btc = data.find(t => t.symbol === 'BTCUSDT');
-                if (btc) {
-                    document.getElementById('btcSlidePrice').innerHTML = `$${parseFloat(btc.lastPrice).toLocaleString()}`;
-                    const btcChange = parseFloat(btc.priceChangePercent).toFixed(2);
-                    const btcElem = document.getElementById('btcSlideChange');
-                    btcElem.innerHTML = `${btcChange >= 0 ? '+' : ''}${btcChange}%`;
-                    btcElem.className = `slide-change ${btcChange >= 0 ? 'up' : 'down'}`;
-                }
-                
-                const eth = data.find(t => t.symbol === 'ETHUSDT');
-                if (eth) {
-                    document.getElementById('ethSlidePrice').innerHTML = `$${parseFloat(eth.lastPrice).toLocaleString()}`;
-                    const ethChange = parseFloat(eth.priceChangePercent).toFixed(2);
-                    const ethElem = document.getElementById('ethSlideChange');
-                    ethElem.innerHTML = `${ethChange >= 0 ? '+' : ''}${ethChange}%`;
-                    ethElem.className = `slide-change ${ethChange >= 0 ? 'up' : 'down'}`;
-                }
-                
-                const sol = data.find(t => t.symbol === 'SOLUSDT');
-                if (sol) {
-                    document.getElementById('solSlidePrice').innerHTML = `$${parseFloat(sol.lastPrice).toLocaleString()}`;
-                    const solChange = parseFloat(sol.priceChangePercent).toFixed(2);
-                    const solElem = document.getElementById('solSlideChange');
-                    solElem.innerHTML = `${solChange >= 0 ? '+' : ''}${solChange}%`;
-                    solElem.className = `slide-change ${solChange >= 0 ? 'up' : 'down'}`;
-                }
-                
-                const bnb = data.find(t => t.symbol === 'BNBUSDT');
-                if (bnb) {
-                    document.getElementById('bnbSlidePrice').innerHTML = `$${parseFloat(bnb.lastPrice).toLocaleString()}`;
-                    const bnbChange = parseFloat(bnb.priceChangePercent).toFixed(2);
-                    const bnbElem = document.getElementById('bnbSlideChange');
-                    bnbElem.innerHTML = `${bnbChange >= 0 ? '+' : ''}${bnbChange}%`;
-                    bnbElem.className = `slide-change ${bnbChange >= 0 ? 'up' : 'down'}`;
-                }
-            } catch(e) { console.log(e); }
-        }
-        
         fetchPrices();
-        setInterval(fetchPrices, 10000);
+        setInterval(fetchPrices, 15000);
     </script>
 </body>
 </html>
