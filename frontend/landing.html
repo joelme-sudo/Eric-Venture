@@ -338,6 +338,34 @@
         }
         .stat-item .label { font-size: 0.7rem; color: #8A8D92; margin-top: 4px; }
         
+        /* Partners Section */
+        .partners {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .partners-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8A8D92;
+            margin-bottom: 20px;
+        }
+        .partners-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .partner-logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #8A8D92;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+        .partner-logo:hover { opacity: 1; color: #F0B90B; }
+        
         /* Security Badges */
         .security-badges {
             display: flex;
@@ -403,7 +431,61 @@
         .feature-card h3 { font-size: 1rem; margin-bottom: 6px; }
         .feature-card p { color: #8A8D92; font-size: 0.7rem; line-height: 1.4; }
         
-        /* Pricing Section */
+        /* Supported Assets */
+        .assets {
+            background: rgba(28,29,34,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 24px;
+            padding: 32px 20px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        .assets-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .asset-item {
+            background: rgba(20,21,25,0.5);
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            margin-bottom: 60px;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+        .step-card {
+            text-align: center;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #F0B90B, #3B82F6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: black;
+        }
+        .step-card h3 { font-size: 1rem; margin-bottom: 8px; }
+        .step-card p { color: #8A8D92; font-size: 0.8rem; }
+        
+        /* Pricing */
         .pricing {
             margin-bottom: 60px;
         }
@@ -493,6 +575,38 @@
         .author-name { font-weight: 600; font-size: 0.9rem; }
         .author-title { font-size: 0.7rem; color: #8A8D92; }
         .stars { color: #F0B90B; margin-top: 8px; font-size: 0.8rem; }
+        
+        /* FAQ */
+        .faq {
+            margin-bottom: 60px;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 32px;
+        }
+        .faq-item {
+            background: rgba(28,29,34,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .faq-answer {
+            color: #8A8D92;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            display: none;
+        }
+        .faq-item.active .faq-answer { display: block; }
         
         /* AI Demo */
         .demo-section { margin-bottom: 60px; }
@@ -747,6 +861,18 @@
             </div>
         </div>
 
+        <!-- Partners -->
+        <div class="partners">
+            <div class="partners-title">TRUSTED BY LEADING COMPANIES</div>
+            <div class="partners-logos">
+                <div class="partner-logo">BINANCE</div>
+                <div class="partner-logo">COINBASE</div>
+                <div class="partner-logo">SOLANA</div>
+                <div class="partner-logo">ETHEREUM</div>
+                <div class="partner-logo">POLYGON</div>
+            </div>
+        </div>
+
         <!-- Stats -->
         <div class="stats-section">
             <div class="stats-grid">
@@ -776,6 +902,36 @@
                 <div class="feature-card"><div class="feature-icon">💳</div><h3>Instant Withdrawals</h3><p>1-2 days</p></div>
                 <div class="feature-card"><div class="feature-icon">📱</div><h3>Mobile First</h3><p>Trade anywhere</p></div>
                 <div class="feature-card"><div class="feature-icon">🌍</div><h3>Global Access</h3><p>40+ countries</p></div>
+            </div>
+        </div>
+
+        <!-- Supported Assets -->
+        <div class="assets">
+            <h3 class="section-title" style="font-size: 1.4rem;">Supported Assets</h3>
+            <div class="assets-grid">
+                <div class="asset-item">Bitcoin (BTC)</div>
+                <div class="asset-item">Ethereum (ETH)</div>
+                <div class="asset-item">Solana (SOL)</div>
+                <div class="asset-item">BNB (BNB)</div>
+                <div class="asset-item">Cardano (ADA)</div>
+                <div class="asset-item">Ripple (XRP)</div>
+                <div class="asset-item">Dogecoin (DOGE)</div>
+                <div class="asset-item">Polkadot (DOT)</div>
+                <div class="asset-item">Avalanche (AVAX)</div>
+                <div class="asset-item">Polygon (MATIC)</div>
+                <div class="asset-item">Chainlink (LINK)</div>
+                <div class="asset-item">Uniswap (UNI)</div>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="how-it-works">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Get started in 3 simple steps</p>
+            <div class="steps-grid">
+                <div class="step-card"><div class="step-number">1</div><h3>Create Account</h3><p>Sign up in 30 seconds</p></div>
+                <div class="step-card"><div class="step-number">2</div><h3>Deposit Funds</h3><p>Add crypto or bank transfer</p></div>
+                <div class="step-card"><div class="step-number">3</div><h3>Start Trading</h3><p>Use AI or trade manually</p></div>
             </div>
         </div>
 
@@ -846,6 +1002,30 @@
                         <div><div class="author-name">Michael O.</div><div class="author-title">Business Owner</div></div>
                     </div>
                     <div class="stars">★★★★★</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know</p>
+            <div class="faq-grid">
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">How does the AI assistant work? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Type what you want in plain English. Our AI executes trades, deposits, and conversions instantly.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">What are the fees? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Spot trading: 0.1% maker / 0.15% taker. VIP discounts available.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">How long do withdrawals take? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Crypto withdrawals are instant. Bank withdrawals take 1-2 business days.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">Is my money safe? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Yes. 98% cold storage, multi-signature wallets, and insurance coverage.</div>
                 </div>
             </div>
         </div>
@@ -928,6 +1108,15 @@
         function goToSlide(index) { showSlide(index); }
         
         setInterval(nextSlide, 5000);
+        
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+            const icon = element.querySelector('.fa-chevron-down, .fa-chevron-up');
+            if (icon) {
+                icon.classList.toggle('fa-chevron-down');
+                icon.classList.toggle('fa-chevron-up');
+            }
+        }
         
         async function fetchPrices() {
             try {
