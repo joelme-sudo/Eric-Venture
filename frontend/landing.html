@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Eric Venture – Crypto Trading Platform</title>
+    <title>Eric Venture – Trade Like a Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -15,28 +15,27 @@
             overflow-x: hidden;
         }
         
-        /* Navigation */
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
-            width: 100%;
+            left: 0;
+            right: 0;
             background: rgba(10,11,14,0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding: 16px 24px;
+            padding: 14px 20px;
             z-index: 1000;
         }
         .nav-container {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
         }
         .logo {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #F0B90B, #FFD700);
             -webkit-background-clip: text;
@@ -44,8 +43,7 @@
         }
         .nav-menu {
             display: flex;
-            gap: 32px;
-            flex-wrap: wrap;
+            gap: 28px;
         }
         .nav-menu a {
             color: #8A8D92;
@@ -54,7 +52,10 @@
             transition: color 0.2s;
         }
         .nav-menu a:hover { color: #F0B90B; }
-        .nav-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
         .btn-login {
             background: transparent;
             border: 1px solid #2B2D33;
@@ -75,46 +76,51 @@
         
         /* Hero */
         .hero {
-            padding: 140px 24px 80px;
-            max-width: 1280px;
+            padding: 120px 20px 60px;
+            max-width: 1200px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            display: flex;
+            flex-direction: row;
             align-items: center;
+            gap: 50px;
+        }
+        .hero-content {
+            flex: 1;
         }
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: 3.2rem;
             font-weight: 700;
             line-height: 1.2;
-            background: linear-gradient(135deg, #FFFFFF, #F0B90B);
+            margin-bottom: 20px;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .hero p {
             color: #8A8D92;
-            font-size: 1.1rem;
-            margin: 24px 0;
+            font-size: 1rem;
+            margin-bottom: 30px;
             line-height: 1.6;
         }
         .hero-stats {
             display: flex;
             gap: 40px;
-            margin: 32px 0;
-            flex-wrap: wrap;
+            margin-bottom: 30px;
         }
         .stat-number {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #F0B90B;
         }
         .stat-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #8A8D92;
         }
         .hero-buttons {
             display: flex;
-            gap: 16px;
+            gap: 15px;
             flex-wrap: wrap;
         }
         .btn-primary {
@@ -125,6 +131,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: transform 0.2s;
+            display: inline-block;
         }
         .btn-primary:hover { transform: translateY(-2px); }
         .btn-secondary {
@@ -134,9 +141,14 @@
             border-radius: 40px;
             font-weight: 600;
             text-decoration: none;
+            display: inline-block;
+        }
+        .hero-image {
+            flex: 1;
         }
         .hero-image img {
             width: 100%;
+            max-width: 500px;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
@@ -144,50 +156,56 @@
         /* Stats Bar */
         .stats-bar {
             background: #111215;
-            padding: 48px 24px;
+            padding: 40px 20px;
             border-top: 1px solid #1E1F24;
             border-bottom: 1px solid #1E1F24;
         }
         .stats-grid {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
+            gap: 20px;
             text-align: center;
         }
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #F0B90B;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #8A8D92;
+            margin-top: 5px;
         }
         
         /* Features */
         .features {
-            padding: 80px 24px;
-            max-width: 1280px;
+            padding: 60px 20px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 16px;
+            font-size: 2rem;
+            margin-bottom: 15px;
         }
         .section-subtitle {
             text-align: center;
             color: #8A8D92;
-            margin-bottom: 48px;
+            margin-bottom: 50px;
+            font-size: 1rem;
         }
         .features-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 25px;
         }
         .feature-card {
             background: #1C1D22;
             border: 1px solid #2B2D33;
             border-radius: 20px;
-            padding: 32px;
+            padding: 30px 20px;
             text-align: center;
             transition: all 0.3s;
         }
@@ -196,15 +214,24 @@
             transform: translateY(-5px);
         }
         .feature-icon {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: #F0B90B;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+        }
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .feature-card p {
+            color: #8A8D92;
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
         
-        /* AI Demo Section */
+        /* AI Demo */
         .ai-demo {
             background: #111215;
-            padding: 80px 24px;
+            padding: 60px 20px;
             border-top: 1px solid #1E1F24;
             border-bottom: 1px solid #1E1F24;
         }
@@ -214,23 +241,23 @@
             background: #1C1D22;
             border: 1px solid #2B2D33;
             border-radius: 24px;
-            padding: 32px;
+            padding: 30px;
         }
         .demo-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
         .demo-icon {
-            width: 48px;
-            height: 48px;
+            width: 55px;
+            height: 55px;
             background: rgba(240,185,11,0.15);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: #F0B90B;
         }
         .demo-title {
@@ -245,15 +272,16 @@
             background: #141519;
             border-radius: 16px;
             padding: 20px;
-            height: 200px;
+            height: 220px;
             overflow-y: auto;
             margin-bottom: 20px;
         }
         .demo-message {
             margin-bottom: 12px;
-            padding: 10px 14px;
-            border-radius: 12px;
+            padding: 10px 15px;
+            border-radius: 14px;
             max-width: 85%;
+            font-size: 0.9rem;
         }
         .demo-message.user {
             background: #2B2D33;
@@ -271,12 +299,12 @@
         }
         .demo-input-group input {
             flex: 1;
-            padding: 14px;
+            padding: 14px 18px;
             background: #141519;
             border: 1px solid #2B2D33;
             border-radius: 40px;
             color: white;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
         .demo-input-group button {
             padding: 14px 28px;
@@ -290,51 +318,107 @@
         
         /* CTA */
         .cta {
-            padding: 80px 24px;
+            padding: 60px 20px;
             text-align: center;
         }
         .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        .cta p {
+            color: #8A8D92;
+            margin-bottom: 30px;
         }
         .cta-buttons {
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin-top: 32px;
             flex-wrap: wrap;
         }
         
         /* Footer */
         .footer {
             background: #111215;
-            padding: 48px 24px;
+            padding: 40px 20px 30px;
             text-align: center;
-            color: #8A8D92;
             border-top: 1px solid #1E1F24;
         }
         .footer-links {
             display: flex;
             justify-content: center;
-            gap: 32px;
-            margin-bottom: 24px;
+            gap: 30px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
         .footer-links a {
             color: #8A8D92;
             text-decoration: none;
+            font-size: 0.85rem;
         }
         .footer-links a:hover { color: #F0B90B; }
+        .footer p {
+            color: #8A8D92;
+            font-size: 0.75rem;
+        }
         
-        @media (max-width: 768px) {
-            .nav-menu { display: none; }
-            .hero { grid-template-columns: 1fr; text-align: center; }
-            .hero-stats { justify-content: center; }
-            .hero-buttons { justify-content: center; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .features-grid { grid-template-columns: 1fr; }
-            .demo-container { padding: 20px; }
-            .demo-message { max-width: 95%; }
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 100px;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-image img {
+                max-width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .demo-container {
+                padding: 20px;
+            }
+            .demo-message {
+                max-width: 95%;
+            }
+            .demo-input-group {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-menu {
+                display: none;
+            }
+            .nav-buttons {
+                gap: 8px;
+            }
+            .btn-login, .btn-signup {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .stat-number {
+                font-size: 1.2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
         }
     </style>
 </head>
@@ -356,30 +440,30 @@
     </nav>
 
     <section class="hero">
-        <div>
-            <h1>The Ultimate Crypto Trading Platform</h1>
-            <p>Trade with confidence using our AI-powered platform. 0% fees on spot trading, instant conversions, and bank withdrawals. Join millions of traders worldwide.</p>
+        <div class="hero-content">
+            <h1>Trade <span>Like a Pro</span></h1>
+            <p>AI-powered trading, instant conversions, and bank withdrawals. 0% fees on spot trading. Join millions of traders worldwide.</p>
             <div class="hero-stats">
                 <div><span class="stat-number">37M+</span><div class="stat-label">Global Users</div></div>
                 <div><span class="stat-number">60+</span><div class="stat-label">Blockchains</div></div>
                 <div><span class="stat-number">$7.6B</span><div class="stat-label">24h Volume</div></div>
             </div>
             <div class="hero-buttons">
-                <a href="signup.html" class="btn-primary">Start Trading Now</a>
+                <a href="signup.html" class="btn-primary">Start Trading</a>
                 <a href="#" class="btn-secondary">View Markets</a>
             </div>
         </div>
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80" alt="Trading Dashboard">
+            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=500&q=80" alt="Trading Dashboard">
         </div>
     </section>
 
     <section class="stats-bar">
         <div class="stats-grid">
-            <div><span class="stat-value">$2.45T</span><div>Market Cap</div></div>
-            <div><span class="stat-value">1,247</span><div>Trading Pairs</div></div>
-            <div><span class="stat-value">40+</span><div>Countries</div></div>
-            <div><span class="stat-value">0</span><div>Security Incidents</div></div>
+            <div><span class="stat-value">$2.45T</span><div class="stat-label">Market Cap</div></div>
+            <div><span class="stat-value">1,247</span><div class="stat-label">Trading Pairs</div></div>
+            <div><span class="stat-value">40+</span><div class="stat-label">Countries</div></div>
+            <div><span class="stat-value">0</span><div class="stat-label">Incidents</div></div>
         </div>
     </section>
 
@@ -396,7 +480,6 @@
         </div>
     </section>
 
-    <!-- AI Demo Section -->
     <section class="ai-demo">
         <div class="demo-container">
             <div class="demo-header">
@@ -409,9 +492,9 @@
             <div class="demo-messages" id="demoMessages">
                 <div class="demo-message ai">
                     <i class="fas fa-robot" style="margin-right: 8px;"></i> Hello! Try typing:
-                    <br>"price of btc"
-                    <br>"deposit 100 usd"
-                    <br>"convert 0.01 btc to eth"
+                    <br>• "price of btc"
+                    <br>• "deposit 100 usd"
+                    <br>• "convert 0.01 btc to eth"
                 </div>
             </div>
             <div class="demo-input-group">
