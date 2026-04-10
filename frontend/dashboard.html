@@ -4,84 +4,263 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Dashboard – Eric Venture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #0A0B0D; color: white; padding: 12px; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0A0B0E;
+            color: #FFFFFF;
+            padding: 16px;
+        }
         
-        /* 120fps Optimized */
+        /* Navbar */
         .navbar {
-            background: rgba(10,11,13,0.95);
+            background: rgba(10,11,14,0.95);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid #2B2D33;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
             position: sticky;
             top: 0;
-            padding: 10px 12px;
-            margin: -12px -12px 16px -12px;
+            padding: 12px 20px;
+            margin: -16px -16px 20px -16px;
             z-index: 100;
-            transform: translateZ(0);
         }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; gap: 10px; }
-        .logo { font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg, #F0B90B, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-links { display: flex; gap: 16px; flex-wrap: wrap; }
-        .nav-links a { color: #8A8D92; text-decoration: none; font-size: 0.8rem; }
-        .logout-btn { background: #1C1D22; border: 1px solid #2B2D33; border-radius: 8px; padding: 5px 12px; cursor: pointer; font-size: 0.7rem; color: white; }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F0B90B, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+        .nav-links a {
+            color: #8A8D92;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #F0B90B; }
+        .logout-btn {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 8px;
+            padding: 6px 16px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: white;
+        }
         
-        /* Stats */
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
-        .stat-card { background: #1C1D22; border: 1px solid #2B2D33; border-radius: 12px; padding: 10px; }
-        .stat-label { font-size: 0.6rem; color: #8A8D92; }
-        .stat-value { font-size: 0.9rem; font-weight: 700; color: #F0B90B; }
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            color: #8A8D92;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #F0B90B;
+            margin-top: 8px;
+        }
         
         /* Price Bar */
-        .price-bar { background: #1C1D22; border: 1px solid #2B2D33; border-radius: 12px; padding: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-        .price-big { font-size: 1.5rem; font-weight: 700; color: #F0B90B; }
-        .price-change { font-size: 0.8rem; }
-        .price-change.up { color: #0ECB81; }
-        .price-change.down { color: #F6465D; }
+        .price-bar {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .price-main { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+        .price-symbol { font-size: 1rem; color: #8A8D92; }
+        .price-value { font-size: 1.8rem; font-weight: 700; color: #F0B90B; }
+        .price-change { font-size: 0.9rem; padding: 4px 8px; border-radius: 20px; }
+        .price-change.up { background: rgba(14,203,129,0.15); color: #0ECB81; }
+        .price-change.down { background: rgba(246,70,93,0.15); color: #F6465D; }
         
         /* Chart */
-        .chart-card { background: #1C1D22; border: 1px solid #2B2D33; border-radius: 12px; padding: 12px; margin-bottom: 16px; }
-        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-        .coin-selector { display: flex; gap: 8px; flex-wrap: wrap; }
-        .coin-btn { background: #141519; border: none; padding: 4px 12px; border-radius: 20px; color: #8A8D92; font-size: 0.7rem; cursor: pointer; }
-        .coin-btn.active { background: #F0B90B; color: black; }
-        .tradingview-widget { width: 100%; height: 400px; }
+        .chart-card {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .coin-selector {
+            display: flex;
+            gap: 8px;
+            background: #141519;
+            padding: 4px;
+            border-radius: 40px;
+        }
+        .coin-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 30px;
+            color: #8A8D92;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .coin-btn.active {
+            background: #F0B90B;
+            color: black;
+        }
+        .tradingview-widget { width: 100%; height: 450px; }
         
-        /* 2 Column */
-        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .trade-card, .market-card { background: #1C1D22; border: 1px solid #2B2D33; border-radius: 12px; padding: 12px; }
-        .trade-card h3, .market-card h3 { font-size: 0.85rem; margin-bottom: 10px; }
-        .input-group { margin-bottom: 10px; }
-        .input-group label { font-size: 0.65rem; color: #8A8D92; display: block; margin-bottom: 4px; }
-        .input-group input { width: 100%; padding: 8px; background: #141519; border: 1px solid #2B2D33; border-radius: 8px; color: white; font-size: 0.8rem; }
-        .trade-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-        .buy-btn { background: #0ECB81; color: black; border: none; padding: 8px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-        .sell-btn { background: #F6465D; color: white; border: none; padding: 8px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        /* 2 Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .trade-card, .market-card {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .input-group { margin-bottom: 16px; }
+        .input-group label {
+            display: block;
+            font-size: 0.7rem;
+            color: #8A8D92;
+            margin-bottom: 6px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: #141519;
+            border: 1px solid #2B2D33;
+            border-radius: 12px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .trade-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .buy-btn {
+            background: #0ECB81;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .sell-btn {
+            background: #F6465D;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
         
         /* Market Table */
-        .market-table { width: 100%; font-size: 0.7rem; border-collapse: collapse; }
-        .market-table th, .market-table td { padding: 8px 4px; text-align: left; border-bottom: 1px solid #2B2D33; }
-        .market-table th { color: #8A8D92; font-weight: 500; }
+        .market-table { width: 100%; border-collapse: collapse; }
+        .market-table th, .market-table td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #2B2D33;
+        }
+        .market-table th { color: #8A8D92; font-weight: 500; font-size: 0.75rem; }
         .positive { color: #0ECB81; }
         .negative { color: #F6465D; }
         
-        /* AI */
-        .ai-card { background: #1C1D22; border: 1px solid #2B2D33; border-radius: 12px; padding: 12px; margin-top: 16px; }
-        .ai-card h3 { font-size: 0.85rem; margin-bottom: 10px; }
-        .ai-input { display: flex; gap: 8px; }
-        .ai-input input { flex: 1; padding: 10px; background: #141519; border: 1px solid #2B2D33; border-radius: 8px; color: white; font-size: 0.8rem; }
-        .ai-input button { padding: 10px 16px; background: #F0B90B; border: none; border-radius: 8px; color: black; font-weight: 600; cursor: pointer; }
-        .ai-response { margin-top: 10px; padding: 10px; background: #141519; border-radius: 8px; font-size: 0.75rem; }
+        /* AI Card */
+        .ai-card {
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .ai-input {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .ai-input input {
+            flex: 1;
+            padding: 12px;
+            background: #141519;
+            border: 1px solid #2B2D33;
+            border-radius: 12px;
+            color: white;
+        }
+        .ai-input button {
+            padding: 12px 24px;
+            background: #F0B90B;
+            border: none;
+            border-radius: 12px;
+            color: black;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .ai-response {
+            margin-top: 12px;
+            padding: 12px;
+            background: #141519;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
         
-        /* Mobile */
         @media (max-width: 768px) {
-            body { padding: 8px; }
-            .stats-row { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-            .two-col { grid-template-columns: 1fr; gap: 12px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .two-col { grid-template-columns: 1fr; }
             .nav-links { display: none; }
-            .price-big { font-size: 1.2rem; }
             .tradingview-widget { height: 300px; }
+            .coin-selector { order: 2; }
+            .chart-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -90,15 +269,16 @@
         <div class="nav-container">
             <div class="logo">ERIC VENTURE</div>
             <div class="nav-links">
-                <a href="dashboard.html">Dashboard</a>
+                <a href="dashboard.html" class="active">Dashboard</a>
                 <a href="wallets.html">Wallets</a>
                 <a href="market-spot.html">Markets</a>
+                <a href="convert.html">Convert</a>
             </div>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </div>
 
-    <div class="stats-row">
+    <div class="stats-grid">
         <div class="stat-card"><div class="stat-label">Total Balance</div><div class="stat-value" id="totalBalance">$0.00</div></div>
         <div class="stat-card"><div class="stat-label">BTC</div><div class="stat-value" id="btcBalance">0.0000</div></div>
         <div class="stat-card"><div class="stat-label">ETH</div><div class="stat-value" id="ethBalance">0.0000</div></div>
@@ -106,9 +286,12 @@
     </div>
 
     <div class="price-bar">
-        <div><span style="font-size:0.8rem;">BTC/USDT</span><div class="price-big" id="btcPrice">$0.00</div></div>
-        <div class="price-change" id="btcChange"></div>
-        <div><span style="font-size:0.65rem; color:#8A8D92;">24h Vol</span><div id="btcVolume">-</div></div>
+        <div class="price-main">
+            <span class="price-symbol">BTC/USDT</span>
+            <span class="price-value" id="btcPrice">$0.00</span>
+            <span class="price-change" id="btcChange"></span>
+        </div>
+        <div><span style="color:#8A8D92;">24h Vol:</span> <span id="btcVolume">-</span></div>
     </div>
 
     <div class="chart-card">
@@ -126,20 +309,20 @@
 
     <div class="two-col">
         <div class="trade-card">
-            <h3>Trade BTC/USDT</h3>
+            <div class="card-title">Trade BTC/USDT</div>
             <div class="input-group"><label>Price (USDT)</label><input type="number" id="tradePrice" placeholder="0.00"></div>
             <div class="input-group"><label>Amount (BTC)</label><input type="number" id="tradeAmount" placeholder="0.00"></div>
             <div class="input-group"><label>Total</label><input type="text" id="tradeTotal" readonly placeholder="0.00 USDT"></div>
-            <div class="trade-buttons"><button class="buy-btn" onclick="placeOrder('buy')">Buy</button><button class="sell-btn" onclick="placeOrder('sell')">Sell</button></div>
+            <div class="trade-buttons"><button class="buy-btn" onclick="placeOrder('buy')">Buy BTC</button><button class="sell-btn" onclick="placeOrder('sell')">Sell BTC</button></div>
         </div>
         <div class="market-card">
-            <h3>Market Prices</h3>
-            <table class="market-table"><thead><tr><th>Coin</th><th>Price</th><th>24h</th></tr></thead><tbody id="marketData"><tr><td colspan="3">Loading...</td></tr></tbody></table>
-        </div>
-    </div>
+            <div class="card-title">Market Prices</div>
+            <table class="market-table"><thead><tr><th>Coin</th><th>Price</th><th>24h</th></tr></thead><tbody id="marketData"><tr><td colspan="3">Loading...<\/td><\/tr><\/tbody><\/table>
+        <\/div>
+    <\/div>
 
     <div class="ai-card">
-        <h3>🤖 AI Assistant</h3>
+        <div class="card-title">🤖 AI Assistant</div>
         <div class="ai-input">
             <input type="text" id="aiCommand" placeholder="deposit 100 USD, balance">
             <button onclick="sendAICommand()">Send</button>
@@ -148,7 +331,7 @@
     </div>
 
     <script>
-        const API_URL = 'https://eric-venture.onrender.com';
+        const API_URL = 'https:\/\/eric-venture.onrender.com';
         const token = localStorage.getItem('token');
         if (!token) window.location.href = 'login.html';
 
@@ -160,7 +343,7 @@
             tvWidget = new TradingView.widget({
                 container_id: "tradingview-widget",
                 width: "100%",
-                height: 400,
+                height: 450,
                 symbol: `BINANCE:${symbol}USDT`,
                 interval: "60",
                 timezone: "Etc/UTC",
@@ -188,8 +371,9 @@
                 const data = await res.json();
                 document.getElementById('btcPrice').innerHTML = `$${parseFloat(data.lastPrice).toLocaleString()}`;
                 const change = parseFloat(data.priceChangePercent).toFixed(2);
-                document.getElementById('btcChange').innerHTML = `${change >= 0 ? '+' : ''}${change}%`;
-                document.getElementById('btcChange').className = `price-change ${change >= 0 ? 'up' : 'down'}`;
+                const changeElem = document.getElementById('btcChange');
+                changeElem.innerHTML = `${change >= 0 ? '+' : ''}${change}%`;
+                changeElem.className = `price-change ${change >= 0 ? 'up' : 'down'}`;
                 document.getElementById('btcVolume').innerHTML = `$${(parseFloat(data.quoteVolume) / 1e9).toFixed(2)}B`;
                 document.getElementById('tradePrice').value = data.lastPrice;
             } catch(e) { console.log(e); }
@@ -206,10 +390,10 @@
                 }).filter(m => m);
                 document.getElementById('marketData').innerHTML = marketData.map(m => `
                     <tr onclick="changeSymbol('${m.symbol}')">
-                        <td><strong>${m.symbol}</strong></td>
-                        <td>$${m.price.toLocaleString()}</td>
-                        <td class="${m.change >= 0 ? 'positive' : 'negative'}">${m.change >= 0 ? '+' : ''}${m.change.toFixed(2)}%</td>
-                    </tr>
+                        <td><strong>${m.symbol}</strong><\/td>
+                        <td>$${m.price.toLocaleString()}<\/td>
+                        <td class="${m.change >= 0 ? 'positive' : 'negative'}">${m.change >= 0 ? '+' : ''}${m.change.toFixed(2)}%<\/td>
+                    <\/tr>
                 `).join('');
             } catch(e) { console.log(e); }
         }
