@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Eric Venture – Trade Crypto Like a Pro</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Eric Venture – Crypto Trading Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -16,7 +15,7 @@
             overflow-x: hidden;
         }
         
-        /* 120fps Optimized */
+        /* Navigation */
         .navbar {
             position: fixed;
             top: 0;
@@ -26,7 +25,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.08);
             padding: 16px 24px;
             z-index: 1000;
-            transform: translateZ(0);
         }
         .nav-container {
             max-width: 1280px;
@@ -34,9 +32,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
         }
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             background: linear-gradient(135deg, #F0B90B, #FFD700);
             -webkit-background-clip: text;
@@ -45,6 +45,7 @@
         .nav-menu {
             display: flex;
             gap: 32px;
+            flex-wrap: wrap;
         }
         .nav-menu a {
             color: #8A8D92;
@@ -53,13 +54,13 @@
             transition: color 0.2s;
         }
         .nav-menu a:hover { color: #F0B90B; }
-        .nav-buttons { display: flex; gap: 12px; }
+        .nav-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
         .btn-login {
             background: transparent;
             border: 1px solid #2B2D33;
             color: white;
             padding: 8px 20px;
-            border-radius: 8px;
+            border-radius: 40px;
             font-weight: 500;
             text-decoration: none;
         }
@@ -67,14 +68,14 @@
             background: #F0B90B;
             color: black;
             padding: 8px 20px;
-            border-radius: 8px;
+            border-radius: 40px;
             font-weight: 600;
             text-decoration: none;
         }
         
         /* Hero */
         .hero {
-            padding: 120px 24px 80px;
+            padding: 140px 24px 80px;
             max-width: 1280px;
             margin: 0 auto;
             display: grid;
@@ -100,6 +101,7 @@
             display: flex;
             gap: 40px;
             margin: 32px 0;
+            flex-wrap: wrap;
         }
         .stat-number {
             font-size: 1.8rem;
@@ -113,6 +115,7 @@
         .hero-buttons {
             display: flex;
             gap: 16px;
+            flex-wrap: wrap;
         }
         .btn-primary {
             background: #F0B90B;
@@ -168,6 +171,11 @@
         .section-title {
             text-align: center;
             font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #8A8D92;
             margin-bottom: 48px;
         }
         .features-grid {
@@ -193,13 +201,97 @@
             margin-bottom: 20px;
         }
         
-        /* CTA */
-        .cta {
-            background: linear-gradient(135deg, #111215, #0A0B0E);
+        /* AI Demo Section */
+        .ai-demo {
+            background: #111215;
             padding: 80px 24px;
-            text-align: center;
             border-top: 1px solid #1E1F24;
             border-bottom: 1px solid #1E1F24;
+        }
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1C1D22;
+            border: 1px solid #2B2D33;
+            border-radius: 24px;
+            padding: 32px;
+        }
+        .demo-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .demo-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(240,185,11,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #F0B90B;
+        }
+        .demo-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        .demo-subtitle {
+            color: #8A8D92;
+            font-size: 0.8rem;
+        }
+        .demo-messages {
+            background: #141519;
+            border-radius: 16px;
+            padding: 20px;
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .demo-message {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            max-width: 85%;
+        }
+        .demo-message.user {
+            background: #2B2D33;
+            margin-left: auto;
+            color: white;
+        }
+        .demo-message.ai {
+            background: rgba(240,185,11,0.1);
+            border: 1px solid rgba(240,185,11,0.3);
+            color: #F0B90B;
+        }
+        .demo-input-group {
+            display: flex;
+            gap: 12px;
+        }
+        .demo-input-group input {
+            flex: 1;
+            padding: 14px;
+            background: #141519;
+            border: 1px solid #2B2D33;
+            border-radius: 40px;
+            color: white;
+            font-size: 1rem;
+        }
+        .demo-input-group button {
+            padding: 14px 28px;
+            background: #F0B90B;
+            border: none;
+            border-radius: 40px;
+            color: black;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* CTA */
+        .cta {
+            padding: 80px 24px;
+            text-align: center;
         }
         .cta h2 {
             font-size: 2.5rem;
@@ -210,6 +302,7 @@
             gap: 20px;
             justify-content: center;
             margin-top: 32px;
+            flex-wrap: wrap;
         }
         
         /* Footer */
@@ -218,7 +311,20 @@
             padding: 48px 24px;
             text-align: center;
             color: #8A8D92;
+            border-top: 1px solid #1E1F24;
         }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #8A8D92;
+            text-decoration: none;
+        }
+        .footer-links a:hover { color: #F0B90B; }
         
         @media (max-width: 768px) {
             .nav-menu { display: none; }
@@ -227,7 +333,8 @@
             .hero-buttons { justify-content: center; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .features-grid { grid-template-columns: 1fr; }
-            .cta-buttons { flex-direction: column; align-items: center; }
+            .demo-container { padding: 20px; }
+            .demo-message { max-width: 95%; }
         }
     </style>
 </head>
@@ -250,20 +357,20 @@
 
     <section class="hero">
         <div>
-            <h1>Trade Crypto<br>Like a Pro</h1>
-            <p>AI-powered trading, instant conversions, and bank withdrawals. 0% fees on spot trading.</p>
+            <h1>The Ultimate Crypto Trading Platform</h1>
+            <p>Trade with confidence using our AI-powered platform. 0% fees on spot trading, instant conversions, and bank withdrawals. Join millions of traders worldwide.</p>
             <div class="hero-stats">
-                <div><span class="stat-number">37M+</span><div class="stat-label">Users</div></div>
-                <div><span class="stat-number">60+</span><div class="stat-label">Chains</div></div>
-                <div><span class="stat-number">$7.6B</span><div class="stat-label">Volume</div></div>
+                <div><span class="stat-number">37M+</span><div class="stat-label">Global Users</div></div>
+                <div><span class="stat-number">60+</span><div class="stat-label">Blockchains</div></div>
+                <div><span class="stat-number">$7.6B</span><div class="stat-label">24h Volume</div></div>
             </div>
             <div class="hero-buttons">
-                <a href="signup.html" class="btn-primary">Get Started</a>
+                <a href="signup.html" class="btn-primary">Start Trading Now</a>
                 <a href="#" class="btn-secondary">View Markets</a>
             </div>
         </div>
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80" alt="Crypto Dashboard">
+            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=80" alt="Trading Dashboard">
         </div>
     </section>
 
@@ -272,30 +379,104 @@
             <div><span class="stat-value">$2.45T</span><div>Market Cap</div></div>
             <div><span class="stat-value">1,247</span><div>Trading Pairs</div></div>
             <div><span class="stat-value">40+</span><div>Countries</div></div>
-            <div><span class="stat-value">0</span><div>Incidents</div></div>
+            <div><span class="stat-value">0</span><div>Security Incidents</div></div>
         </div>
     </section>
 
     <section class="features">
         <h2 class="section-title">Why Choose Eric Venture?</h2>
+        <p class="section-subtitle">The most advanced crypto trading platform</p>
         <div class="features-grid">
-            <div class="feature-card"><div class="feature-icon">⚡</div><h3>Lightning Fast</h3><p>100k+ transactions per second</p></div>
-            <div class="feature-card"><div class="feature-icon">🔒</div><h3>Bank-Grade Security</h3><p>98% cold storage</p></div>
-            <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI-Powered</h3><p>Smart trading bots</p></div>
+            <div class="feature-card"><div class="feature-icon">⚡</div><h3>Lightning Fast</h3><p>100k+ transactions per second with zero downtime</p></div>
+            <div class="feature-card"><div class="feature-icon">🔒</div><h3>Bank-Grade Security</h3><p>Multi-signature wallets, 98% cold storage</p></div>
+            <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI-Powered Trading</h3><p>Smart trading bots and predictive analytics</p></div>
+            <div class="feature-card"><div class="feature-icon">💳</div><h3>Instant Withdrawals</h3><p>Direct bank transfers in 1-2 days</p></div>
+            <div class="feature-card"><div class="feature-icon">📱</div><h3>Mobile First</h3><p>Trade anywhere, anytime</p></div>
+            <div class="feature-card"><div class="feature-icon">🌍</div><h3>Global Access</h3><p>Support for 40+ countries</p></div>
+        </div>
+    </section>
+
+    <!-- AI Demo Section -->
+    <section class="ai-demo">
+        <div class="demo-container">
+            <div class="demo-header">
+                <div class="demo-icon"><i class="fas fa-robot"></i></div>
+                <div>
+                    <div class="demo-title">Try Our AI Assistant</div>
+                    <div class="demo-subtitle">No login required – test it now</div>
+                </div>
+            </div>
+            <div class="demo-messages" id="demoMessages">
+                <div class="demo-message ai">
+                    <i class="fas fa-robot" style="margin-right: 8px;"></i> Hello! Try typing:
+                    <br>"price of btc"
+                    <br>"deposit 100 usd"
+                    <br>"convert 0.01 btc to eth"
+                </div>
+            </div>
+            <div class="demo-input-group">
+                <input type="text" id="demoCommand" placeholder="Type a command..." value="price of btc">
+                <button onclick="sendDemoCommand()">Send</button>
+            </div>
+            <p style="color:#8A8D92; font-size:0.7rem; margin-top:16px; text-align:center;">
+                <i class="fas fa-bolt" style="color:#F0B90B;"></i> Powered by real-time market data
+            </p>
         </div>
     </section>
 
     <section class="cta">
         <h2>Ready to start trading?</h2>
-        <p>Join 37M+ users worldwide</p>
+        <p>Join 37 million users already trading with Eric Venture</p>
         <div class="cta-buttons">
-            <a href="signup.html" class="btn-primary">Sign Up Now</a>
-            <a href="#" class="btn-secondary">Try Demo</a>
+            <a href="signup.html" class="btn-primary">Create Free Account</a>
+            <a href="#" class="btn-secondary">Learn More</a>
         </div>
     </section>
 
     <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Careers</a>
+            <a href="#">Blog</a>
+            <a href="#">Support</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+        </div>
         <p>© 2026 Eric Venture. All rights reserved.</p>
     </footer>
+
+    <script>
+        const API_URL = 'https://eric-venture.onrender.com';
+
+        async function sendDemoCommand() {
+            const command = document.getElementById('demoCommand').value;
+            if (!command) return;
+            
+            const messagesDiv = document.getElementById('demoMessages');
+            messagesDiv.innerHTML += `<div class="demo-message user"><i class="fas fa-user" style="margin-right: 8px;"></i> ${command}</div>`;
+            messagesDiv.innerHTML += `<div class="demo-message ai" id="loadingMsg"><i class="fas fa-spinner fa-spin"></i> Processing...</div>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            try {
+                const res = await fetch(`${API_URL}/api/ai/demo`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command })
+                });
+                const data = await res.json();
+                document.getElementById('loadingMsg').remove();
+                messagesDiv.innerHTML += `<div class="demo-message ai"><i class="fas fa-robot" style="margin-right: 8px;"></i> ${data.message || 'Command processed'}</div>`;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            } catch (err) {
+                document.getElementById('loadingMsg').remove();
+                messagesDiv.innerHTML += `<div class="demo-message ai"><i class="fas fa-exclamation-triangle"></i> Connection error. Please try again.</div>`;
+            }
+            document.getElementById('demoCommand').value = '';
+        }
+        
+        document.getElementById('demoCommand').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendDemoCommand();
+        });
+    </script>
 </body>
 </html>
